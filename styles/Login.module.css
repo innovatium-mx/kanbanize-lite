@@ -17,7 +17,7 @@ form.form {
     grid-template-columns: 1fr;
     grid-gap: 2.5em;
     outline: solid var(--details);
-    background-color: var(--main-color);
+    background-color: white;
     width: fit-content;
     height: fit-content;
     padding: 4.5em 0 2.5em 0;
@@ -28,3 +28,78 @@ form.form {
     -ms-border-radius: 0.5em;
     -o-border-radius: 0.5em;
 }
+
+div.formInputLogin {
+    margin-left: 2em;
+    margin-right: 2em;
+    position: relative;
+}
+
+fieldset.formGroup {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+}
+
+button.formBtnSubmitLogin {
+    border: none;
+    color: hsl(0, 0%, 100%);
+    cursor: pointer;
+    font-weight: bold;
+    padding: .7em;
+    border-radius: 0.5em;
+    font-size: 2rem;
+    background-color: blue;
+    transition: all .3s ease-in-out;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+}
+
+button.formBtnSubmitLogin:hover, button.formBtnSubmitLogin:focus {
+    outline: none;
+    transform: scale(1.01);
+    -webkit-transform: scale(1.01);
+    -moz-transform: scale(1.01);
+    -ms-transform: scale(1.01);
+    -o-transform: scale(1.01);
+}
+
+form.form footer.formFooterLogin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+input.inputLogin:is([type=email], [type=password]) {
+    border: 2px solid gray;
+    padding: .8em .5em;
+    font-size: 1.5rem;
+    text-align: center;
+    display: inline-block;
+    border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    -ms-border-radius: 0.5em;
+    -o-border-radius: 0.5em;
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+}
+
+
+
+
+
+
+
+
+
+

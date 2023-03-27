@@ -1,24 +1,38 @@
 import axios from "axios";
 import login from '../styles/Login.module.css'
-import { use, useState } from "react"
+import React, { useRef, useId, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faCircleCheck, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 
 
-export default function Login() {
+function Login() {
 
     const [loginUsername, setLoginUsername] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
 
-    const loginPost = () =>{
-        axios({
-            method: ""
 
+    function handleSubmit(){
+        /*axios({
+            method: "post",
+            headers: {"Content-type" : "application/json"},
+            data: {
+                email : loginUsername,
+                pass : loginPassword
+            },
+            withCredentials: true,
+            url: "https://university6y.kanbanize.com/index.php/api/kanbanize/login"
+        }).then(res=> console.log(res)).catch(err=> console.log(err));
+        */
 
+        axios.post(`https://university6y.kanbanize.com/index.php/api/kanbanize/login`,{
+            data : {
+                email : loginUsername,
+                pass : loginPassword
+            }
         })
-
-    }
+        .then(res=> console.log(res)).catch(err=> console.log(err));
+    };
 
     return (
         <>
@@ -28,9 +42,27 @@ export default function Login() {
             </header>
 
             <form className={login.form}>
-                <input type="text" name="username" placeholder="username" onChange={e => setLoginUsername(e.target.value)}></input>
-                <input type="password" name="passwrd" placeholder="password" onChange={e => setLoginPassword(e.target.value)}></input>
-                <button>Login</button>
+
+                <fieldset className={login.formGroup}>
+
+                    <div className={login.formInputLogin}>
+                        <input type="email" className={login.inputLogin}  name="username" placeholder="username" title="Enter your email" onChange={e => setLoginUsername(e.target.value)}></input>
+                    </div>
+
+                </fieldset>
+
+                <fieldset className={login.formGroup}>
+
+                    <div className={login.formInputLogin}>
+                        <input type="password" className={login.inputLogin} name="passwrd" placeholder="password" title="Enter your password"  onChange={e => setLoginPassword(e.target.value)}></input>
+                    </div>
+
+                </fieldset>
+
+                <footer className={login.formFooterLogin}>
+                    <button className={login.formBtnSubmitLogin} type="submit" onClick={() => handleSubmit()}>Login</button>
+                </footer>
+
             </form>
 
 
@@ -39,3 +71,5 @@ export default function Login() {
         </>
     )
 }
+
+export default Login;
