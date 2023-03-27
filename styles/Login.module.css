@@ -1,0 +1,30 @@
+div.grid {
+    display: grid;
+    place-items: center;
+    margin-bottom: 2.5rem;
+    grid-gap: 4rem;
+}
+
+header.formHeader {
+    font-size: 1.5em;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-color);
+}
+
+form.form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 2.5em;
+    outline: solid var(--details);
+    background-color: var(--main-color);
+    width: fit-content;
+    height: fit-content;
+    padding: 4.5em 0 2.5em 0;
+    position: relative;
+    border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    -ms-border-radius: 0.5em;
+    -o-border-radius: 0.5em;
+}
