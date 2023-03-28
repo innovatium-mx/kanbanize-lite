@@ -1,6 +1,6 @@
-import axios from "axios";
 import login from '../styles/Login.module.css'
 import React, { useRef, useId, useState } from 'react';
+import { parseString } from "xml2js";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faCircleCheck, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
@@ -38,8 +38,12 @@ function Login() {
             },
             body: formData,
         })
-        .then((response) =>{
-            console.log(response);
+        .then((response) => response.text())
+        .then((data) => {
+            parseString(data, { explicitArray: false }, function(error, result) {
+                localStorage.setItem('email', result.xml.email);
+                localStorage.setItem('apikey', result.xml.apikey);
+            });
         })
         .catch((error) => {
             console.log(error);
