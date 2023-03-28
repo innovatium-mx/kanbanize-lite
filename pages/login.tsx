@@ -1,12 +1,13 @@
 import axios from "axios";
 import login from '../styles/Login.module.css'
 import React, { useRef, useId, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faCircleCheck, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-
-
 function Login() {
+
+    //const navigate = useNavigate();
 
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -29,23 +30,20 @@ function Login() {
             "email": loginEmail,
             "pass": loginPassword,
         });
-        
-        console.log(formData);
-        axios.post(`https://university6y.kanbanize.com/index.php/api/kanbanize/login`,{
-            body: formData,
+
+        fetch(`https://university6y.kanbanize.com/index.php/api/kanbanize/login`, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
+            body: formData,
         })
-        .then(function (response) {
-            console.log('Cat');
+        .then((response) =>{
             console.log(response);
-            navigate('../');
         })
-        .catch(function (error) {
-            console.log('Dog')
+        .catch((error) => {
             console.log(error);
-        });
+          });
 
     };
 
