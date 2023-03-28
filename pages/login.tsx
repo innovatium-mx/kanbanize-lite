@@ -1,13 +1,13 @@
 import login from '../styles/Login.module.css'
 import React, { useRef, useId, useState } from 'react';
 import { parseString } from "xml2js";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faCircleCheck, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 function Login() {
 
-    //const navigate = useNavigate();
+    const router = useRouter();
 
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -43,6 +43,7 @@ function Login() {
             parseString(data, { explicitArray: false }, function(error, result) {
                 localStorage.setItem('email', result.xml.email);
                 localStorage.setItem('apikey', result.xml.apikey);
+                router.push('/myBoards');
             });
         })
         .catch((error) => {
