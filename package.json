@@ -18,18 +18,21 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "eslint": "8.36.0",
-    "eslint-config-next": "13.2.4",
+    "eslint-config-next": "^13.2.4",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "mysql": "^2.18.1",
-    "next": "13.2.4",
+    "next": "^13.2.4",
     "nodemon": "^2.0.22",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "react": "18.2.0",
+    "react": "^18.2.0",
     "react-devtools": "^4.27.4",
-    "react-dom": "18.2.0",
+    "react-dom": "^18.2.0",
     "typescript": "5.0.2",
     "xml2js": "^0.4.23"
+  },
+  "devDependencies": {
+    "file-loader": "^6.2.0"
   }
 }
