@@ -8,30 +8,45 @@ import { faEnvelope, faLock, faCircleCheck, faTimesCircle } from '@fortawesome/f
 
 function Login() {
 
-    const [loginUsername, setLoginUsername] = useState('');
+    const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
 
+    const handleLoginEmail = (e: {
+        target: { value: React.SetStateAction<string> };
+      }) => {
+        setLoginEmail(e.target.value);
+      };
+    
+    const handleLoginPassword = (e: {
+        target: { value: React.SetStateAction<string> };
+      }) => {
+        setLoginPassword(e.target.value);
+    };
 
-    function handleSubmit(){
-        /*axios({
-            method: "post",
-            headers: {"Content-type" : "application/json"},
-            data: {
-                email : loginUsername,
-                pass : loginPassword
-            },
-            withCredentials: true,
-            url: "https://university6y.kanbanize.com/index.php/api/kanbanize/login"
-        }).then(res=> console.log(res)).catch(err=> console.log(err));
-        */
-
+    const handleSubmit = (e: { preventDefault: () => void }) => {
+        e.preventDefault();
+        let formData : JSON = JSON.stringify({
+            "email": loginEmail,
+            "pass": loginPassword,
+        });
+        
+        console.log(formData);
         axios.post(`https://university6y.kanbanize.com/index.php/api/kanbanize/login`,{
-            data : {
-                email : loginUsername,
-                pass : loginPassword
+            body: formData,
+            headers: {
+                'Content-Type': 'application/json'
             }
         })
-        .then(res=> console.log(res)).catch(err=> console.log(err));
+        .then(function (response) {
+            console.log('Cat');
+            console.log(response);
+            navigate('../');
+        })
+        .catch(function (error) {
+            console.log('Dog')
+            console.log(error);
+        });
+
     };
 
     return (
@@ -41,12 +56,12 @@ function Login() {
                 <h1>Login</h1>
             </header>
 
-            <form className={login.form}>
+            <form className={login.form} onSubmit={handleSubmit}>
 
                 <fieldset className={login.formGroup}>
 
                     <div className={login.formInputLogin}>
-                        <input type="email" className={login.inputLogin}  name="username" placeholder="username" title="Enter your email" onChange={e => setLoginUsername(e.target.value)}></input>
+                        <input type="email" className={login.inputLogin}  name="username" placeholder="username" title="Enter your email" onChange={handleLoginEmail}></input>
                     </div>
 
                 </fieldset>
@@ -54,13 +69,13 @@ function Login() {
                 <fieldset className={login.formGroup}>
 
                     <div className={login.formInputLogin}>
-                        <input type="password" className={login.inputLogin} name="passwrd" placeholder="password" title="Enter your password"  onChange={e => setLoginPassword(e.target.value)}></input>
+                        <input type="password" className={login.inputLogin} name="password" placeholder="password" title="Enter your password" onChange={handleLoginPassword} ></input>
                     </div>
 
                 </fieldset>
 
                 <footer className={login.formFooterLogin}>
-                    <button className={login.formBtnSubmitLogin} type="submit" onClick={() => handleSubmit()}>Login</button>
+                    <button className={login.formBtnSubmitLogin} type="submit" >Login</button>
                 </footer>
 
             </form>
