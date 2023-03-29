@@ -1,0 +1,176 @@
+div.grid {
+    display: grid;
+    place-items: center;
+    margin-bottom: 2.5rem;
+    margin-top: 2.5rem;
+    grid-gap: 4rem;
+    box-sizing: border-box;
+}
+
+div.formHeader {
+    font-size: 1.2em;
+    text-align: left;
+    color: var(--text-color);
+    margin-bottom: .3em;
+}
+
+div.buttonAlign{
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+img.logo{
+    max-width: 25em;
+    height: auto;
+}
+
+button.languageButton {
+    border: none;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: white;
+    padding: 1em .5em;
+    font-size: 1rem;
+    text-align: relative;
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+}
+
+div.iconPlacement{
+    padding: 1em .5em;
+    display: flex;
+
+}
+
+span.loginText {
+    font-size: 1.5em;
+}
+
+form.form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: .5em;
+    outline: solid var(--details);
+    background-color: white;
+    width: 25em;
+    height: fit-content;
+    position: relative;
+    border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    -ms-border-radius: 0.5em;
+    -o-border-radius: 0.5em;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+}
+
+div.formInputLogin {
+    position: relative;
+    width: 100%;
+}
+
+fieldset.formGroup {
+    border: none;
+    display: flex;
+    margin: auto;
+    padding: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+button.formBtnSubmitLogin {
+    border: none;
+    color: hsl(0, 0%, 100%);
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #45B7F6;
+    display: inline-block;
+    padding: .8em;
+    width: 100%;
+    font-size: 1rem;
+    text-align: relative;
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+}
+
+button.formBtnSubmitLogin:hover, button.formBtnSubmitLogin:focus {
+    outline: none;
+    transform: scale(1.01);
+    -webkit-transform: scale(1.01);
+    -moz-transform: scale(1.01);
+    -ms-transform: scale(1.01);
+    -o-transform: scale(1.01);
+}
+
+form.form footer.formFooterLogin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4em;
+}
+
+a.linkStyle {
+    text-decoration: none;
+    color: #45B7F6;
+}
+
+
+input.inputLogin:is([type=email], [type=password]) {
+    border: white;
+    background-color: #eaeaea;
+    padding: .8em;
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: .3em;
+    box-sizing:border-box;
+    text-align: relative;
+    display: inline-block;
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+}
+
+input.inputLogin:focus:is([type=email], [type=password]) {
+    outline: none;
+    caret-color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+@media screen and (max-width: 480px) {
+    div.grid {
+     width: 100%;
+      margin: auto;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    div.grid {
+      width: 135%;
+      margin: auto;
+    }
+}
+
+@media screen and (max-width: 330px) {
+    div.grid {
+      width: 170%;
+      margin: auto;
+    }
+}
+
+
+
+
+
+
