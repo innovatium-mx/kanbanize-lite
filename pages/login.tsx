@@ -2,14 +2,15 @@ import login from '../styles/Login.module.css'
 import React, { useRef, useId, useState } from 'react';
 import { parseString } from "xml2js";
 import { useRouter } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock, faCircleCheck, faTimesCircle, faFlag } from '@fortawesome/free-solid-svg-icons';
-import Kb_logo from '../images/Kanbanize_logo.png'
 import Image from "next/image";
+import LanguageButton from '../components/LanguageDropdown';
+import { CDropdown, CDropdownItem, CDropdownToggle, CDropdownMenu } from '@coreui/react'
+
 
 function Login() {
 
     const router = useRouter();
+    const Kb_logo = require('../images/Kanbanize_logo.png')
 
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -54,25 +55,31 @@ function Login() {
 
     };
 
+
+
+
+
+
+
+
+
+
+
+
     return (
         <>
         <div>
 
-            <div className={login.buttonAlign}>
-                <div className={login.iconPlacement}>
-                    <FontAwesomeIcon icon={faFlag}/>
-                </div>
-                <button className={login.languageButton}>ENG</button>
-            </div>
-
             <div className={login.grid}>
 
-                <div className={login.iconContainer}>
-            
+                <div >
+                    <Image src={Kb_logo} alt="Kanbanize-logo" className={login.logo}/>
                 </div>
 
-
                 <form className={login.form} onSubmit={handleSubmit}>
+
+
+
 
                         <div className={login.formHeader}>
                             <b>
