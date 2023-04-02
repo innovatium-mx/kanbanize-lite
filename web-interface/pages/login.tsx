@@ -4,14 +4,13 @@ import { parseString } from "xml2js";
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import {urlLocal} from '../constants.ts'
-import LanguageButton from '../components/LanguageDropdown';
-import { CDropdown, CDropdownItem, CDropdownToggle, CDropdownMenu } from '@coreui/react'
-
+import dynamic from 'next/dynamic';
 
 function Login() {
 
     const router = useRouter();
     const Kb_logo = require('../images/Kanbanize_logo.png')
+    const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
 
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
@@ -58,19 +57,13 @@ function Login() {
     };
 
 
-
-
-
-
-
-
-
-
-
-
     return (
         <>
         <div>
+            
+            <div className={login.dropdownFragment}>
+                <LanguageButton></LanguageButton>
+            </div>
 
             <div className={login.grid}>
 
@@ -80,16 +73,11 @@ function Login() {
 
                 <form className={login.form} onSubmit={handleSubmit}>
 
-
-
-
                         <div className={login.formHeader}>
                             <b>
                                 <span className={login.loginText}>Log In</span>
                             </b>
                             </div>
-
-                        
 
                         <div>
                             <span>Don't have an account? </span>

@@ -1,28 +1,41 @@
-import dropdown from '../styles/Dropdown.module.css'
-import login from '../styles/Login.module.css'
+import languageDrop from '../styles/Dropdown.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
 
-function LanguageButton() {
-
+const LanguageButton = () => {
+    const [dropdown, setDropdown]=useState(false);
+    const openCloseDropdown = () => {
+        setDropdown(!dropdown);
+    }
 
 
     return(
+        <>
+        <label className={languageDrop.labelContainer}>
 
-        <label className={dropdown.dropdown}>
+            <FontAwesomeIcon icon={faGlobe} className={languageDrop.iconStyle}/>
 
-            <button className={dropdown.dropdownButton}>ENG</button>
+            <div>
+                <Dropdown isOpen={dropdown} toggle={openCloseDropdown}  >
+                    <DropdownToggle caret className={languageDrop.buttonStyle}> Language </DropdownToggle>
 
-            <input type="checkbox" className={dropdown.dropdownInput} id="test"/>
+                    <DropdownMenu>
+                        <DropdownItem>English</DropdownItem>
+                        <DropdownItem>Español</DropdownItem>
+                    </DropdownMenu>
 
-                <ul className={dropdown.ddmenu}>
-                    <li>English</li>
-                    <li>Español</li>    
-                </ul>
+                </Dropdown>
+            </div>
+
         </label>
 
-
+        
+        
+        </>
     )
 
 

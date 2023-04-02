@@ -3,8 +3,14 @@ div.grid {
     place-items: center;
     margin-bottom: 2.5rem;
     margin-top: 2.5rem;
+    margin-right: 0rem;
     grid-gap: 4rem;
     box-sizing: border-box;
+}
+
+div.dropdownFragment{
+    overflow: hidden;
+    position: relative;
 }
 
 div.formHeader {
@@ -148,29 +154,41 @@ input.inputLogin:focus:is([type=email], [type=password]) {
     border: 2px solid var(--primary-color);
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 480px) and (min-width: 431px) {
     div.grid {
-     width: 100%;
-      margin: auto;
+        width: 100%;
+    }
+
+}
+
+@media screen and (max-width: 430px) and (min-width: 380px){
+    div.grid {
+       width: 110%;
     }
 }
 
-@media screen and (max-width: 390px) {
+@media screen and (max-width: 380px) and (min-width: 340px) {
+    div.grid {
+      width: 120%;
+    }
+}
+
+@media screen and (max-width: 340px) and (min-width: 305px) {
     div.grid {
       width: 135%;
-      margin: auto;
     }
 }
 
-@media screen and (max-width: 330px) {
+@media screen and (max-width: 305px) and (min-width: 285px) {
     div.grid {
-      width: 170%;
-      margin: auto;
+      width: 145%;
     }
 }
 
+@media screen and (max-width: 285px){
+    div.grid {
+      width: 155%;
+    }
+}
 
-
-
-
-
+/*265 px is the min screen's width*/

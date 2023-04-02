@@ -16,6 +16,7 @@
     "@types/react": "18.0.29",
     "@types/react-dom": "18.0.11",
     "bcrypt": "^5.1.0",
+    "bootstrap": "^5.2.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "eslint": "8.36.0",
@@ -31,6 +32,7 @@
     "react-bootstrap": "^2.7.2",
     "react-devtools": "^4.27.4",
     "react-dom": "^18.2.0",
+    "reactstrap": "^9.1.8",
     "sass": "^1.60.0",
     "typescript": "5.0.2",
     "xml2js": "^0.4.23"
@@ -40,4 +42,5 @@
     "@types/xml2js": "^0.4.11",
     "file-loader": "^6.2.0"
   }
+  
 }
