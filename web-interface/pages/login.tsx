@@ -5,13 +5,15 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import {urlLocal} from '../constants.ts'
 import dynamic from 'next/dynamic';
+import '../src/i18next.tsx';
 
-function Login() {
+
+function Login(){
 
     const router = useRouter();
     const Kb_logo = require('../images/Kanbanize_logo.png')
     const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
-
+    
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
 
@@ -75,13 +77,13 @@ function Login() {
 
                         <div className={login.formHeader}>
                             <b>
-                                <span className={login.loginText}>Log In</span>
+                                <span className={login.loginText} id="login.LogIn">Log In</span>
                             </b>
                             </div>
 
                         <div>
-                            <span>Don't have an account? </span>
-                            <a href="https://kanbanize.com/sign-up" className={login.linkStyle}>Register</a>
+                            <span id="login.donothaveaccount">Don't have an account? </span>
+                            <a href="https://kanbanize.com/sign-up" className={login.linkStyle} id="login.register">Register</a>
                         </div>
 
                         <br />
@@ -103,7 +105,7 @@ function Login() {
                     </fieldset>
 
                     <footer className={login.formFooterLogin}>
-                        <button className={login.formBtnSubmitLogin} type="submit">Log In</button>
+                        <button className={login.formBtnSubmitLogin} type="submit" id="login.LogIn">Log In</button>
                     </footer>
 
                     </form>
@@ -114,4 +116,4 @@ function Login() {
     )
 }
 
-export default Login;
+export default (Login);

@@ -9,8 +9,12 @@ div.grid {
 }
 
 div.dropdownFragment{
-    overflow: hidden;
     position: relative;
+    width: 10%;
+}
+
+div.mainPage{
+    width: 50%;
 }
 
 div.formHeader {

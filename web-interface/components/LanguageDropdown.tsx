@@ -16,25 +16,19 @@ const LanguageButton = () => {
     return(
         <>
         <label className={languageDrop.labelContainer}>
-
             <FontAwesomeIcon icon={faGlobe} className={languageDrop.iconStyle}/>
-
             <div>
                 <Dropdown isOpen={dropdown} toggle={openCloseDropdown}  >
                     <DropdownToggle caret className={languageDrop.buttonStyle}> Language </DropdownToggle>
 
                     <DropdownMenu>
-                        <DropdownItem>English</DropdownItem>
-                        <DropdownItem>Español</DropdownItem>
+                        <DropdownItem hreflang='en'>English</DropdownItem>
+                        <DropdownItem hreflang='es'>Español</DropdownItem>
                     </DropdownMenu>
 
                 </Dropdown>
             </div>
-
         </label>
-
-        
-        
         </>
     )
 
