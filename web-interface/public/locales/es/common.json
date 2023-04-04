@@ -1,0 +1,8 @@
+{
+    "button.language" : "Idioma",
+    "login.LogIn" : "Iniciar Sesión",
+    "login.donothaveaccount" : "¿No tienes una cuenta? ",
+    "login.register" : "Regístrate",
+    "login.password" : "Contraseña",
+    "login.email" : "Correo electrónico"
+}

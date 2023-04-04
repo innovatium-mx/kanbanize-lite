@@ -4,6 +4,21 @@
     border: none !important;
 }
 
+.menuStyle{
+    border: 1px solid #45B7F6 !important;
+    align-items: center !important;
+}
+
+.menuStyle > *{
+    align-items: center !important;
+    border-radius: 10px !important;
+    text-align: center !important;
+}
+
+.menuStyle > *:active{
+    background-color: #45B7F6;
+}
+
 .labelContainer{
     padding-top: .3em !important;
     display: flex !important;

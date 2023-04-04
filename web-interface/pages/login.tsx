@@ -5,12 +5,29 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import {urlLocal} from '../constants.ts'
 import dynamic from 'next/dynamic';
-import '../src/i18next.tsx';
 
+//i18next language imports
+import { useTranslation, Trans } from 'next-i18next';
+import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 
-function Login(){
+import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 
+type Props = {
+    // Add custom props here
+  }
+
+const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
+
+    //
+    const {t} = useTranslation('common');
     const router = useRouter();
+
+    const passwordInput = t('common.password' as const)
+    const emailInput = t('common.email' as const)
+
+
+    //
+
     const Kb_logo = require('../images/Kanbanize_logo.png')
     const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
     
@@ -64,7 +81,7 @@ function Login(){
         <div>
             
             <div className={login.dropdownFragment}>
-                <LanguageButton></LanguageButton>
+                <LanguageButton/>
             </div>
 
             <div className={login.grid}>
@@ -77,13 +94,15 @@ function Login(){
 
                         <div className={login.formHeader}>
                             <b>
-                                <span className={login.loginText} id="login.LogIn">Log In</span>
+                                <span className={login.loginText}>
+                                        {t('login.LogIn')}
+                                </span>
                             </b>
                             </div>
 
                         <div>
-                            <span id="login.donothaveaccount">Don't have an account? </span>
-                            <a href="https://kanbanize.com/sign-up" className={login.linkStyle} id="login.register">Register</a>
+                            <span>{t('login.donothaveaccount')}</span>
+                            <a href="https://kanbanize.com/sign-up" className={login.linkStyle} >{t('login.register')}</a>
                         </div>
 
                         <br />
@@ -91,7 +110,7 @@ function Login(){
                     <fieldset className={login.formGroup}>
 
                         <div className={login.formInputLogin}>
-                            <input type="email" className={login.inputLogin}  name="Email" placeholder="Email" title="Enter your email" onChange={handleLoginEmail}></input>
+                            <input type="email" className={login.inputLogin}  name="Email" placeholder={t('login.email' as const)} title="Enter your email" onChange={handleLoginEmail}></input>
                         </div>
 
                     </fieldset>
@@ -99,13 +118,13 @@ function Login(){
                     <fieldset className={login.formGroup}>
 
                         <div className={login.formInputLogin}>
-                            <input type="password" className={login.inputLogin} name="Password" placeholder="Password" title="Enter your password" onChange={handleLoginPassword} ></input>
+                            <input type="password" className={login.inputLogin} name = 'password' placeholder={t('login.password' as const)} title="Enter your password" onChange={handleLoginPassword} ></input>
                         </div>
 
                     </fieldset>
 
                     <footer className={login.formFooterLogin}>
-                        <button className={login.formBtnSubmitLogin} type="submit" id="login.LogIn">Log In</button>
+                        <button className={login.formBtnSubmitLogin} type="submit">{t('login.LogIn')}</button>
                     </footer>
 
                     </form>
@@ -115,5 +134,17 @@ function Login(){
 
     )
 }
+
+
+// or getServerSideProps: GetServerSideProps<Props> = async ({ locale })
+export const getStaticProps: GetStaticProps<Props> = async ({
+    locale,
+  }) => ({
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', [
+        'common'
+      ])),
+    },
+  })
 
 export default (Login);
