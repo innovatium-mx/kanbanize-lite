@@ -1,9 +1,8 @@
 import login from '../styles/Login.module.css'
-import React, { useRef, useId, useState } from 'react';
-import { parseString } from "xml2js";
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
-import {urlLocal} from '../constants.ts'
+import {urlLocal} from '../constants'
 import dynamic from 'next/dynamic';
 
 //i18next language imports
@@ -19,7 +18,7 @@ type Props = {
 const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     //
-    const {t} = useTranslation('common');
+    const {t} : any = useTranslation('common');
     const router = useRouter();
 
     const passwordInput = t('common.password' as const)
@@ -46,12 +45,12 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        let formData : JSON = JSON.stringify({
+        let formData : string = JSON.stringify({
             "email": loginEmail,
             "pass": loginPassword,
         });
 
-        fetch(urlLocal + '/login', {
+        fetch(urlLocal + '/login/university6y', {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

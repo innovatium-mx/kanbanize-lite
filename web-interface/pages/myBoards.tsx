@@ -1,6 +1,7 @@
 import { useTranslation, Trans } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetStaticProps, InferGetStaticPropsType } from 'next'
+import authRoute from '../components/authRoute';
 import { getStaticProps } from './login';
 
 import dynamic from 'next/dynamic';
@@ -36,4 +37,4 @@ export const getStaticProps: GetStaticProps<Props> = async ({
     },
   })
 
-export default myBoards;
+export default authRoute(myBoards);
