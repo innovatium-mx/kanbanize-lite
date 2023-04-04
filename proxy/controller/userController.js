@@ -41,8 +41,8 @@ module.exports.checkToken = (req,res) =>{
     })
     .then((response) => response.json())
     .then((data) => {
-        console.log(data.data.email);
-        res.json({"email": data.data.email});
+        console.log(data);
+        res.json(data);
     })
     .catch((error) => {
         res.send(error);
