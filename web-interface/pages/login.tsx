@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic';
 import { useTranslation, Trans } from 'next-i18next';
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 
-import type { GetStaticProps, InferGetStaticPropsType } from 'next'
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 
 type Props = {
     // Add custom props here
@@ -24,8 +24,6 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     const passwordInput = t('common.password' as const)
     const emailInput = t('common.email' as const)
-
-
     //
 
     const Kb_logo = require('../images/Kanbanize_logo.png')

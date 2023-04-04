@@ -4,5 +4,6 @@
     "login.donothaveaccount" : "Don't have an account? ",
     "login.register" : "Register",
     "login.password" : "Password",
-    "login.email" : "Email"
+    "login.email" : "Email",
+    "myBoards.myBoards" : "My Boards"
 }

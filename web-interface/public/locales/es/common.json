@@ -4,5 +4,6 @@
     "login.donothaveaccount" : "¿No tienes una cuenta? ",
     "login.register" : "Regístrate",
     "login.password" : "Contraseña",
-    "login.email" : "Correo electrónico"
+    "login.email" : "Correo electrónico",
+    "myBoards.myBoards" : "Mis tableros"
 }
