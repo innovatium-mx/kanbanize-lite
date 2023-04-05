@@ -1,44 +1,33 @@
 const fetch = require('node-fetch');
 
-/*function boardDetails(data){
-    var boards = [];
-    for(var i = 0; i < data.data.length; i++)
-    {
-        var board_id = data.data[i].board_id   
-        fetch(`https://${host}.kanbanize.com/api/v2/boards/${board_id}`, {
-            method: "GET",
-            headers: {
-                "apikey": apikey
-            },
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            boards.push({"board_id": board_id, "is_archived": data.data.is_archived, "name": data.data.name, "description": data.data.description});
-        })  
-        .catch((error) => {
-            console.log(error);
-        });           
-    }
-    console.log(boards);
-    return boards;
-}*/
-
 module.exports.boards = async (req,res) =>{
     const host = req.params.host;
     const userid = req.params.userid;
     const apikey = req.headers.apikey;
+    var boardsId = [];
+    var boards = [];
     
-   fetch(`https://${host}.kanbanize.com/api/v2/users/${userid}/boardRoles`, {
-            method: "GET",
-            headers: {
-              "apikey": apikey
-            },
+    const response = await  fetch(`https://${host}.kanbanize.com/api/v2/users/${userid}/boardRoles`, {
+        method: "GET",
+        headers: {
+            "apikey": apikey
+        },
     })
-    .then((response) => response.json())
-    .then((data) => {
-        res.json(data.data);
-    })  
-    .catch((error) => {
-        res.send(error);
-        });
+    const data = await response.json();
+    boardsId = data.data;
+
+    await Promise.all(
+        boardsId.map(async function(element){
+            const response = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${element.board_id}`, {
+                method: "GET",
+                headers: {
+                    "apikey": apikey
+                },
+            })
+            const data = await response.json();
+            boards.push({"board_id": element.board_id,"workspace_id": data.data.workspace_id, "is_archived": data.data.is_archived, "name": data.data.name, "description": data.data.description});
+        })
+    )
+    console.log(boards);
+    res.json(boards);
 }
