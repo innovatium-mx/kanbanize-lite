@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import {urlLocal} from '../constants.ts'
 import dynamic from 'next/dynamic';
+import Swal from 'sweetalert2'
 
 //i18next language imports
-import { useTranslation, Trans } from 'next-i18next';
+import { useTranslation, Trans, i18n } from 'next-i18next';
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
@@ -24,6 +25,10 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     const passwordInput = t('common.password' as const)
     const emailInput = t('common.email' as const)
+
+    const invalid = t('login.invalid');
+    const emptyCredentials = t('login.emptyFields');
+
     //
 
     const Kb_logo = require('../images/Kanbanize_logo.png')
@@ -46,31 +51,76 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        let formData : JSON = JSON.stringify({
-            "email": loginEmail,
-            "pass": loginPassword,
-        });
+        
+        // empty fields
 
-        fetch(urlLocal + '/login', {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: formData,
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if(!data.response){
-                localStorage.setItem('email', data.email);
-                localStorage.setItem('apikey', data.apikey);
-                router.push('/myBoards');
-            }
+        if(loginEmail === "" || loginPassword === ""){
+            Swal.fire({
+                iconColor: 'red',
+                confirmButtonColor: 'gray',
+                icon: 'error',
+                title: emptyCredentials
+            })
+        }
+        else{
 
-        })
-        .catch((error) => {
-            console.log(error);
-          });
-
+            let formData : JSON = JSON.stringify({
+                "email": loginEmail,
+                "pass": loginPassword,
+            });
+    
+            fetch(urlLocal + '/login', {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: formData,
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if(!data.response){
+                    console.log(data);
+    
+                    localStorage.setItem('email', data.email);
+                    localStorage.setItem('apikey', data.apikey);
+                    
+                    //login successfull
+                    const signedInSuccess = t('login.success')
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: false,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                      })
+                      
+                      Toast.fire({
+                        icon: 'success',
+                        title: signedInSuccess
+                      })
+    
+                    router.push('/myBoards');    
+    
+                }else{
+                    // login failed
+                    Swal.fire({
+                        iconColor: 'red',
+                        confirmButtonColor: 'gray',
+                        icon: 'error',
+                        title: invalid
+                    })
+                }
+    
+            })
+            .catch((error) => {
+                console.log('kiti');
+    
+              });
+        }
     };
 
 
@@ -88,7 +138,8 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     <Image src={Kb_logo} alt="Kanbanize-logo" className={login.logo}/>
                 </div>
 
-                <form className={login.form} onSubmit={handleSubmit}>
+                <form className={login.form}>
+
 
                         <div className={login.formHeader}>
                             <b>
@@ -122,7 +173,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     </fieldset>
 
                     <footer className={login.formFooterLogin}>
-                        <button className={login.formBtnSubmitLogin} type="submit">{t('login.LogIn')}</button>
+                        <button className={login.formBtnSubmitLogin} type="submit" onClick={handleSubmit}>{t('login.LogIn')}</button>
                     </footer>
 
                     </form>

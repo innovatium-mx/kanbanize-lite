@@ -5,5 +5,8 @@
     "login.register" : "Regístrate",
     "login.password" : "Contraseña",
     "login.email" : "Correo electrónico",
+    "login.invalid" : "Contraseña o correo electrónico inválido",
+    "login.success" : "Sesión iniciada correctamente",
+    "login.emptyFields" : "Por favor, ingrese sus credenciales de acceso",
     "myBoards.myBoards" : "Mis tableros"
 }
