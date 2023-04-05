@@ -48,33 +48,12 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
         setLoginPassword(e.target.value);
     };
 
+
+
+
+
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        let formData : string = JSON.stringify({
-            "email": loginEmail,
-            "pass": loginPassword,
-        });
-
-        fetch(urlLocal + '/login/university6y', {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: formData,
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if(data.apikey){
-                localStorage.setItem('email', data.email);
-                localStorage.setItem('apikey', data.apikey);
-                localStorage.setItem('userid', data.userid);
-                router.push('/myBoards');
-            }
-
-        })
-        .catch((error) => {
-            console.log(error);
-          });
         
         // empty fields
 
@@ -88,25 +67,25 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
         }
         else{
 
-            let formData : JSON = JSON.stringify({
+            let formData : string = JSON.stringify({
                 "email": loginEmail,
                 "pass": loginPassword,
             });
     
-            fetch(urlLocal + '/login', {
+            fetch(urlLocal + '/login/university6y', {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
                 body: formData,
             })
+
             .then((response) => response.json())
             .then((data) => {
-                if(!data.response){
-                    console.log(data);
-    
+                if(data.apikey){
                     localStorage.setItem('email', data.email);
                     localStorage.setItem('apikey', data.apikey);
+                    localStorage.setItem('userid', data.userid);
                     
                     //login successfull
                     const signedInSuccess = t('login.success')
@@ -131,6 +110,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
     
                 }else{
                     // login failed
+                    console.log('login failed')
                     Swal.fire({
                         iconColor: 'red',
                         confirmButtonColor: 'gray',
