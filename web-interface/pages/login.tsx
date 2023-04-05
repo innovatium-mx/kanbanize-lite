@@ -59,9 +59,10 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
         })
         .then((response) => response.json())
         .then((data) => {
-            if(!data.response){
+            if(data.apikey){
                 localStorage.setItem('email', data.email);
                 localStorage.setItem('apikey', data.apikey);
+                localStorage.setItem('userid', data.userid);
                 router.push('/myBoards');
             }
 
