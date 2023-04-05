@@ -5,5 +5,8 @@
     "login.register" : "Register",
     "login.password" : "Password",
     "login.email" : "Email",
+    "login.invalid" : "Incorrect email or password",
+    "login.success" : "Signed in successfully",
+    "login.emptyFields" : "Please, enter your access credentials",
     "myBoards.myBoards" : "My Boards"
 }
