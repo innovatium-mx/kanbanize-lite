@@ -1,5 +1,3 @@
-//import fetch from 'node-fetch';
-//let fetch = await import('node-fetch').
 const fetch = require('node-fetch');
 
 module.exports.login = (req,res) =>{
@@ -32,11 +30,12 @@ module.exports.login = (req,res) =>{
 
 module.exports.checkToken = (req,res) =>{
     const host = req.params.host;
+    const apikey = req.headers.apikey;
     
    fetch(`https://${host}.kanbanize.com/api/v2/me`, {
             method: "GET",
             headers: {
-              "apikey": req.headers.apikey
+                "apikey": apikey
             },
     })
     .then((response) => response.json())
