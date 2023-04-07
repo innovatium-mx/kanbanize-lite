@@ -8,5 +8,8 @@
     "login.invalid" : "Incorrect email or password",
     "login.success" : "Signed in successfully",
     "login.emptyFields" : "Please, enter your access credentials",
+    "login.company" : "Company",
+    "login.companyLookUp" : "Look up",
+    "login.invalidCompany" : "Invalid company name",
     "myBoards.myBoards" : "My Boards"
 }

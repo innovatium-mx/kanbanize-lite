@@ -8,5 +8,8 @@
     "login.invalid" : "Contraseña o correo electrónico inválido",
     "login.success" : "Sesión iniciada correctamente",
     "login.emptyFields" : "Por favor, ingrese sus credenciales de acceso",
+    "login.company" : "Organización",
+    "login.companyLookUp" : "Buscar",
+    "login.invalidCompany" : "Organización inválida",
     "myBoards.myBoards" : "Mis tableros"
 }

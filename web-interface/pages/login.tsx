@@ -26,6 +26,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
     const emailInput = t('common.email' as const)
 
     const invalid = t('login.invalid');
+    const invalidCompany = t('login.invalidCompany');
     const emptyCredentials = t('login.emptyFields');
 
     //
@@ -35,6 +36,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
     
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
+    const [loginCompany, setLoginCompany] = useState('');
 
     const handleLoginEmail = (e: {
         target: { value: React.SetStateAction<string> };
@@ -48,11 +50,14 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
         setLoginPassword(e.target.value);
     };
 
+    const handleLoginCompany = (e: {
+        target : {value: React.SetStateAction<string> };
+    }) => {
+        setLoginCompany(e.target.value);
+    };
 
 
-
-
-    const handleSubmit = (e: { preventDefault: () => void }) => {
+    const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         
         // empty fields
@@ -67,19 +72,42 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
         }
         else{
 
+            // retrieve company name
+            const company = t('login.company');
+            const companyLookUp = t('login.companyLookUp')
+
+            const {value: loginCompany} = await Swal.fire({
+                title: company,
+                input: 'text',
+                inputAttributes: {
+                  autocapitalize: 'off'
+                },
+                showCancelButton: false,
+                confirmButtonText: companyLookUp,
+                showLoaderOnConfirm: true,
+                preConfirm: (loginCompany) => {
+                  return loginCompany;
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+              })
+
+              // end-retrieve company name
+
+
             let formData : string = JSON.stringify({
                 "email": loginEmail,
                 "pass": loginPassword,
             });
     
-            fetch(urlLocal + '/login/university6y', {
+            console.log(loginCompany);
+
+            fetch(urlLocal + '/login/' + loginCompany, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
                 body: formData,
             })
-
             .then((response) => response.json())
             .then((data) => {
                 if(data.apikey){
@@ -88,6 +116,10 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     localStorage.setItem('userid', data.userid);
                     
                     //login successfull
+                    console.log('login successfull');
+                    console.log(data);
+
+                    //////////////////////
                     const signedInSuccess = t('login.success')
                     const Toast = Swal.mixin({
                         toast: true,
@@ -106,17 +138,26 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                         title: signedInSuccess
                       })
     
-                    router.push('/myBoards');    
+                    router.push('/myBoards');
+                    /////////////
     
                 }else{
                     // login failed
-                    console.log('login failed')
+                    //[data.message] exists when invalid companyname, otherwise, undefined
+                    var whichInvalid = '';
+
+                    if(data.message){
+                        whichInvalid = invalidCompany;
+                    }else{
+                        whichInvalid = invalid;
+                    }
                     Swal.fire({
                         iconColor: 'red',
                         confirmButtonColor: 'gray',
                         icon: 'error',
-                        title: invalid
+                        title: whichInvalid
                     })
+
                 }
     
             })
