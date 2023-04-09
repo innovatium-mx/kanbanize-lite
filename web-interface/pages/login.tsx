@@ -2,7 +2,7 @@ import login from '../styles/Login.module.css'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
-import {urlLocal} from '../constants'
+import {urlCloud} from '../constants'
 import dynamic from 'next/dynamic';
 import Swal from 'sweetalert2'
 
@@ -98,10 +98,8 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                 "email": loginEmail,
                 "pass": loginPassword,
             });
-    
-            console.log(loginCompany);
 
-            fetch(urlLocal + '/login/' + loginCompany, {
+            fetch(urlCloud + 'login/' + loginCompany, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -111,14 +109,11 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
             .then((response) => response.json())
             .then((data) => {
                 if(data.apikey){
+                    localStorage.setItem('host', loginCompany);
                     localStorage.setItem('email', data.email);
                     localStorage.setItem('apikey', data.apikey);
                     localStorage.setItem('userid', data.userid);
                     
-                    //login successfull
-                    console.log('login successfull');
-                    console.log(data);
-
                     //////////////////////
                     const signedInSuccess = t('login.success')
                     const Toast = Swal.mixin({

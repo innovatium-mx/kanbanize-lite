@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import {urlLocal} from '../constants'
+import {urlCloud} from '../constants'
 import {useEffect, useState } from "react";
 
 const authRoute = (Component : any) => {
@@ -9,6 +9,7 @@ const authRoute = (Component : any) => {
     useEffect(() => {
       const checkToken = () => {
         const token = localStorage.getItem("apikey");
+        const host = localStorage.getItem("host"); 
 
         if (!token) 
         {
@@ -16,7 +17,7 @@ const authRoute = (Component : any) => {
         } 
         else 
         {
-          fetch(urlLocal + '/checkToken/university6y', {
+          fetch(urlCloud + 'checkToken/' + host, {
             method: "GET",
             headers: {
               "apikey": token,
@@ -35,6 +36,8 @@ const authRoute = (Component : any) => {
           })
         .catch((error) => {
             console.log(error);
+            localStorage.removeItem("token");
+            router.push('/');
           });
         }
       }
