@@ -90,14 +90,51 @@ module.exports.boardDetails = async (req,res) =>{
                 })
                 boardWorkflow[i].columns = columns;
             }
-            res.json(boardWorkflow);
+            const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards`, {
+                method: "GET",
+                headers: {
+                    "apikey": apikey
+                },
+            })
+            if(response3.ok){
+                const data3 = await response3.json();
+                const cards = data3.data.data;
+                for(var x=0; x<boardWorkflow.length;x++){
+                    for(var y=0; y<boardWorkflow[x].columns.length;y++){
+                        const columnid = boardWorkflow[x].columns[y].column_id;
+                        const columnCards = [];
+                        cards.map( function(element){
+                            if(element.column_id == columnid){
+                                columnCards.push({
+                                    "card_id": element.card_id,
+                                    "custom_id": element.custom_id,
+                                    "title": element.title,
+                                    "owner_user_id": element.owner_user_id,
+                                    "type_id": element.type_id,
+                                    "color": element.color,
+                                    "section": element.section,
+                                    "lane_id": element.lane_id,
+                                    "position": element.position
+                                })
+                            }
+                        })
+                        if(columnCards.length != 0){
+                            boardWorkflow[x].columns[y].cards = columnCards;
+                        }
+                    } 
+                }
+              res.json(boardWorkflow); 
+            }
+            else{
+                res.json({"error": response3.status});
+            }
         }
         else{
-            res.json({"error": response.status});
+            res.json({"error": response2.status});
         }
     }
     else {
-        res.json({"error": response.status});
+        res.json({"error": response1.status});
     }
 
 }
