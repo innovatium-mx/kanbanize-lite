@@ -158,20 +158,22 @@ input.inputLogin:focus:is([type=email], [type=password]) {
     border: 2px solid var(--primary-color);
 }
 
-@media screen and (max-width: 480px) and (min-width: 431px) {
-    div.grid {
-        width: 100%;
-    }
+/* iphone 13 pro max -> 583 x 412*/
 
+
+@media screen and (max-width: 610px) and (min-width: 551px) { /* ∆ = 50 */
+    div.grid {
+        width: 105%;
+    }
 }
 
-@media screen and (max-width: 430px) and (min-width: 380px){
+@media screen and (max-width: 551px) and (min-width: 420px){
     div.grid {
        width: 110%;
     }
 }
 
-@media screen and (max-width: 380px) and (min-width: 340px) {
+@media screen and (max-width: 420px) and (min-width: 340px) {
     div.grid {
       width: 120%;
     }
