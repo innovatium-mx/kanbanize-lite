@@ -56,27 +56,48 @@ module.exports.boardDetails = async (req,res) =>{
         },
     })
     if (response1.ok){
-        const data = await response1.json();
-        const boardWorflow = data.data;
+        const data1 = await response1.json();
+        const boardWorkflow = data1.data;
 
-        /*const response2 = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/columns`, {
+        const response2 = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/columns`, {
             method: "GET",
             headers: {
                 "apikey": apikey
             },
         })
         if (response2.ok){
-            const data = await response2.json();
-            boards.push({"board_id": element.board_id,"workspace_id": data.data.workspace_id, "is_archived": data.data.is_archived, "name": data.data.name, "description": data.data.description});
+            const data2 = await response2.json();
+            const boardColumns = data2.data;
+            for(var i=0; i<boardWorkflow.length;i++){
+                const workflowid = boardWorkflow[i].workflow_id;
+                const columns = [];
+                boardColumns.map( function(element){
+                    if(element.workflow_id == workflowid){
+                        columns.push({
+                        "column_id": element.column_id, 
+                        "section": element.section, 
+                        "parent_column_id": element.parent_column_id,
+                        "position": element.position,
+                        "name": element.name,
+                        "description": element.description,
+                        "color": element.color,
+                        "limit": element.limit,
+                        "cards_per_row": element.cards_per_row,
+                        "flow_type": element.flow_type,
+                        "card_ordering": element.card_ordering
+                        })
+                    }
+                })
+                boardWorkflow[i].columns = columns;
+            }
+            res.json(boardWorkflow);
         }
         else{
-            res.json({"error": response2.status});
-        }*/
-        res.json(boardWorflow);
-
+            res.json({"error": response.status});
+        }
     }
     else {
-        res.json({"error": response1.status});
+        res.json({"error": response.status});
     }
 
 }
