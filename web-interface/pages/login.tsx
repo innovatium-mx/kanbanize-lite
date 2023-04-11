@@ -11,6 +11,7 @@ import { useTranslation, Trans, i18n } from 'next-i18next';
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
+import Head from 'next/head';
 
 type Props = {
     // Add custom props here
@@ -33,7 +34,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     const Kb_logo = require('../images/Kanbanize_logo.png')
     const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
-    
+
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [loginCompany, setLoginCompany] = useState('');
@@ -55,7 +56,6 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
     }) => {
         setLoginCompany(e.target.value);
     };
-
 
     const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -115,6 +115,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     localStorage.setItem('userid', data.userid);
                     
                     //////////////////////
+                    console.log(data);
                     const signedInSuccess = t('login.success')
                     const Toast = Swal.mixin({
                         toast: true,
@@ -138,10 +139,12 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
     
                 }else{
                     // login failed
-                    //[data.message] exists when invalid companyname, otherwise, undefined
+                    //[data.error] exists when invalid companyname, otherwise, undefined
                     var whichInvalid = '';
 
-                    if(data.message){
+                    console.log(data);
+
+                    if(data.error){
                         whichInvalid = invalidCompany;
                     }else{
                         whichInvalid = invalid;
@@ -165,11 +168,18 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     return (
         <>
-        <div>
-            
+
+        {
+            /* <Head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            </Head>*/
+        }
             <div className={login.dropdownFragment}>
                 <LanguageButton/>
             </div>
+
+
+        <div>
 
             <div className={login.grid}>
 
@@ -222,7 +232,6 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     )
 }
-
 
 // or getServerSideProps: GetServerSideProps<Props> = async ({ locale })
 export const getStaticProps: GetStaticProps<Props> = async ({
