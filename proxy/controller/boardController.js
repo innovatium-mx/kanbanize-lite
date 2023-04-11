@@ -2,45 +2,33 @@ const fetch = require('node-fetch');
 
 module.exports.boards = async (req,res) =>{
     const host = req.params.host;
-    const userid = req.params.userid;
     const apikey = req.headers.apikey;
-    var boardsId = [];
-    var boards = [];
-    
-    const response = await  fetch(`https://${host}.kanbanize.com/api/v2/users/${userid}/boardRoles`, {
-        method: "GET",
-        headers: {
-            "apikey": apikey
-        },
-    })
-    if (response.ok){
-        const data = await response.json();
-        boardsId = data.data;
-
-        await Promise.all(
-            boardsId.map(async function(element){
-                const response = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${element.board_id}`, {
-                    method: "GET",
-                    headers: {
-                        "apikey": apikey
-                    },
-                })
-                if (response.ok){
-                    const data = await response.json();
-                    boards.push({"board_id": element.board_id,"workspace_id": data.data.workspace_id, "is_archived": data.data.is_archived, "name": data.data.name, "description": data.data.description});
-                }
-                else{
-                    res.json({"error": response.status});
+    try{
+        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/?if_assigned=1`, {
+            method: "GET",
+            headers: {
+                "apikey": apikey
+            },
+        })
+        if (response.ok){
+            const data = await response.json();
+            const rawboards = data.data;
+            const boards = [];
+            rawboards.map( function (element){
+                if(!element.is_archived){
+                    boards.push(element);
                 }
             })
-        )
-        console.log(boards);
-        res.json(boards);
+            res.json(boards);
+        }
+        else{
+            res.json({"error": response.status});
+        }
     }
-    else{
-        res.json({"error": response.status});
+    catch(error){
+        console.error(error);
+        res.json({"error": error});
     }
-    
 }
 
 module.exports.boardDetails = async (req,res) =>{
@@ -179,6 +167,6 @@ module.exports.boardDetails = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.json({"error": error});
     }
 }
