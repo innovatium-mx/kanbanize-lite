@@ -1,10 +1,11 @@
 const fetch = require('node-fetch');
 
-module.exports.boards = async (req,res) =>{
+module.exports.workSpaces = async (req,res) =>{
     const host = req.params.host;
     const apikey = req.headers.apikey;
+    const workspaceid = req.params.workspaceid
     try{
-        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/?if_assigned=1`, {
+        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/workspaces?if_assigned_to_boards=1&is_archived=0`, {
             method: "GET",
             headers: {
                 "apikey": apikey
@@ -12,13 +13,33 @@ module.exports.boards = async (req,res) =>{
         })
         if (response.ok){
             const data = await response.json();
-            const rawboards = data.data;
-            const boards = [];
-            rawboards.map( function (element){
-                if(!element.is_archived){
-                    boards.push(element);
-                }
-            })
+            const workSpaces = data.data;
+            res.json(workSpaces);
+        }
+        else{
+            res.json({"error": response.status});
+        }
+    }
+    catch(error){
+        console.error(error);
+        res.json({"error": error});
+    }
+}
+
+module.exports.boards = async (req,res) =>{
+    const host = req.params.host;
+    const apikey = req.headers.apikey;
+    const workspaceid = req.params.workspaceid
+    try{
+        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/boards?if_assigned=1&is_archived=0&workspace_ids=${workspaceid}`, {
+            method: "GET",
+            headers: {
+                "apikey": apikey
+            },
+        })
+        if (response.ok){
+            const data = await response.json();
+            const boards = data.data;
             res.json(boards);
         }
         else{
