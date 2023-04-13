@@ -27,24 +27,3 @@ module.exports.login = (req,res) =>{
         res.send(error);
         });
 }
-
-module.exports.checkToken = (req,res) =>{
-    const host = req.params.host;
-    const apikey = req.headers.apikey;
-    
-   fetch(`https://${host}.kanbanize.com/api/v2/me`, {
-            method: "GET",
-            headers: {
-                "apikey": apikey
-            },
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log(data);
-        res.json(data);
-    })
-    .catch((error) => {
-        res.send(error);
-        });
-}
-

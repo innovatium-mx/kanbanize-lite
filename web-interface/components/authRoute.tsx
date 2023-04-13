@@ -9,36 +9,13 @@ const authRoute = (Component : any) => {
     useEffect(() => {
       const checkToken = () => {
         const token = localStorage.getItem("apikey");
-        const host = localStorage.getItem("host"); 
-
         if (!token) 
         {
           router.push('/');
         } 
         else 
         {
-          fetch(urlCloud + 'checkToken/' + host, {
-            method: "GET",
-            headers: {
-              "apikey": token,
-            },
-          })
-          .then((response) => response.json())
-          .then((data) => {
-          if(!data.error){
-              setAuthenticated(true);
-          }
-          else
-          {
-            localStorage.removeItem("token");
-            router.push('/');
-          }
-          })
-        .catch((error) => {
-            console.log(error);
-            localStorage.removeItem("token");
-            router.push('/');
-          });
+          setAuthenticated(true);
         }
       }
       checkToken();
