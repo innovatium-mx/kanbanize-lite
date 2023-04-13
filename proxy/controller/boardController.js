@@ -56,9 +56,7 @@ module.exports.boardDetails = async (req,res) =>{
     const host = req.params.host;
     const boardid = req.params.boardid;
     const apikey = req.headers.apikey;
-    const usersDetails = [];
-    const userIds = []
-
+    var users = [];
     try{
         const response1 = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/workflows`, {
             method: "GET",
@@ -67,9 +65,8 @@ module.exports.boardDetails = async (req,res) =>{
             },
         })
         if (response1.ok){
-            const data1 = await response1.json();
+            const data1 = await response1.json()
             const boardWorkflow = data1.data;
-
             const response2 = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/columns`, {
                 method: "GET",
                 headers: {
@@ -101,7 +98,7 @@ module.exports.boardDetails = async (req,res) =>{
                     })
                     boardWorkflow[i].columns = columns;
                 }
-                const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards`, {
+                const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}`, {
                     method: "GET",
                     headers: {
                         "apikey": apikey
@@ -109,64 +106,62 @@ module.exports.boardDetails = async (req,res) =>{
                 })
                 if(response3.ok){
                     const data3 = await response3.json();
-                    const cards = data3.data.data;
+                    const boardCards = data3.data.data;
+                    const responseUsers = await  fetch(`https://${host}.kanbanize.com/api/v2/users`, {
+                        method: "GET",
+                        headers: {
+                            "apikey": apikey
+                        },
+                    })
+                    if(responseUsers.ok){
+                        const rawUsers = await responseUsers.json();
+                        users = rawUsers.data;
+                    }
+                    else{
+                        res.json({"error": responseUsers.status});
+                    }
                     for(var x=0; x<boardWorkflow.length;x++){
                         for(var y=0; y<boardWorkflow[x].columns.length;y++){
                             const columnid = boardWorkflow[x].columns[y].column_id;
                             const columnCards = [];
-                            await Promise.all(
-                                cards.map( async function(element){
-                                    if(element.column_id == columnid){
-                                        if(!userIds.includes(element.owner_user_id ) && element.owner_user_id !=  null){
-                                            userIds.push(element.owner_user_id);
-                                            const owneruserid = element.owner_user_id;
-                                            const response4 = await fetch(`https://${host}.kanbanize.com/api/v2/users/${owneruserid}`, {
-                                                method: "GET",
-                                                headers: {
-                                                    "apikey": apikey
-                                                },
-                                            })
-                                            if(response4.ok){
-                                                const data4 = await response4.json();
-                                                const owneruser = data4.data;
-                                                usersDetails.push(owneruser);
+                            boardCards.map( async function(element){
+                                if(element.column_id == columnid){
+                                    if(element.owner_user_id){
+                                        var index = -1;
+                                        const userObject = users.find(function(item, i){
+                                            if(item.user_id === element.owner_user_id){
+                                              index = i;
+                                              return i;
                                             }
-                                            else{
-                                                res.json({"error": response4.status});
-                                            }
-                                        }
-                                        if(element.owner_user_id){
-                                            columnCards.push({
-                                                "card_id": element.card_id,
-                                                "custom_id": element.custom_id,
-                                                "title": element.title,
-                                                "owner_user_id": element.owner_user_id,
-                                                "owner_username": usersDetails[userIds.indexOf(element.owner_user_id)].username,
-                                                "owner_avatar": usersDetails[userIds.indexOf(element.owner_user_id)].avatar,
-                                                "type_id": element.type_id,
-                                                "color": element.color,
-                                                "section": element.section,
-                                                "lane_id": element.lane_id,
-                                                "position": element.position
-                                            })
-                                        }
-                                        else{
-                                            columnCards.push({
-                                                "card_id": element.card_id,
-                                                "custom_id": element.custom_id,
-                                                "title": element.title,
-                                                "type_id": element.type_id,
-                                                "color": element.color,
-                                                "section": element.section,
-                                                "lane_id": element.lane_id,
-                                                "position": element.position
-                                            })
-                                        }
-                                        
-                                        
+                                        });
+                                        columnCards.push({
+                                            "card_id": element.card_id,
+                                            "custom_id": element.custom_id,
+                                            "title": element.title,
+                                            "owner_user_id": element.owner_user_id,
+                                            "owner_username": userObject.username,
+                                            "owner_avatar": userObject.avatar,
+                                            "type_id": element.type_id,
+                                            "color": element.color,
+                                            "section": element.section,
+                                            "lane_id": element.lane_id,
+                                            "position": element.position
+                                        })
                                     }
-                                })
-                            )
+                                    else{
+                                        columnCards.push({
+                                            "card_id": element.card_id,
+                                            "custom_id": element.custom_id,
+                                            "title": element.title,
+                                            "type_id": element.type_id,
+                                            "color": element.color,
+                                            "section": element.section,
+                                            "lane_id": element.lane_id,
+                                            "position": element.position
+                                        })
+                                    }
+                                }
+                            })
                             if(columnCards.length != 0){
                                 boardWorkflow[x].columns[y].cards = columnCards;
                             }
