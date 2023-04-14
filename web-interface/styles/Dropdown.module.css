@@ -73,7 +73,7 @@
 
 @media screen and (max-width: 429px) { /* screen's width redimension*/
     .labelContainer{
-        left: calc(80vw - 12%)
+        left: calc(69vw)
     }
 }
 
