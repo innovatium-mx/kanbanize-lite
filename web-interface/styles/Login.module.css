@@ -9,7 +9,6 @@ div.grid {
 }
 
 div.dropdownFragment{
-    position: relative;
     width: 10%;
 }
 
@@ -26,9 +25,7 @@ div.formHeader {
 
 div.buttonAlign{
     display: flex;
-    justify-content: flex-end;
 }
-
 
 img.logo{
     max-width: 25em;
@@ -158,20 +155,42 @@ input.inputLogin:focus:is([type=email], [type=password]) {
     border: 2px solid var(--primary-color);
 }
 
-@media screen and (max-width: 480px) and (min-width: 431px) {
-    div.grid {
-        width: 100%;
+/* iphone 13 pro max -> 583 x 412*/
+
+/* iphones */
+@media only screen 
+    and (device-width: 390px) 
+    and (device-height: 844px) 
+    and (-webkit-device-pixel-ratio: 3) { 
+        div.grid {
+            width: 120% !important;
+          }
     }
 
+    
+     /*2778x1284 pixels at 458ppi */
+@media only screen 
+and (device-width: 428px) 
+and (device-height: 926px) 
+and (-webkit-device-pixel-ratio: 3) {
+    div.grid {
+        width: 100% !important;
+    }
 }
 
-@media screen and (max-width: 430px) and (min-width: 380px){
+@media screen and (max-width: 610px) and (min-width: 551px) { /* ∆ = 50 */
+    div.grid {
+        width: 105%;
+    }
+}
+
+@media screen and (max-width: 551px) and (min-width: 420px){
     div.grid {
        width: 110%;
     }
 }
 
-@media screen and (max-width: 380px) and (min-width: 340px) {
+@media screen and (max-width: 420px) and (min-width: 340px) {
     div.grid {
       width: 120%;
     }
