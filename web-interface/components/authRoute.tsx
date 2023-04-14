@@ -27,5 +27,7 @@ const authRoute = (Component : any) => {
       return null;
     }
   }
-};  
+};
+
+authRoute.displayName = 'authRoute';
 export default authRoute;
