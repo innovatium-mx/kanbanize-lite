@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
 import {urlCloud} from '../constants'
-import {useEffect, useState } from "react";
+import {FC, useEffect, useState } from "react";
 
-const authRoute = (Component : any) => {
+const authRoute = (Component : FC) => {
+  // eslint-disable-next-line react/display-name
   return (props : any) => {
     const router = useRouter();
     const [authenticated, setAuthenticated] = useState(false);      
@@ -19,7 +20,7 @@ const authRoute = (Component : any) => {
         }
       }
       checkToken();
-    }, []);
+    }, [router]);
   
     if (authenticated) {
       return <Component {...props}/>;
