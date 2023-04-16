@@ -43,7 +43,7 @@ const MyBoards = ( props: PropsResponse) => {
       setValue(event.target.value);
       console.log(event.target.value);
     };
-    console.log(props.data[0]);
+    const workflows = props.data;
 
     return (
         <>
@@ -52,9 +52,8 @@ const MyBoards = ( props: PropsResponse) => {
             <h1>{t("myBoards.myBoards")}</h1>
             <select value={value} onChange={handleChange} >
                 <option value="" disabled selected hidden>WorkSpaces</option>
-                {Object.entries(props.data).map(([key, { name,workspace_id}])  => (
-                  <option value={workspace_id}>{name}</option>
-                ))}
+                {// eslint-disable-next-line react/display-name
+                workflows.map((element: any)=><option key={element.key} value={element.workspace_id}>{element.name}</option>)}
 				    </select>
             
         </div>
