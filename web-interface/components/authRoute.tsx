@@ -1,15 +1,16 @@
 import { useRouter } from "next/router";
 import {urlCloud} from '../constants'
-import {FC, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
+const cookieCutter= require('cookie-cutter');
 
-const authRoute = (Component : FC) => {
+const authRoute = (Component : any) => {
   // eslint-disable-next-line react/display-name
   return (props : any) => {
     const router = useRouter();
     const [authenticated, setAuthenticated] = useState(false);      
     useEffect(() => {
       const checkToken = () => {
-        const token = localStorage.getItem("apikey");
+        const token = cookieCutter.get('apikey');
         if (!token) 
         {
           router.push('/');

@@ -3,7 +3,6 @@ const fetch = require('node-fetch');
 module.exports.workSpaces = async (req,res) =>{
     const host = req.params.host;
     const apikey = req.headers.apikey;
-    const workspaceid = req.params.workspaceid
     try{
         const response = await  fetch(`https://${host}.kanbanize.com/api/v2/workspaces?if_assigned_to_boards=1&is_archived=0`, {
             method: "GET",

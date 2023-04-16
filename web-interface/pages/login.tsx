@@ -5,13 +5,12 @@ import Image from "next/image";
 import {urlCloud} from '../constants'
 import dynamic from 'next/dynamic';
 import Swal from 'sweetalert2'
+const cookieCutter= require('cookie-cutter');
 
 //i18next language imports
 import { useTranslation, Trans, i18n } from 'next-i18next';
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
-
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
-import Head from 'next/head';
 
 type Props = {
     // Add custom props here
@@ -109,13 +108,12 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
             .then((response) => response.json())
             .then((data) => {
                 if(data.apikey){
-                    localStorage.setItem('host', loginCompany);
-                    localStorage.setItem('email', data.email);
-                    localStorage.setItem('apikey', data.apikey);
-                    localStorage.setItem('userid', data.userid);
-                    
-                    //////////////////////
-                    console.log(data);
+                    // Set a cookie
+	                cookieCutter.set('apikey', data.apikey);
+                    cookieCutter.set('host', loginCompany);
+                    cookieCutter.set('email', data.email);
+                    cookieCutter.set('userid', data.userid);
+
                     const signedInSuccess = t('login.success')
                     const Toast = Swal.mixin({
                         toast: true,
