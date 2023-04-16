@@ -108,11 +108,11 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
             .then((response) => response.json())
             .then((data) => {
                 if(data.apikey){
-                    localStorage.setItem('email', data.email);
-                    localStorage.setItem('userid', data.userid);
                     // Set a cookie
 	                cookieCutter.set('apikey', data.apikey);
                     cookieCutter.set('host', loginCompany);
+                    cookieCutter.set('email', data.email);
+                    cookieCutter.set('userid', data.userid);
 
                     const signedInSuccess = t('login.success')
                     const Toast = Swal.mixin({
