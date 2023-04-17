@@ -8,15 +8,20 @@ import dynamic from 'next/dynamic';
 import Dashboard from '../components/Dashboard'
 import type { boardCard } from '../components/Dashboard';
 import {urlCloud} from '../constants'
+import dashboard from '../styles/Dashboards.module.css';
+import login from '../styles/Login.module.css';
+
 import Cookies from 'cookies'
 const cookieCutter= require('cookie-cutter');
 
 type Props = {}
 
-interface Data {workspace_id: number,
+interface Data {
+  workspace_id: number,
   type: number,
   is_archived: number,
-  name: string}
+  name: string,
+}
 
   type NextJsI18NConfig = {
     defaultLocale: string
@@ -35,7 +40,15 @@ interface Data {workspace_id: number,
     _nextI18Next : NextJsI18NConfig
   }
 
+
 const MyBoards = ( props: PropsResponse) => {
+
+    const [dropdown, setDropdown]=useState(false);
+    const openCloseDropdown = () => {
+        setDropdown(!dropdown);
+    }
+
+
     const router = useRouter();
     const [value, setValue] = useState(0);
     const [boards, setBoards] = useState<Array<boardCard>>([{
@@ -43,17 +56,22 @@ const MyBoards = ( props: PropsResponse) => {
       "workspace_id": 0,
       "is_archived": 0,
       "name": "",
-      "description": ""
-    }]);
+      "description": "",
+      "index" : 0
+      }]);
 
     const {t} = useTranslation('common');
-    const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
+    const LanguageSelector = dynamic(import('../components/LanguageSelector'), {ssr:false});
+    const WorkspacesDropdown = dynamic(import('../components/WorkspacesDropdown'), {ssr:false});
+
     const workflows = props.data;
 
     const handleChange = (event : any) => {
       setValue(event.target.value);
       getBoards(event.target.value);
+      
     };
+
 
     const getBoards = async (boardid : number) => {
       const apikey = cookieCutter.get('apikey');
@@ -90,15 +108,36 @@ const MyBoards = ( props: PropsResponse) => {
     return (
         <>
         <div>
-            <div>
-              <LanguageButton/>
-              <select value={value} onChange={handleChange} >
+        {<WorkspacesDropdown data={workflows} getBoards={getBoards} />}
+
+            <label className={dashboard.dropdownFragment}>
+
+            {/*
+              <select value={value} onChange={handleChange} className={dashboard.workspacesDrop} >
                   <option  value="" selected hidden>WorkSpaces</option>
                   {workflows.map((element: any)=><option key={element.key} value={element.workspace_id}>{element.name}</option>)}
               </select>
+            */
+            }
+
+              {/*<LanguageButton/>*/}
+
+              <LanguageSelector/>
+
+            </label>
+
+
+
+            <div className={dashboard.grid}>
+
+              <div className={dashboard.title}>{t("myBoards.myBoards")}</div>
+
+              {boards.map((element: any, index)=> 
+                    <Dashboard key={element.key} board_id={element.board_id} workspace_id={element.workspace_id} is_archived={element.is_archived} name={element.name} description={element.description} index={index}/>
+              )}
+
             </div>
-            <h1>{t("myBoards.myBoards")}</h1>
-            {boards.map((element: any)=><Dashboard key={element.key} board_id={element.board_id} workspace_id={element.workspace_id} is_archived={element.is_archived} name={element.name} description={element.description}/>)}
+ 
         </div>
         </>
     )

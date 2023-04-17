@@ -1,0 +1,27 @@
+div.boardCard{
+    background-color: rgb(255, 254, 252);
+    border-radius: .3em;
+    margin-bottom: 1.2em;
+    padding-bottom: 2em;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 25em;
+    filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.06));
+}
+
+.boardCard > *{
+    padding: .5em 1em;
+}
+
+header.topCard{
+    border-top-left-radius: .3em;
+    border-top-right-radius: .3em;
+    padding-bottom: 2em;
+    padding-right: 1em;
+    text-align: right;
+    color: white;
+
+    background-color: var(--main-card-color);
+    height: 1.5em;
+}
