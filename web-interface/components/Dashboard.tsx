@@ -21,7 +21,7 @@ const DashBoard = ({board_id, workspace_id, is_archived, name, description, inde
 
 
     
-    const handleColorUpdate = (index : any) =>{
+    const HandleColorUpdate = (index : any) =>{
         //cardColor = "#" + colorsArray[Math.floor(Math.random()*colorsArray.length)];
         var newIndex=0;
   
@@ -44,7 +44,7 @@ const DashBoard = ({board_id, workspace_id, is_archived, name, description, inde
 
     return(
         <div className={boardStyle.boardCard}>
-            <header className={boardStyle.topCard} style={{backgroundColor: "#" + handleColorUpdate(index)}}>{board_id}</header>
+            <header className={boardStyle.topCard} style={{backgroundColor: "#" + HandleColorUpdate(index)}}>{board_id}</header>
             <div>{name.toUpperCase()}</div>
             <div></div>
             <div>{description}</div>
