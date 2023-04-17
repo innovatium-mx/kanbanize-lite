@@ -34,7 +34,7 @@ const WorkspacesDropdown = ({data, getBoards} : response) => {
     return(
         <>
         <Dropdown isOpen={dropdown} toggle={openCloseDropdown}  >
-                    <DropdownToggle caret >XD</DropdownToggle>
+                    <DropdownToggle caret >WorkSpaces</DropdownToggle>
 
                     <DropdownMenu >
                         {data.map((element: any)=><DropdownItem key={element.key} value={element.workspace_id} onClick={() => onToggleClick(element.workspace_id)}>{element.name}</DropdownItem>)}
