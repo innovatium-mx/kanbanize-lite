@@ -1,0 +1,14 @@
+button.selector{
+    background-color: #2666BE;
+    border: none;
+    color: white;
+}
+
+label.wrap{
+    padding-top: 0em !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    position: relative;
+    left: calc(80vw);
+    color: white;
+}

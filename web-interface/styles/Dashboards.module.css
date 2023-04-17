@@ -1,0 +1,99 @@
+div.grid{
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    height: fit-content;
+    position: relative;
+    width: 100%;
+}
+
+div.title{
+    border: white;
+    padding-right: 11em;
+    padding-bottom: 1em;
+    padding-top: 1em;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 26px;
+}
+
+label.dropdownFragment{
+    width: 100%;
+    background-color: #2666BE;
+    overflow: hidden;
+    
+}
+
+select.workspacesDrop{
+    background-color: rgba(255, 255, 255, 0.5);
+    color: white;
+    padding: 12px;
+    width: 250px;
+    border: none;
+    font-size: 20px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* iphone 13 pro max -> 583 x 412*/
+
+/* iphones */
+@media only screen 
+    and (device-width: 390px) 
+    and (device-height: 844px) 
+    and (-webkit-device-pixel-ratio: 3) { 
+        div.grid {
+            width: 120% !important;
+          }
+    }
+
+    
+     /*2778x1284 pixels at 458ppi */
+@media only screen 
+and (device-width: 428px) 
+and (device-height: 926px) 
+and (-webkit-device-pixel-ratio: 3) {
+    div.grid {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 610px) and (min-width: 420px) { /* ∆ = 50 */
+    div.grid {
+        width: 105%;
+    }
+}
+
+
+@media screen and (max-width: 420px) and (min-width: 370px) {
+    div.grid {
+      width: 115%;
+    }
+}
+
+@media screen and (max-width: 370px) and (min-width: 340px) {
+    div.grid {
+      width: 125%;
+    }
+}
+
+@media screen and (max-width: 340px) and (min-width: 315px) {
+    div.grid {
+      width: 135%;
+    }
+}
+
+@media screen and (max-width: 315px){
+    div.grid {
+      width: 145%;
+    }
+}
+
+@media screen and (max-width: 290px){
+    div.grid {
+      width: 155%;
+    }
+}
+
+/*265 px is the min screen's width*/
