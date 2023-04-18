@@ -17,10 +17,10 @@ div.title{
     line-height: 26px;
 }
 
-label.dropdownFragment{
+div.dropdownFragment{
     width: 100%;
     background-color: #2666BE;
-    overflow: hidden;
+    padding: 1.5em;
     
 }
 
@@ -32,6 +32,12 @@ select.workspacesDrop{
     border: none;
     font-size: 20px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+}
+
+.workspaceStyle{
+    background-color: #2666BE !important;
+    border: none !important;
+    padding-left: 2em !important;
 }
 
 
@@ -46,6 +52,7 @@ select.workspacesDrop{
         div.grid {
             width: 120% !important;
           }
+
     }
 
     
@@ -59,41 +66,59 @@ and (-webkit-device-pixel-ratio: 3) {
     }
 }
 
-@media screen and (max-width: 610px) and (min-width: 420px) { /* ∆ = 50 */
+@media screen and (max-width: 610px) and (min-width: 500px) { /* ∆ = 50 */
     div.grid {
-        width: 105%;
+        width: 110vw;
+    }
+    div.dropdownFragment{
+        width: 110%;
     }
 }
 
 
-@media screen and (max-width: 420px) and (min-width: 370px) {
+@media screen and (max-width: 500px) and (min-width: 370px) {
     div.grid {
-      width: 115%;
+      width: 120vw;
+    }
+    div.dropdownFragment{
+        width: 120%;
     }
 }
 
 @media screen and (max-width: 370px) and (min-width: 340px) {
     div.grid {
-      width: 125%;
+      width: 130vw;
+    }
+    div.dropdownFragment{
+        width: 130%;
     }
 }
 
 @media screen and (max-width: 340px) and (min-width: 315px) {
     div.grid {
-      width: 135%;
+      width: 140vw;
+    }
+    div.dropdownFragment{
+        width: 140%;
     }
 }
 
 @media screen and (max-width: 315px){
     div.grid {
-      width: 145%;
+      width: 150vw;
+    }
+    div.dropdownFragment{
+        width: 150%;
     }
 }
 
 @media screen and (max-width: 290px){
     div.grid {
-      width: 155%;
+      width: 155vw;
+    }
+    div.dropdownFragment{
+        width: 155%;
     }
 }
 
-/*265 px is the min screen's width*/
+/*270 px is the min screen's width*/
