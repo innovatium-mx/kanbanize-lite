@@ -31,7 +31,7 @@ const LanguageButton = () => {
         <label className={languageDrop.labelContainer}>
             <FontAwesomeIcon icon={faGlobe} className={languageDrop.iconStyle}/>
             <div>
-                <Dropdown isOpen={dropdown} toggle={openCloseDropdown}  >
+                <Dropdown isOpen={dropdown} toggle={openCloseDropdown}>
                     <DropdownToggle caret className={languageDrop.buttonStyle}>{t('button.language')}</DropdownToggle>
 
                     <DropdownMenu className={languageDrop.menuStyle}>

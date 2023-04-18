@@ -61,7 +61,6 @@ const MyBoards = ( props: PropsResponse) => {
       }]);
 
     const {t} = useTranslation('common');
-    const LanguageSelector = dynamic(import('../components/LanguageSelector'), {ssr:false});
     const WorkspacesDropdown = dynamic(import('../components/WorkspacesDropdown'), {ssr:false});
 
     const workflows = props.data;
@@ -108,9 +107,8 @@ const MyBoards = ( props: PropsResponse) => {
     return (
         <>
         <div>
-        {<WorkspacesDropdown data={workflows} getBoards={getBoards} />}
 
-            <label className={dashboard.dropdownFragment}>
+            <div className={dashboard.dropdownFragment}>
 
             {/*
               <select value={value} onChange={handleChange} className={dashboard.workspacesDrop} >
@@ -121,19 +119,17 @@ const MyBoards = ( props: PropsResponse) => {
             }
 
               {/*<LanguageButton/>*/}
+              {<WorkspacesDropdown data={workflows} getBoards={getBoards}/>}
 
-              <LanguageSelector/>
-
-            </label>
+            </div>
 
 
 
             <div className={dashboard.grid}>
-
               <div className={dashboard.title}>{t("myBoards.myBoards")}</div>
 
               {boards.map((element: any, index)=> 
-                    <Dashboard key={element.key} board_id={element.board_id} workspace_id={element.workspace_id} is_archived={element.is_archived} name={element.name} description={element.description} index={index}/>
+                    <Dashboard key={element.key} board_id={element.board_id} workspace_id={element.workspace_id} is_archived={element.is_archived} name={element.name} description={element.description} index={index} />
               )}
 
             </div>
