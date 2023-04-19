@@ -109,7 +109,6 @@ module.exports.boardDetails = async (req,res) =>{
                     const pages = data3.data.pagination.all_pages;
                     if( pages > 1){
                         for(var page = 2; page <= pages; page++){
-                            console.log("page")
                             const responseCardPages = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${page}`, {
                                 method: "GET",
                                 headers: {
