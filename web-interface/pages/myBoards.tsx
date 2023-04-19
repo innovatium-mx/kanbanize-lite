@@ -51,14 +51,7 @@ const MyBoards = ( props: PropsResponse) => {
 
     const router = useRouter();
     const [value, setValue] = useState(0);
-    const [boards, setBoards] = useState<Array<boardCard>>([{
-      "board_id": 0,
-      "workspace_id": 0,
-      "is_archived": 0,
-      "name": "",
-      "description": "",
-      "index" : 0
-      }]);
+    const [boards, setBoards] = useState<Array<boardCard>>([]);
 
     const {t} = useTranslation('common');
     const WorkspacesDropdown = dynamic(import('../components/WorkspacesDropdown'), {ssr:false});
@@ -84,7 +77,6 @@ const MyBoards = ( props: PropsResponse) => {
       if(response.ok){
         const data: any = await response.json();
         if(!data.error){
-          console.log(data);
           setBoards(data);
         }
         else{

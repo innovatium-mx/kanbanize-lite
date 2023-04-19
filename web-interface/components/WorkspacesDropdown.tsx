@@ -18,7 +18,6 @@ interface response {
 
 const WorkspacesDropdown = ({data, getBoards} : response) => {
 
-    console.log(data[0]);
     const router = useRouter();
 
     const [dropdown, setDropdown]=useState(false);
@@ -31,7 +30,6 @@ const WorkspacesDropdown = ({data, getBoards} : response) => {
     }
 
     const onToggleClick = (element: number) => {
-            console.log(element);
             getBoards(element);    
     }
     
