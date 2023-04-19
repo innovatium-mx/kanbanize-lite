@@ -97,7 +97,7 @@ module.exports.boardDetails = async (req,res) =>{
                     })
                     boardWorkflow[i].columns = columns;
                 }
-                const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}`, {
+                const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${1}`, {
                     method: "GET",
                     headers: {
                         "apikey": apikey
@@ -105,7 +105,26 @@ module.exports.boardDetails = async (req,res) =>{
                 })
                 if(response3.ok){
                     const data3 = await response3.json();
-                    const boardCards = data3.data.data;
+                    var boardCards = data3.data.data;
+                    const pages = data3.data.pagination.all_pages;
+                    if( pages > 1){
+                        for(var page = 2; page <= pages; page++){
+                            console.log("page")
+                            const responseCardPages = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${page}`, {
+                                method: "GET",
+                                headers: {
+                                    "apikey": apikey
+                                },
+                            }) 
+                            if(responseCardPages.ok){
+                                const rawCardPages = await responseCardPages.json();
+                                boardCards = boardCards.concat(rawCardPages.data.data);
+                            }
+                            else{
+                                res.json({"error": responseCardPages.status});
+                            }
+                        }
+                    }
                     const responseUsers = await  fetch(`https://${host}.kanbanize.com/api/v2/users`, {
                         method: "GET",
                         headers: {
