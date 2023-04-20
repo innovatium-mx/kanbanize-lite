@@ -54,9 +54,9 @@ const MyBoards = ( props: PropsResponse) => {
     const [boards, setBoards] = useState<Array<boardCard>>([]);
 
     const {t} = useTranslation('common');
-    const WorkspacesDropdown = dynamic(import('../components/WorkspacesDropdown'), {ssr:false});
+    const InterfaceDropdown= dynamic(import('../components/InterfaceDropdown'), {ssr:false});
 
-    const workflows = props.data;
+    const workspaces = props.data;
 
     const handleChange = (event : any) => {
       setValue(event.target.value);
@@ -111,7 +111,7 @@ const MyBoards = ( props: PropsResponse) => {
             }
 
               {/*<LanguageButton/>*/}
-              {<WorkspacesDropdown data={workflows} getBoards={getBoards}/>}
+              {<InterfaceDropdown data={workspaces} name={"WORKSPACE"} getData={getBoards}/>}
 
             </div>
 

@@ -35,7 +35,7 @@ const DashBoard = ({board_id, workspace_id, is_archived, name, description, inde
 
         useEffect(()=>{
             setCardColor(colorsArray[newIndex]);
-        }, [])
+        })
 
         //return {backgroundColor: `cardColor`};
         return cardColor;

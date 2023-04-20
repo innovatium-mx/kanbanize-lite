@@ -4,7 +4,10 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetServerSideProps} from 'next'
 import { useRouter } from "next/router";
 import authRoute from '../../components/authRoute';
+import {useEffect, useState } from "react";
+import dynamic from 'next/dynamic';
 import {urlCloud} from '../../constants'
+import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies'
 
 type Props = {}
@@ -69,16 +72,28 @@ type workflow = {
 const Board = ( props: PropsResponse) => {
   const router = useRouter();
   const {t} = useTranslation('common');
+  const InterfaceDropdown = dynamic(import('../../components/InterfaceDropdown'), {ssr:false});
+  //const [workflow, setWorkflow] = useState<number>([]);
   const query = router.query;
   const board_id = query.board_id;
   const board = props.data;
-  console.log(board);
+
+  const getBoards = (workflowid : number) => {
+    console.log(workflowid);
+  }
 
   return (
-    <div style={{ padding: 40 }}>
-      <h1>Board</h1>
-      <h2>Board Id: {board_id}</h2>
+
+    <>
+    <div>
+      <div className={dashboard.dropdownFragment}>
+
+      {<InterfaceDropdown data={board} name={"WORKFLOW"} getData={getBoards}/>}
+
+        </div>
     </div>
+    </>
+    
   );
 };
 
