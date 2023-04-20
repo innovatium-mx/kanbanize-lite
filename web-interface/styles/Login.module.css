@@ -10,6 +10,15 @@ div.grid {
 
 div.dropdownFragment{
     width: 10%;
+    padding-left: 90vw;
+}
+
+.labelContainer{
+    padding-top: 0em !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    position: relative;
+    left: calc(90vw);
 }
 
 div.mainPage{
@@ -177,6 +186,23 @@ and (-webkit-device-pixel-ratio: 3) {
         width: 100% !important;
     }
 }
+
+@media screen and (max-width: 1330px) {
+    div.dropdownFragment{
+        padding-left: 1%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 @media screen and (max-width: 610px) and (min-width: 551px) { /* ∆ = 50 */
     div.grid {
