@@ -1,5 +1,6 @@
 import boardStyle from '../styles/Board.module.css';
 import { useState, useEffect } from 'react';
+import { useRouter } from "next/router";
 
 export type boardCard = {
     board_id: number,
@@ -13,10 +14,9 @@ export type boardCard = {
 const DashBoard = ({board_id, workspace_id, is_archived, name, description, index}: boardCard) => {
 
     //const forceUpdate = useForceUpdate();
-
+    const router = useRouter();
     const colorsArray = Array(('E6186A'), ('43AF4A'), ('2666BE'),('F48A32'));
     const [cardColor, setCardColor] = useState('');
-    console.log(index);
 
 
 
@@ -35,15 +35,20 @@ const DashBoard = ({board_id, workspace_id, is_archived, name, description, inde
 
         useEffect(()=>{
             setCardColor(colorsArray[newIndex]);
-        }, [])
+        })
 
-        console.log(cardColor);
         //return {backgroundColor: `cardColor`};
         return cardColor;
     }
 
+    const handleClick = () => {
+        router.push({
+            pathname: `/board/${board_id}`,
+        })
+    };
+
     return(
-        <div className={boardStyle.boardCard}>
+        <div className={boardStyle.boardCard} onClick={() => handleClick()}>
             <header className={boardStyle.topCard} style={{backgroundColor: "#" + HandleColorUpdate(index)}}>{board_id}</header>
             <div>{name.toUpperCase()}</div>
             <div></div>
