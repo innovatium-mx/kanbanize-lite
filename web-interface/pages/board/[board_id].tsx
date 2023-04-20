@@ -73,13 +73,13 @@ const Board = ( props: PropsResponse) => {
   const router = useRouter();
   const {t} = useTranslation('common');
   const InterfaceDropdown = dynamic(import('../../components/InterfaceDropdown'), {ssr:false});
-  //const [workflow, setWorkflow] = useState<number>([]);
+  const [workflow, setWorkflow] = useState<workflow>();
   const query = router.query;
   const board_id = query.board_id;
   const board = props.data;
 
-  const getBoards = (workflowid : number) => {
-    console.log(workflowid);
+  const getWorkflow = (workflowid : number) => {
+    setWorkflow(board.filter(function(item) { return item.workflow_id === workflowid; })[0]);
   }
 
   return (
@@ -88,7 +88,7 @@ const Board = ( props: PropsResponse) => {
     <div>
       <div className={dashboard.dropdownFragment}>
 
-      {<InterfaceDropdown data={board} name={"WORKFLOW"} getData={getBoards}/>}
+      {<InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow}/>}
 
         </div>
     </div>
