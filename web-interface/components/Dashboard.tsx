@@ -26,9 +26,9 @@ const DashBoard = ({board_id, workspace_id, is_archived, name, description, inde
         var newIndex=0;
   
         if(index === 0){newIndex = 0;}
-        else if(index%3 === 0){newIndex = 0;}
-        else if(index%4 === 0 || index === 1){newIndex = 1;}
-        else if(index%5 === 0 || index === 2){newIndex = 2;}
+        else if(index%4 === 0){newIndex = 0;}
+        else if(index%5 === 0 || index === 1){newIndex = 1;}
+        else if(index%6 === 0 || index === 2){newIndex = 2;}
         else{
             newIndex = 3;
         }

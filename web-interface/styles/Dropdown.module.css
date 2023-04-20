@@ -1,6 +1,6 @@
 .buttonStyle{
-    background-color: white !important;
-    color: black !important;
+    background-color:  var(--dropdown-bg-) !important;
+    color: var(--dropdowncolor-) !important;
     border: none !important;
 }
 
@@ -24,11 +24,11 @@
     display: flex !important;
     align-items: flex-end !important;
     position: relative;
-    left: calc(90vw);
 }
 
 
 .iconStyle{
+    color: var(--dropdowncolor-);
     width: auto;
     padding-left: .6em;
     padding-bottom: .6em;

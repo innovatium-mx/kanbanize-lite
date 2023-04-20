@@ -43,6 +43,11 @@ interface Data {
 
 const MyBoards = ( props: PropsResponse) => {
 
+  if (typeof window !== 'undefined') {
+    document.documentElement.style.setProperty('--dropdowncolor-', 'white');
+    document.documentElement.style.setProperty('--dropdown-bg-', '#2666BE');
+  }
+
     const [dropdown, setDropdown]=useState(false);
     const openCloseDropdown = () => {
         setDropdown(!dropdown);
@@ -54,6 +59,7 @@ const MyBoards = ( props: PropsResponse) => {
     const [boards, setBoards] = useState<Array<boardCard>>([]);
 
     const {t} = useTranslation('common');
+    const LanguageDropdown = dynamic(import('../components/LanguageDropdown'),{ssr:false});
     const InterfaceDropdown= dynamic(import('../components/InterfaceDropdown'), {ssr:false});
 
     const workspaces = props.data;
@@ -99,23 +105,17 @@ const MyBoards = ( props: PropsResponse) => {
     return (
         <>
         <div>
+        
+        <label className={dashboard.topBar}>
 
-            <div className={dashboard.dropdownFragment}>
+        <label className={dashboard.dropdownFragment}>
+          {<InterfaceDropdown data={workspaces} name={"WORKSPACE"} getData={getBoards}/>}
+        </label>
 
-            {/*
-              <select value={value} onChange={handleChange} className={dashboard.workspacesDrop} >
-                  <option  value="" selected hidden>WorkSpaces</option>
-                  {workflows.map((element: any)=><option key={element.key} value={element.workspace_id}>{element.name}</option>)}
-              </select>
-            */
-            }
-
-              {/*<LanguageButton/>*/}
-              {<InterfaceDropdown data={workspaces} name={"WORKSPACE"} getData={getBoards}/>}
-
-            </div>
-
-
+          <label className={dashboard.languageDropdown}>
+            <LanguageDropdown/>
+          </label>
+        </label>
 
             <div className={dashboard.grid}>
               <div className={dashboard.title}>{t("myBoards.myBoards")}</div>
