@@ -37,7 +37,7 @@ const WorkspacesDropdown = ({data, getBoards} : response) => {
     
     return(
         <>
-        <div className={dashboard.testing}>
+        <div>
             <Dropdown isOpen={dropdown} toggle={openCloseDropdown}  >
                         <DropdownToggle caret className={dashboard.workspaceStyle}>WorkSpaces</DropdownToggle>
                         <DropdownMenu >

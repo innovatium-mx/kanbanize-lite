@@ -24,7 +24,6 @@
     display: flex !important;
     align-items: flex-end !important;
     position: relative;
-    left: calc(90vw);
 }
 
 

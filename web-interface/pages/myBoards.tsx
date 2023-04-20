@@ -62,6 +62,7 @@ const MyBoards = ( props: PropsResponse) => {
 
     const {t} = useTranslation('common');
     const WorkspacesDropdown = dynamic(import('../components/WorkspacesDropdown'), {ssr:false});
+    const LanguageDropdown = dynamic(import('../components/LanguageDropdown'),{ssr:false});
 
     const workflows = props.data;
 
@@ -107,23 +108,17 @@ const MyBoards = ( props: PropsResponse) => {
     return (
         <>
         <div>
+        
+        <label className={dashboard.topBar}>
+          
+          <label className={dashboard.labelContainer}>
+            {<WorkspacesDropdown data={workflows} getBoards={getBoards}/>}
+          </label>
 
-            <div className={dashboard.dropdownFragment}>
-
-            {/*
-              <select value={value} onChange={handleChange} className={dashboard.workspacesDrop} >
-                  <option  value="" selected hidden>WorkSpaces</option>
-                  {workflows.map((element: any)=><option key={element.key} value={element.workspace_id}>{element.name}</option>)}
-              </select>
-            */
-            }
-
-              {/*<LanguageButton/>*/}
-              {<WorkspacesDropdown data={workflows} getBoards={getBoards}/>}
-
-            </div>
-
-
+          <label className={dashboard.languageDropdown}>
+            <LanguageDropdown/>
+          </label>
+        </label>
 
             <div className={dashboard.grid}>
               <div className={dashboard.title}>{t("myBoards.myBoards")}</div>
