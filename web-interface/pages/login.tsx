@@ -34,6 +34,11 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
     const Kb_logo = require('../images/Kanbanize_logo.png')
     const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
 
+    if (typeof window !== 'undefined') {
+        document.documentElement.style.setProperty('--dropdowncolor-', 'black');
+        document.documentElement.style.setProperty('--dropdown-bg-', 'white');
+    }
+
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [loginCompany, setLoginCompany] = useState('');

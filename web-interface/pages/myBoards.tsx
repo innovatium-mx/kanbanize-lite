@@ -43,6 +43,11 @@ interface Data {
 
 const MyBoards = ( props: PropsResponse) => {
 
+  if (typeof window !== 'undefined') {
+    document.documentElement.style.setProperty('--dropdowncolor-', 'white');
+    document.documentElement.style.setProperty('--dropdown-bg-', '#2666BE');
+  }
+
     const [dropdown, setDropdown]=useState(false);
     const openCloseDropdown = () => {
         setDropdown(!dropdown);

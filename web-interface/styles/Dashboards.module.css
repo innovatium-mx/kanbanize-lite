@@ -106,7 +106,10 @@ and (-webkit-device-pixel-ratio: 3) {
         padding-left: 1vw;
     }
     label.topBar{
-        width: 107%;
+        width: 110%;
+    }
+    div.grid {
+        width: 110vw;
     }
 }
 
@@ -127,7 +130,7 @@ and (-webkit-device-pixel-ratio: 3) {
         padding-left: 5vw;
     }
     label.topBar{
-        width: 115%;
+        width: 117%;
     }
     div.grid {
         width: 115vw;
@@ -146,7 +149,7 @@ and (-webkit-device-pixel-ratio: 3) {
     }
 }
 
-@media screen and (max-width: 710px) {
+@media screen and (max-width: 765px) {
     label.languageDropdown{
         padding-left: 6vw;
     }
@@ -158,7 +161,7 @@ and (-webkit-device-pixel-ratio: 3) {
     }
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 650px) {
     label.languageDropdown{
         padding-left: 6vw;
     }
@@ -168,7 +171,7 @@ and (-webkit-device-pixel-ratio: 3) {
 }
 
 
-@media screen and (max-width: 610px) and (min-width: 500px) { /* ∆ = 50 */
+@media screen and (max-width: 650px) and (min-width: 575px) { /* ∆ = 50 */
     div.grid {
         width: 130vw;
     }
@@ -177,53 +180,93 @@ and (-webkit-device-pixel-ratio: 3) {
     }
 }
 
-@media screen {
-    
-}
-
-
-@media screen and (max-width: 500px) and (min-width: 370px) {
+@media screen and (max-width: 575px) and (min-width: 524px) {
     div.grid {
-      width: 120vw;
+      width: 135vw;
     }
     div.dropdownFragment{
         width: 120%;
     }
+    label.languageDropdown{
+        padding-left: 6vw;
+    }
+    label.topBar{
+        width: 135%;
+    }
 }
 
-@media screen and (max-width: 370px) and (min-width: 340px) {
+@media screen and (max-width: 524px) and (min-width: 470px) {
     div.grid {
-      width: 130vw;
+      width: 135vw;
     }
     div.dropdownFragment{
         width: 130%;
     }
+    label.languageDropdown{
+        padding-left: 2vw;
+    }
+    label.topBar{
+        width: 135%;
+    }
 }
 
-@media screen and (max-width: 340px) and (min-width: 315px) {
+@media screen and (max-width: 470px) and (min-width: 392px) {
     div.grid {
-      width: 140vw;
+      width: 150vw;
     }
     div.dropdownFragment{
         width: 140%;
     }
+    label.languageDropdown{
+        padding-left: 2vw;
+    }
+    label.topBar{
+        width: 150%;
+    }
 }
 
-@media screen and (max-width: 315px){
+@media screen and (max-width: 392px){
     div.grid {
       width: 150vw;
     }
     div.dropdownFragment{
         width: 150%;
     }
+    label.languageDropdown{
+        padding-left: 2vw;
+    }
+    label.topBar{
+        width: 150%;
+    }
 }
 
-@media screen and (max-width: 290px){
+@media screen and (max-width: 335px){
     div.grid {
       width: 155vw;
     }
     div.dropdownFragment{
         width: 155%;
+    }
+    label.languageDropdown{
+        padding-left: 0vw;
+    }
+    label.topBar{
+        width: 155%;
+    }
+}
+
+@media screen and (max-width: 300px){
+    div.grid {
+        width: 165vw;
+      }
+      div.dropdownFragment{
+          width: 155%;
+      }
+    label.languageDropdown{
+        padding-left: 3vw;
+    }
+    label.topBar{
+        width: 165%;
     }
 }
 
