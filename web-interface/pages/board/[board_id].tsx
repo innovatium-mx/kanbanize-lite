@@ -86,11 +86,13 @@ const Board = ( props: PropsResponse) => {
 
     <>
     <div>
-      <div className={dashboard.dropdownFragment}>
+      <label className={dashboard.topBar}>
+        <label className={dashboard.dropdownFragment}>
 
-      {<InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow}/>}
+        {<InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow}/>}
 
-        </div>
+        </label>
+      </label>
     </div>
     </>
     
