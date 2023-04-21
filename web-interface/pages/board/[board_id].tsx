@@ -102,6 +102,11 @@ const Board = ( props: PropsResponse) => {
 
         </label>
       </label>
+      <div>
+        { workflow.type === 0 && 
+          <CardsWorkflow data={workflow.columns}/>
+        }
+      </div>
     </div>
     </>
     
