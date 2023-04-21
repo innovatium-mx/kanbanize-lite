@@ -50,7 +50,7 @@ type workflow = {
   "is_collapsible": number,
   "name": string,
   "workflow_id": number,
-  "columns": Array<column> | null
+  "columns": Array<column>
 }
 
   type NextJsI18NConfig = {

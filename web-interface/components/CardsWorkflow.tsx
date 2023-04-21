@@ -1,4 +1,5 @@
-
+import ColumnTitle from './ColumnTitle';
+import {useEffect, useState } from "react";
 
 type card = {
     "card_id": number,
@@ -29,11 +30,39 @@ type column = {
     "cards": Array<card> | null
 };
 
-const CardsWorkflow = ({data} : Array<column>) => {
+type CardsWorkflowProps = {
+    data: Array<column>
+}
 
-    console.log(data);
+type showButtons = {
+    left: boolean,
+    right: boolean
+};
+
+const CardsWorkflow = ({data} : CardsWorkflowProps) => {
+
+    const [index, setIndex] = useState<number>(0);
+    const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
+    
+    const returnResponse = (response : number) => {
+        setIndex(index+response);
+        if(index+response === 0){
+            setButtons({left: false, right: true})
+        }
+        else if(index+response === data.length-1){
+            setButtons({left: true, right: false})
+        }
+        else{
+            setButtons({left: true, right: true})
+        }
+    };
+
     return(
-        <h2>Tipo 0</h2>
+        <>
+            <div>
+                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} returnResponse={returnResponse}/>
+            </div>
+        </>
     )
 }
 
