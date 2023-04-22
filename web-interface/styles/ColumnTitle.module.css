@@ -1,0 +1,17 @@
+.container{
+    width: 100%;
+    padding-top: 4em;
+    display: flex;
+    padding-bottom: 4em;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+  
+.leftright {
+    margin: 20px 10px;
+}
+  
+.title {
+    margin: 20px 10px;
+}

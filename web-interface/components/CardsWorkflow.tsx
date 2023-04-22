@@ -43,6 +43,7 @@ const CardsWorkflow = ({data} : CardsWorkflowProps) => {
 
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
+    const [color, setColor] = useState<string>('#9e9e9e');
     
     const returnResponse = (response : number) => {
         setIndex(index+response);
@@ -55,12 +56,19 @@ const CardsWorkflow = ({data} : CardsWorkflowProps) => {
         else{
             setButtons({left: true, right: true})
         }
+
+        if(data[index+response].color === ''){
+            setColor('#9e9e9e');
+        }
+        else{
+            setColor('#'+data[index+response].color);
+        }
     };
 
     return(
         <>
             <div>
-                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} returnResponse={returnResponse}/>
+                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse}/>
             </div>
         </>
     )

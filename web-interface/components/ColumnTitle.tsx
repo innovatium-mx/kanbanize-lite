@@ -1,15 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import columntitle from '../styles/ColumnTitle.module.css';
 
 type ColumnTitleProps = {
     name: string,
     left: boolean,
-    right: boolean, 
+    right: boolean,
+    color: string,
     returnResponse: any,
 }
 
-const ColumnTitle = ({name, left, right, returnResponse} : ColumnTitleProps) => {
-
+const ColumnTitle = ({name, left, right, color, returnResponse} : ColumnTitleProps) => {
+    console.log(color);
     const handleLeftClick = () => {
         returnResponse(-1);
     }
@@ -20,15 +22,15 @@ const ColumnTitle = ({name, left, right, returnResponse} : ColumnTitleProps) => 
 
     return(
         <>
-            <div>
-                { left && 
-                    <FontAwesomeIcon onClick={() => handleLeftClick()} icon={faAngleLeft} size="xl"/>
-                }
-                    <h2>{name}</h2>
-                { right && 
-                    <FontAwesomeIcon onClick={() => handleRightClick()} icon={faAngleRight} size="xl"/>
-                }
-            </div>
+                <label className={columntitle.container} style={{ backgroundColor: color }}>
+                    { left && 
+                        <FontAwesomeIcon className={columntitle.leftright} onClick={() => handleLeftClick()} icon={faAngleLeft} size="xl"/>
+                    }
+                        <span className={columntitle.title}>{name}</span>
+                    { right && 
+                        <FontAwesomeIcon className={columntitle.leftright} onClick={() => handleRightClick()} icon={faAngleRight} size="xl"/>
+                    }
+                </label >
         </>
     )
 }
