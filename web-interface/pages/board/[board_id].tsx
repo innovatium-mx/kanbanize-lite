@@ -4,6 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetServerSideProps} from 'next'
 import { useRouter } from "next/router";
 import authRoute from '../../components/authRoute';
+import CardsWorkflow from '../../components/CardsWorkflow';
 import {useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
 import {urlCloud} from '../../constants'
@@ -49,7 +50,7 @@ type workflow = {
   "is_collapsible": number,
   "name": string,
   "workflow_id": number,
-  "columns": Array<column> | null
+  "columns": Array<column>
 }
 
   type NextJsI18NConfig = {
@@ -73,7 +74,15 @@ const Board = ( props: PropsResponse) => {
   const router = useRouter();
   const {t} = useTranslation('common');
   const InterfaceDropdown = dynamic(import('../../components/InterfaceDropdown'), {ssr:false});
-  const [workflow, setWorkflow] = useState<workflow>();
+  const [workflow, setWorkflow] = useState<workflow>({
+    "type": -1,
+    "position": -1,
+    "is_enabled": -1,
+    "is_collapsible": -1,
+    "name": "",
+    "workflow_id": -1,
+    "columns": [] 
+  });
   const query = router.query;
   const board_id = query.board_id;
   const board = props.data;
@@ -93,6 +102,11 @@ const Board = ( props: PropsResponse) => {
 
         </label>
       </label>
+      <div>
+        { workflow.type === 0 && 
+          <CardsWorkflow data={workflow.columns}/>
+        }
+      </div>
     </div>
     </>
     
