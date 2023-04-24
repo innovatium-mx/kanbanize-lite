@@ -1,5 +1,8 @@
 import ColumnTitle from './ColumnTitle';
 import {useEffect, useState } from "react";
+import dynamic from 'next/dynamic';
+import Dynamicboard from '../styles/Dynamicboard.module.css';
+import { response } from 'express';
 
 type card = {
     "card_id": number,
@@ -27,7 +30,7 @@ type column = {
     "cards_per_row": number,
     "flow_type": number,
     "card_ordering": string | null,
-    "cards": Array<card> | null
+    "cards": Array<card>  | null
 };
 
 type CardsWorkflowProps = {
@@ -44,7 +47,15 @@ const CardsWorkflow = ({data} : CardsWorkflowProps) => {
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
+    const [activities, setActivities] = useState<Array<card> | null>([]);
     
+    const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
+
+    useEffect(()=>{
+        setActivities(data[index].cards);
+    })
+
+
     const returnResponse = (response : number) => {
         setIndex(index+response);
         if(index+response === 0){
@@ -63,12 +74,20 @@ const CardsWorkflow = ({data} : CardsWorkflowProps) => {
         else{
             setColor('#'+data[index+response].color);
         }
-    };
+        //setActivities(data[index+response].cards);
+};
+
+    
 
     return(
         <>
             <div>
                 <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse}/>
+                <div className={Dynamicboard.grid}>
+                    { activities != null && activities.map((element: any) =>
+                        <ActivityCard color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username}/>
+                    )}
+                </div>
             </div>
         </>
     )

@@ -9,9 +9,7 @@ div.boardCard{
 
     background-color: var(--boardCard-color-);
     background-clip: padding-box;
-
     border-radius: 0.4rem;
-    
 }
 
 div.boardCard::before{
@@ -44,7 +42,7 @@ div.text{
 
 .photo{
     margin-top: 1em;
-    margin-bottom: .1em;
+    margin-bottom: 1em;
     margin-right: auto;
     margin-left: auto;
     height: 4em;
@@ -58,9 +56,9 @@ div.text{
     margin-top: 1em;
     margin-bottom: 1em;
     margin-right: auto;
-    margin-left: auto;
-    height: 3em;
-    width: 3em;
+    margin-left: 1em;
+    height: 4em;
+    width: 4em;
     border-radius: 50%;
     z-index: 1;
     background: gray;
@@ -74,15 +72,13 @@ div.text{
     margin-bottom: 1em;
     margin-right: auto;
     margin-left: auto;
-    height: 3em;
-    width: 3em;
+    height: 4em;
+    width: 4em;
     border-radius: 50%;
     z-index: 1;
     background: var(--card-color-);
-    filter: drop-shadow(.5em .5em .2em rgba(0,0,0,0.1));
+    filter: drop-shadow(.2em 1em .3em rgba(0,0,0,0.06));
     border: 1px solid white;
-
-
 }
 
 div.letter{
