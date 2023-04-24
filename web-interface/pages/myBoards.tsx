@@ -108,9 +108,9 @@ const MyBoards = ( props: PropsResponse) => {
         
         <label className={dashboard.topBar}>
 
-        <label className={dashboard.dropdownFragment}>
-          {<InterfaceDropdown data={workspaces} name={"WORKSPACE"} getData={getBoards}/>}
-        </label>
+          <label className={dashboard.dropdownFragment}>
+            {<InterfaceDropdown data={workspaces} name={"WORKSPACE"} getData={getBoards}/>}
+          </label>
 
           <label className={dashboard.languageDropdown}>
             <LanguageDropdown/>
