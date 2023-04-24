@@ -22,15 +22,21 @@ const ColumnTitle = ({name, left, right, color, returnResponse} : ColumnTitlePro
 
     return(
         <>
-                <label className={columntitle.container} style={{ backgroundColor: color }}>
-                    { left && 
-                        <FontAwesomeIcon className={columntitle.leftright} onClick={() => handleLeftClick()} icon={faAngleLeft} size="xl"/>
-                    }
-                        <span className={columntitle.title}>{name}</span>
-                    { right && 
-                        <FontAwesomeIcon className={columntitle.leftright} onClick={() => handleRightClick()} icon={faAngleRight} size="xl"/>
-                    }
-                </label >
+            <div className={columntitle.container} style={{ backgroundColor: color }}>
+                <label className={columntitle.innercontainer}>
+                    <label className={columntitle.buttons} onClick={() => handleLeftClick()}>
+                        { left && 
+                            <FontAwesomeIcon  icon={faAngleLeft} size="xl"/>
+                        }
+                    </label>
+                    <label className={columntitle.title}>{name}</label>
+                    <label className={columntitle.buttons} onClick={() => handleRightClick()}>
+                        { right && 
+                            <FontAwesomeIcon icon={faAngleRight} size="xl"/>
+                        }
+                    </label>
+                </label>
+            </div >
         </>
     )
 }
