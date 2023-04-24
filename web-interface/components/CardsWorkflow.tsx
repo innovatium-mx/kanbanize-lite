@@ -85,7 +85,7 @@ const CardsWorkflow = ({data} : CardsWorkflowProps) => {
                 <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse}/>
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
-                        <ActivityCard color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username}/>
+                        <ActivityCard key={element.key} color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username}/>
                     )}
                 </div>
             </div>
