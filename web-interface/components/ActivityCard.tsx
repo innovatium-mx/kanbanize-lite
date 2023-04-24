@@ -1,30 +1,51 @@
 import dynamic from 'next/dynamic';
 import actCard from '../styles/Activitycard.module.css';
 import Image from 'next/image';
-import pSBC from '../helpers/lightenColor';
 import adjustColor from '../helpers/lightenColor';
 
-const ActivityCard = () =>{
+export type ActivityCardProps = {
+    "color": string,
+    "owner_avatar": string | null,
+    "title": string,
+    "owner_username": string | null,
+}
 
-    //const color =  '#ff0000'; // red
-    const color =  adjustColor('#ff0000',-70); // red
 
-    const lightenedColor = adjustColor(color, 70);
+const ActivityCard = ({color, owner_avatar, title, owner_username} : ActivityCardProps) =>{
+
+    const darkenedColor =  adjustColor(color,-90); // red
+    const lightenedColor = adjustColor(darkenedColor, 90);
+    const boardCardColor = adjustColor(color, 160);
 
     if (typeof window !== 'undefined') {
-        document.documentElement.style.setProperty('--primary-gradient-', color);
+        document.documentElement.style.setProperty('--primary-gradient-', darkenedColor);
         document.documentElement.style.setProperty('--secondary-gradient-', lightenedColor);
+        document.documentElement.style.setProperty('--card-color-', color);
+        document.documentElement.style.setProperty('--boardCard-color-', boardCardColor);
     }
 
-    console.log(color);
-    console.log(lightenedColor);
+    var nonPhoto;
+    var letter = '';
+
+    if(owner_username === null){
+        nonPhoto = actCard.noPhoto_noUser;
+        letter = 'N';
+    }
+    else{
+        nonPhoto = actCard.noPhoto_user;
+        letter = owner_username.charAt(0);
+    }
 
     return(
         <>
             <div className={actCard.boardCard}>
-                <div className={actCard.text}>T2.HU10.- Crear componente de sidebar con Perfil, organización, idioma, link a workspaces y cerrar sesión.T2.HU10.- Crear componente de sidebar con Perfil, organización, idioma, link a workspaces y cerrar sesión.T2.HU10.- Crear componente de sidebar con Perfil, organización, idioma, link a workspaces y cerrar sesión.T2.HU10.- Crear componente de sidebar con Perfil, organización, idioma, link a workspaces y cerrar sesión.T2.HU10.- Crear componente de sidebar con Perfil, organización, idioma, link a workspaces y cerrar sesión.T2.HU10.- Crear componente de sidebar con Perfil, organización, idioma, link a workspaces y cerrar sesión.T2.HU10.- Crear componente de sidebar con Perfil, organización, idioma, link a workspaces y cerrar sesión.</div>
-                <Image src={''} alt="src" className={actCard.photo}/>
+                <div className={actCard.text}>{title}</div>
+                    <div className={actCard.imageSection}>
+                    {owner_avatar !=  null ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto}> <div className={actCard.letter}>{letter}</div> </div></div>}
+                    {owner_username}
+                    </div>
             </div>
+            
 
         
         </>
