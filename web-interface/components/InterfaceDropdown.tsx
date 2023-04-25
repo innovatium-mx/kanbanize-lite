@@ -72,7 +72,7 @@ const InterfaceDropdown = ({data, getData, name} : DropdownProps) => {
     
     return(
         <>
-        <div className={dashboard.testing}>
+        <div>
             <Dropdown isOpen={dropdown} toggle={openCloseDropdown}  >
                         <DropdownToggle caret className={dashboard.workspaceStyle}>{name}</DropdownToggle>
                         <DropdownMenu >

@@ -28,7 +28,7 @@ const LanguageButton = () => {
 
     return(
         <>
-        <label className={languageDrop.labelContainer}>
+        <div className={languageDrop.labelContainer}>
             <FontAwesomeIcon icon={faGlobe} className={languageDrop.iconStyle}/>
             <div>
                 <Dropdown isOpen={dropdown} toggle={openCloseDropdown}>
@@ -41,7 +41,7 @@ const LanguageButton = () => {
 
                 </Dropdown>
             </div>
-        </label>
+        </div>
         </>
     )
 }

@@ -106,16 +106,15 @@ const MyBoards = ( props: PropsResponse) => {
         <>
         <div>
         
-        <label className={dashboard.topBar}>
-
-        <label className={dashboard.dropdownFragment}>
-          {<InterfaceDropdown data={workspaces} name={"WORKSPACE"} getData={getBoards}/>}
-        </label>
-
-          <label className={dashboard.languageDropdown}>
-            <LanguageDropdown/>
-          </label>
-        </label>
+        <div className={dashboard.topBar}>
+            <div className={dashboard.dropdownFragment}>
+              <InterfaceDropdown  data={workspaces} name={"WORKSPACE"} getData={getBoards}/>
+            </div>
+            <div className={dashboard.languageDropdown}>
+              <LanguageDropdown/>
+            </div>
+              
+        </div>
 
             <div className={dashboard.grid}>
               <div className={dashboard.title}>{t("myBoards.myBoards")}</div>
