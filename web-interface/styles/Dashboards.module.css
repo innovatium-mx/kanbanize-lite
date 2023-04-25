@@ -41,13 +41,3 @@
 .languageDropdown {
     padding-right: 1.5em;
 }
-
-@media screen and (max-width: 329px) {
-    .dropdownFragment {
-        padding-left: 0.5em;
-    }
-
-    .languageDropdown {
-        padding-right: 0.5em;
-    }
-}
