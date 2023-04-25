@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { appWithTranslation } from 'next-i18next'
 import Head from "next/head";
+import '@fortawesome/fontawesome-svg-core/styles.css'
 
 function App({ Component, pageProps }: AppProps) {
   const {locale} = useRouter();
