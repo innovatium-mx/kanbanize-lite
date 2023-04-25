@@ -166,11 +166,15 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                 console.log(error);
               });
         }
+
+
+
     };
 
 
     return (
         <>
+        <div className={login.index}>
 
         {
             /* <Head>
@@ -230,6 +234,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
                     </form>
                 </div>
+            </div>
             </div>
         </>
 
