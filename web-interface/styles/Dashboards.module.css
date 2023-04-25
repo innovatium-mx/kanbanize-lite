@@ -1,4 +1,10 @@
-div.grid{
+.workspaceStyle{
+    background-color: #2666BE !important;
+    border: none !important;
+    
+}
+
+.grid{
     display: grid;
     place-items: center;
     box-sizing: border-box;
@@ -7,7 +13,7 @@ div.grid{
     width: 100%;
 }
 
-div.title{
+.title{
     border: white;
     padding-right: 11em;
     padding-bottom: 1em;
@@ -17,257 +23,21 @@ div.title{
     line-height: 26px;
 }
 
-div.dropdownFragment{
-    width: 100%;
-    padding: 0 0 2em 0;
-}
-
-select.workspacesDrop{
-    background-color: rgba(255, 255, 255, 0.5);
-    color: white;
-    padding: 12px;
-    width: 250px;
-    border: none;
-    font-size: 20px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-}
-
-.workspaceStyle{
-    background-color: #2666BE !important;
-    border: none !important;
-    
-}
-
-label.topBar{
+.topBar{
     background-color: #2666BE !important;
     width: 100%;
     padding-top: 2em;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     padding-bottom: 2em;
 }
 
-label.labelContainer{
-    padding-top: 0em !important;
-    display: flex !important;
-    align-items: flex-start !important;
-    position: relative;
-    left: calc(0vw);
+.dropdownFragment{
+    padding-left: 1.5em;
 }
 
-label.languageDropdown{
-    padding-left: 80vw;
+.languageDropdown{
+    padding-right: 1.5em;
 }
-
-
-/* iphone 13 pro max -> 583 x 412*/
-
-/* iphones */
-/*
-@media only screen 
-    and (device-width: 390px) 
-    and (device-height: 844px) 
-    and (-webkit-device-pixel-ratio: 3) { 
-        div.grid {
-            width: 120% !important;
-          }
-
-    }
-*/
-    
-     /*2778x1284 pixels at 458ppi */
-/*
-@media only screen 
-and (device-width: 428px) 
-and (device-height: 926px) 
-and (-webkit-device-pixel-ratio: 3) {
-    div.grid {
-        width: 100% !important;
-    }
-}
-*/
-
-
-/* TOP BAR */
-
-@media screen and (max-width: 1330px) {
-    label.languageDropdown{
-        padding-left: 0vw;
-    }
-    label.topBar{
-        width: 105%;
-    }
-    div.grid {
-        width: 105vw;
-    }
-}
-
-@media screen and (max-width: 1235px) {
-    label.languageDropdown{
-        padding-left: 1vw;
-    }
-    label.topBar{
-        width: 110%;
-    }
-    div.grid {
-        width: 110vw;
-    }
-}
-
-@media screen and (max-width: 1160px) {
-    label.languageDropdown{
-        padding-left: 2vw;
-    }
-    label.topBar{
-        width: 110%;
-    }
-    div.grid {
-        width: 110vw;
-    }
-}
-
-@media screen and (max-width: 1060px) {
-    label.languageDropdown{
-        padding-left: 5vw;
-    }
-    label.topBar{
-        width: 117%;
-    }
-    div.grid {
-        width: 115vw;
-    }
-}
-
-@media screen and (max-width: 800px) {
-    label.languageDropdown{
-        padding-left: 6vw;
-    }
-    label.topBar{
-        width: 120%;
-    }
-    div.grid {
-        width: 120vw;
-    }
-}
-
-@media screen and (max-width: 765px) {
-    label.languageDropdown{
-        padding-left: 6vw;
-    }
-    label.topBar{
-        width: 125%;
-    }
-    div.grid {
-        width: 125vw;
-    }
-}
-
-@media screen and (max-width: 650px) {
-    label.languageDropdown{
-        padding-left: 6vw;
-    }
-    label.topBar{
-        width: 130%;
-    }
-}
-
-
-@media screen and (max-width: 650px) and (min-width: 575px) { /* ∆ = 50 */
-    div.grid {
-        width: 130vw;
-    }
-    div.dropdownFragment{
-        width: 110%;
-    }
-}
-
-@media screen and (max-width: 575px) and (min-width: 524px) {
-    div.grid {
-      width: 135vw;
-    }
-    div.dropdownFragment{
-        width: 120%;
-    }
-    label.languageDropdown{
-        padding-left: 6vw;
-    }
-    label.topBar{
-        width: 135%;
-    }
-}
-
-@media screen and (max-width: 524px) and (min-width: 470px) {
-    div.grid {
-      width: 135vw;
-    }
-    div.dropdownFragment{
-        width: 130%;
-    }
-    label.languageDropdown{
-        padding-left: 2vw;
-    }
-    label.topBar{
-        width: 135%;
-    }
-}
-
-@media screen and (max-width: 470px) and (min-width: 392px) {
-    div.grid {
-      width: 150vw;
-    }
-    div.dropdownFragment{
-        width: 140%;
-    }
-    label.languageDropdown{
-        padding-left: 2vw;
-    }
-    label.topBar{
-        width: 150%;
-    }
-}
-
-@media screen and (max-width: 392px){
-    div.grid {
-      width: 150vw;
-    }
-    div.dropdownFragment{
-        width: 150%;
-    }
-    label.languageDropdown{
-        padding-left: 2vw;
-    }
-    label.topBar{
-        width: 150%;
-    }
-}
-
-@media screen and (max-width: 335px){
-    div.grid {
-      width: 155vw;
-    }
-    div.dropdownFragment{
-        width: 155%;
-    }
-    label.languageDropdown{
-        padding-left: 0vw;
-    }
-    label.topBar{
-        width: 155%;
-    }
-}
-
-@media screen and (max-width: 300px){
-    div.grid {
-        width: 165vw;
-      }
-      div.dropdownFragment{
-          width: 155%;
-      }
-    label.languageDropdown{
-        padding-left: 3vw;
-    }
-    label.topBar{
-        width: 165%;
-    }
-}
-
-/*270 px is the min screen's width*/

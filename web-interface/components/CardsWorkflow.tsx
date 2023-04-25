@@ -52,11 +52,11 @@ const CardsWorkflow = ({data} : CardsWorkflowProps) => {
     const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
 
     useEffect(()=>{
-        setActivities(data[index].cards);
-    })
+        setActivities(data[index].cards) 
+    }, [data, index]);
 
 
-    const returnResponse = (response : number) => {
+    const returnResponse = (response : number) =>   {
         setIndex(index+response);
         if(index+response === 0){
             setButtons({left: false, right: true})
@@ -74,10 +74,7 @@ const CardsWorkflow = ({data} : CardsWorkflowProps) => {
         else{
             setColor('#'+data[index+response].color);
         }
-        //setActivities(data[index+response].cards);
-};
-
-    
+    };
 
     return(
         <>
