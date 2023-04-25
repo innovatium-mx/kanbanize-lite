@@ -117,7 +117,7 @@ const MyBoards = ( props: PropsResponse) => {
         </div>
 
             <div className={dashboard.grid}>
-              {/*<div className={dashboard.title}>{t("myBoards.myBoards")}</div>*/}
+              {<div className={dashboard.title}>{t("myBoards.myBoards")}</div>}
 
               {boards.map((element: any, index)=> 
                     <Dashboard key={element.key} board_id={element.board_id} workspace_id={element.workspace_id} is_archived={element.is_archived} name={element.name} description={element.description} index={index} />
