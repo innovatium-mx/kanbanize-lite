@@ -1,10 +1,10 @@
-.workspaceStyle{
+.workspaceStyle {
     background-color: #2666BE !important;
     border: none !important;
-    
+
 }
 
-.grid{
+.grid {
     display: grid;
     place-items: center;
     box-sizing: border-box;
@@ -13,17 +13,17 @@
     width: 100%;
 }
 
-.title{
+.title {
     border: white;
     padding-right: 11em;
     padding-bottom: 1em;
     padding-top: 1em;
     font-weight: 600;
-    font-size: 22px;
-    line-height: 26px;
+    font-size: 1em;
+    line-height: 1em;
 }
 
-.topBar{
+.topBar {
     background-color: #2666BE !important;
     width: 100%;
     padding-top: 2em;
@@ -34,10 +34,20 @@
     padding-bottom: 2em;
 }
 
-.dropdownFragment{
+.dropdownFragment {
     padding-left: 1.5em;
 }
 
-.languageDropdown{
+.languageDropdown {
     padding-right: 1.5em;
+}
+
+@media screen and (max-width: 329px) {
+    .dropdownFragment {
+        padding-left: 0.5em;
+    }
+
+    .languageDropdown {
+        padding-right: 0.5em;
+    }
 }
