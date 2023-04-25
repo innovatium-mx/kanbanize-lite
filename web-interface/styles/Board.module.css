@@ -25,3 +25,16 @@ header.topCard{
     background-color: var(--main-card-color);
     height: 1.5em;
 }
+
+
+@media screen and (max-width: 430px) {
+    div.boardCard{
+        width: 22em;
+    }
+}
+
+@media screen and (max-width: 365px) {
+    div.boardCard{
+        width: 17.5em;
+    }
+}
