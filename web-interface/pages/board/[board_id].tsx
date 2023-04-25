@@ -9,7 +9,7 @@ import {useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
 import {urlCloud} from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
-import Cookies from 'cookies'
+import Cookies from 'cookies';
 
 type Props = {}
 
@@ -74,6 +74,7 @@ const Board = ( props: PropsResponse) => {
   const router = useRouter();
   const {t} = useTranslation('common');
   const InterfaceDropdown = dynamic(import('../../components/InterfaceDropdown'), {ssr:false});
+
   const [workflow, setWorkflow] = useState<workflow>({
     "type": -1,
     "position": -1,
@@ -107,6 +108,7 @@ const Board = ( props: PropsResponse) => {
           <CardsWorkflow data={workflow.columns}/>
         }
       </div>
+
     </div>
     </>
     
