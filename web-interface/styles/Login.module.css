@@ -1,3 +1,7 @@
+div.index{
+    justify-content: center;
+}
+
 div.grid {
     display: grid;
     place-items: center;
@@ -9,20 +13,21 @@ div.grid {
 }
 
 div.dropdownFragment{
-    width: 10%;
-    padding-left: 90vw;
+    position: fixed;
+       /* set position */
+       top: 0.5em;
+       right: 2em;
+   
+       /* must have dimension */
+       width: 100px;
+       height: auto;
+
 }
 
 .labelContainer{
     padding-top: 0em !important;
     display: flex !important;
     align-items: flex-end !important;
-    position: relative;
-    left: calc(90vw);
-}
-
-div.mainPage{
-    width: 50%;
 }
 
 div.formHeader {
@@ -86,7 +91,6 @@ form.form {
 }
 
 div.formInputLogin {
-    position: relative;
     width: 100%;
 }
 
@@ -164,80 +168,22 @@ input.inputLogin:focus:is([type=email], [type=password]) {
     border: 2px solid var(--primary-color);
 }
 
-/* iphone 13 pro max -> 583 x 412*/
 
-/* iphones */
-@media only screen 
-    and (device-width: 390px) 
-    and (device-height: 844px) 
-    and (-webkit-device-pixel-ratio: 3) { 
-        div.grid {
-            width: 120% !important;
-          }
+@media screen and (max-width: 415px) {
+
+    form.form{
+        width: 22em;
     }
-
-    
-     /*2778x1284 pixels at 458ppi */
-@media only screen 
-and (device-width: 428px) 
-and (device-height: 926px) 
-and (-webkit-device-pixel-ratio: 3) {
-    div.grid {
-        width: 100% !important;
+    img.logo{
+        width: 22em;
     }
 }
 
-@media screen and (max-width: 1330px) {
-    div.dropdownFragment{
-        padding-left: 1%;
+@media screen and (max-width: 365px) {
+    form.form{
+        width: 18em;
+    }
+    img.logo{
+        width: 18em;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-@media screen and (max-width: 610px) and (min-width: 551px) { /* ∆ = 50 */
-    div.grid {
-        width: 105%;
-    }
-}
-
-@media screen and (max-width: 551px) and (min-width: 420px){
-    div.grid {
-       width: 110%;
-    }
-}
-
-@media screen and (max-width: 420px) and (min-width: 340px) {
-    div.grid {
-      width: 120%;
-    }
-}
-
-@media screen and (max-width: 340px) and (min-width: 305px) {
-    div.grid {
-      width: 135%;
-    }
-}
-
-@media screen and (max-width: 305px) and (min-width: 285px) {
-    div.grid {
-      width: 145%;
-    }
-}
-
-@media screen and (max-width: 285px){
-    div.grid {
-      width: 155%;
-    }
-}
-
-/*265 px is the min screen's width*/
