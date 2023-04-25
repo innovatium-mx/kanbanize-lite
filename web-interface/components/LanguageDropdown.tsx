@@ -29,12 +29,14 @@ const LanguageButton = () => {
     return(
         <>
         <div className={languageDrop.labelContainer}>
-            <FontAwesomeIcon icon={faGlobe} className={languageDrop.iconStyle}/>
+            <div className={languageDrop.iconStyle}>
+                <FontAwesomeIcon icon={faGlobe}/>
+            </div>
             <div>
                 <Dropdown isOpen={dropdown} toggle={openCloseDropdown}>
                     <DropdownToggle caret className={languageDrop.buttonStyle}>{t('button.language')}</DropdownToggle>
 
-                    <DropdownMenu className={languageDrop.menuStyle}>
+                    <DropdownMenu className={languageDrop.menuStyle} end={true}>
                         <DropdownItem hreflang='en' onClick={() => onToggleLanguageClick('en')}>English</DropdownItem>
                         <DropdownItem hreflang='es' onClick={() => onToggleLanguageClick('es')}>Español</DropdownItem>
                     </DropdownMenu>

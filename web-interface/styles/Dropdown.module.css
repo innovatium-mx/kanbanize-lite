@@ -1,96 +1,32 @@
-.buttonStyle{
-    background-color:  var(--dropdown-bg-) !important;
+.buttonStyle {
+    background-color: var(--dropdown-bg-) !important;
     color: var(--dropdowncolor-) !important;
     border: none !important;
 }
 
-.menuStyle{
+.menuStyle {
     border: 1px solid #45B7F6 !important;
     align-items: center !important;
 }
 
-.menuStyle > *{
+.menuStyle>* {
     align-items: center !important;
     border-radius: 10px !important;
     text-align: center !important;
 }
 
-.menuStyle > *:active{
+.menuStyle>*:active {
     background-color: #45B7F6;
 }
 
-.labelContainer{
-    padding-top: 0em !important;
-    display: flex !important;
-    align-items: flex-end !important;
+.labelContainer {
+    padding-top: 0em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
-
-.iconStyle{
+.iconStyle {
     color: var(--dropdowncolor-);
-    width: auto;
-    padding-left: .6em;
-    padding-bottom: .6em;
-}
-
-@media screen and (max-width: 1330px) {
-    .labelContainer{
-        left: calc(85vw)
-    }
-}
-
-@media screen and (max-width: 990px) {
-    .labelContainer{
-        left: calc(80vw)
-    }
-}
-
-@media screen and (max-width: 680px) {
-    .labelContainer{
-        left: calc(80vw - 5%)
-    }
-}
-
-@media screen and (max-width: 590px) {
-    .labelContainer{
-        left: calc(80vw - 5%)
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .labelContainer{
-        left: calc(80vw - 7%)
-    }
-}
-
-@media screen and (max-width: 465px) {
-    .labelContainer{
-        left: calc(80vw - 10%)
-    }
-}
-
-
-@media screen and (max-width: 429px) { /* screen's width redimension*/
-    .labelContainer{
-        left: calc(69vw)
-    }
-}
-
-@media screen and (max-width: 391px) {
-    .labelContainer{
-        left: calc(80vw - 13%)
-    }
-}
-
-@media screen and (max-width: 373px) {
-    .labelContainer{
-        left: calc(80vw - 15%)
-    }
-}
-
-
-@media screen and (max-width: 355px) {
-    .labelContainer{
-        left: calc(80vw - 27%)
-    }
 }
