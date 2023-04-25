@@ -1,4 +1,4 @@
-.container{
+.container {
     width: 100%;
     padding-top: 2em;
     display: flex;
@@ -7,12 +7,12 @@
     align-items: center;
     padding: 1em;
 }
-  
+
 .title {
     font-size: 1.5em;
     margin: 0 0.5em;
 }
-  
+
 .buttons {
     margin: 0.5em;
     cursor: pointer;
@@ -29,4 +29,4 @@
     .buttons:hover {
         transform: scale(1.65);
     }
-  }
+}

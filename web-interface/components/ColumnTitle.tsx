@@ -41,5 +41,4 @@ const ColumnTitle = ({name, left, right, color, returnResponse} : ColumnTitlePro
     )
 }
 
-
 export default ColumnTitle;
