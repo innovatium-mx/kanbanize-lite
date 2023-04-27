@@ -14,23 +14,25 @@ export type ActivityCardProps = {
 
 const ActivityCard = ({color, owner_avatar, title, owner_username} : ActivityCardProps) =>{
 
-    const darkenedColor =  adjustColor(color,-90); 
-    const lightenedColor = adjustColor(darkenedColor, 90);
-    const boardCardColor = adjustColor(color, 160);
+    const newColor = '#' + color;
+    const boardCardColor = adjustColor(newColor, 175);
+    console.log(color);
 
+    /*
     if (typeof window !== 'undefined') {
-        document.documentElement.style.setProperty('--primary-gradient-', darkenedColor);
-        document.documentElement.style.setProperty('--secondary-gradient-', lightenedColor);
-        document.documentElement.style.setProperty('--card-color-', '#'+ color.toString());
         document.documentElement.style.setProperty('--boardCard-color-', boardCardColor);
-    }
+        document.documentElement.style.setProperty('--card-color-', newColor);
+        document.documentElement.style.setProperty('--bottom-card-color-', newColor);
+    }*/
 
     var nonPhoto;
     var letter = '';
+    var letterBackground = '';
 
     if(owner_username === null || owner_username === undefined){
         nonPhoto = actCard.noPhoto_noUser;
         letter = 'N';
+        letterBackground = 'gray';
     }
     else{
         nonPhoto = actCard.noPhoto_user;
@@ -38,17 +40,20 @@ const ActivityCard = ({color, owner_avatar, title, owner_username} : ActivityCar
         console.log(color)
         console.log(owner_username);
         console.log(letter = owner_username.charAt(0));
+        letterBackground = newColor;
     }
 
     return(
         <>
-            <div className={actCard.boardCard}>
+            <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}}>
                 <div className={actCard.text}>{title}</div>
                     <div className={actCard.imageSection}>
-                        {owner_avatar !=  null ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto}> <div className={actCard.letter}>{letter}</div> </div></div>}
-                        {owner_username != undefined && <div className={actCard.name}>{owner_username}</div>}
+                        {owner_avatar !=  null ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
+                        {/*owner_username != undefined && <div className={actCard.name}>{owner_username}</div>*/}
+
                     </div>
             </div>
+            <footer className={actCard.bottom} style={{backgroundColor:newColor}}></footer>
         
         </>
     )

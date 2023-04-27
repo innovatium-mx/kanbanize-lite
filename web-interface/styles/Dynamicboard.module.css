@@ -1,9 +1,7 @@
 div.grid{
     display: grid;
     place-items: center;
-    margin-bottom: 2.5rem;
     margin-top: 2rem;
     margin-right: 0rem;
-    grid-gap: 2rem;
     box-sizing: border-box;
 }
