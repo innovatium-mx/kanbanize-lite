@@ -35,6 +35,6 @@ header.topCard{
 
 @media screen and (max-width: 365px) {
     div.boardCard{
-        width: 17.5em;
+        width: 17em;
     }
 }

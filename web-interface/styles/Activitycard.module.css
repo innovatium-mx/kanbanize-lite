@@ -7,11 +7,24 @@ div.boardCard{
     width: 30em;
     height: auto;
 
-    background-color: var(--boardCard-color-);
     background-clip: padding-box;
-    border-radius: 0.4rem;
+    border-top-right-radius: 0.4rem;
+    border-top-left-radius: 0.4rem;
 }
 
+footer.bottom{
+    border-bottom-left-radius: .3em;
+    border-bottom-right-radius: .3em;
+    padding-bottom: 0.3em;
+    text-align: right;
+    color: white;
+    width: 30em;
+    
+    height: 0em;
+    margin-bottom: 2em;
+}
+
+/*
 div.boardCard::before{
 
     content: "";
@@ -25,7 +38,7 @@ div.boardCard::before{
     filter: drop-shadow(.2em 1em .3em rgba(0,0,0,0.06));
 
     z-index: -1;
-}
+}*/
 
 div.text{
     text-align: center;
@@ -47,11 +60,12 @@ div.name{
     margin-top: 1em;
     margin-bottom: 1em;
     margin-right: auto;
-    margin-left: auto;
+    margin-left: 1em;
     height: 4em;
     width: 4em;
     border: 1px solid white;
     border-radius: 50%;
+    filter: drop-shadow(.2em 1em .3em rgba(0,0,0,0.06));
     z-index: 1;
 }
 
@@ -64,7 +78,6 @@ div.name{
     width: 4em;
     border-radius: 50%;
     z-index: 1;
-    background: gray;
     filter: drop-shadow(.2em 1em .3em rgba(0,0,0,0.06));
     border: 1px solid white;
 
@@ -79,7 +92,6 @@ div.name{
     width: 4em;
     border-radius: 50%;
     z-index: 1;
-    background: var(--card-color-);
     filter: drop-shadow(.2em 1em .3em rgba(0,0,0,0.06));
     border: 1px solid white;
 }
@@ -102,17 +114,23 @@ div.imageSection{
 @media screen and (max-width: 500px) {
     div.boardCard{
         width: 23em;
-        padding-right: 1em;
+    }
+
+    footer.bottom{
+        width: 23em;
     }
     
     .photo{
         height: 3em;
         width: 3em;
+        margin-left: 0.4em;
     }
 
     .noPhoto_noUser{
         height: 3em;
         width: 3em;
+        margin-left: 0.4em;
+
     }
 
     .noPhoto_user{
@@ -127,31 +145,39 @@ div.imageSection{
     div.text{
         font-size: 95%;
         width: 20em;
-    }
-
-    div.name{
-        font-size: 90%;
     }
 }
 
 @media screen and (max-width: 392px) {
     div.boardCard{
-        width: 18em;
+        width: 17em;
     }
     
+    footer.bottom{
+        width: 17em;
+    }
+
     .photo{
-        height: 3em;
-        width: 3em;
+        height: 2.7em;
+        width: 2.7em;
+        margin-left: 0.3em;
+        margin-right: 0.3em;
     }
 
     .noPhoto_noUser{
-        height: 3em;
-        width: 3em;
+        height: 2.7em;
+        width: 2.7em;
+        margin-left: 0.3em;
+        margin-right: 0.3em;
+
     }
 
     .noPhoto_user{
-        height: 3em;
-        width: 3em;
+        height: 2.7em;
+        width: 2.7em;
+        margin-left: 0.3em;
+        margin-right: 0.3em;
+
     }
 
     div.letter{
@@ -159,11 +185,7 @@ div.imageSection{
     }
 
     div.text{
-        font-size: 95%;
-        width: 20em;
-    }
-
-    div.name{
         font-size: 90%;
+        width: 20em;
     }
 }
