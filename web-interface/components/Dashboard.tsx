@@ -42,9 +42,7 @@ const DashBoard = ({board_id, workspace_id, is_archived, name, description, inde
     }
 
     const handleClick = () => {
-        router.push({
-            pathname: `/board/${board_id}`,
-        })
+        router.push({pathname: 'board/[board_id]', query: { board_id: board_id}});
     };
 
     return(

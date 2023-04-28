@@ -4,10 +4,21 @@ import { useRouter } from 'next/router'
 import { appWithTranslation } from 'next-i18next'
 import Head from "next/head";
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import LoadingScreen from '../components/LoadingScreen'
+import { useState, useEffect, Fragment } from 'react';
 
 function App({ Component, pageProps }: AppProps) {
   const {locale} = useRouter();
-
+  const router = useRouter();
+  const [pageLoading, setPageLoading] = useState<boolean>(false);
+  useEffect(() => {
+        const handleStart = () => { setPageLoading(true); };
+        const handleComplete = () => { setPageLoading(false); };
+        const handleError = () => {router.push('/')};
+        router.events.on('routeChangeStart', handleStart);
+        router.events.on('routeChangeComplete', handleComplete);
+        router.events.on('routeChangeError', handleError);
+  }, [router]);
 
   return(  
     <>
@@ -19,7 +30,13 @@ function App({ Component, pageProps }: AppProps) {
         <link rel="manifest" href="/site.webmanifest"/>
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"/>
       </Head>
-      <Component {...pageProps} />
+      {!pageLoading? (
+        <Fragment>
+          <Component {...pageProps} />
+        </Fragment>
+      ) : (
+        <LoadingScreen/>
+      )}
     </>
   )
   
