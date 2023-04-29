@@ -114,10 +114,11 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
             .then((data) => {
                 if(data.apikey){
                     // Set a cookie
-	                cookieCutter.set('apikey', data.apikey);
-                    cookieCutter.set('host', loginCompany);
-                    cookieCutter.set('email', data.email);
-                    cookieCutter.set('userid', data.userid);
+                    const now = new Date();
+	                cookieCutter.set('apikey', data.apikey, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000)});
+                    cookieCutter.set('host', loginCompany, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000)});
+                    cookieCutter.set('email', data.email, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000)});
+                    cookieCutter.set('userid', data.userid, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000)});
 
                     const signedInSuccess = t('login.success')
                     const Toast = Swal.mixin({

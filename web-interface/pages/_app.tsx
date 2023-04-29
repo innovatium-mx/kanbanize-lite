@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { appWithTranslation } from 'next-i18next'
 import Head from "next/head";
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import LoadingScreen from '../components/LoadingScreen'
+import Loader from '../components/Loader'
 import { useState, useEffect, Fragment } from 'react';
 
 function App({ Component, pageProps }: AppProps) {
@@ -14,10 +14,9 @@ function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
         const handleStart = () => { setPageLoading(true); };
         const handleComplete = () => { setPageLoading(false); };
-        const handleError = () => {router.push('/')};
         router.events.on('routeChangeStart', handleStart);
         router.events.on('routeChangeComplete', handleComplete);
-        router.events.on('routeChangeError', handleError);
+        router.events.on('routeChangeError', handleComplete);
   }, [router]);
 
   return(  
@@ -35,7 +34,7 @@ function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </Fragment>
       ) : (
-        <LoadingScreen/>
+        <Loader/>
       )}
     </>
   )
