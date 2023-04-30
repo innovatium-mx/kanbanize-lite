@@ -2,7 +2,6 @@
 import { useTranslation} from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetServerSideProps} from 'next'
-import { useRouter } from "next/router";
 import authRoute from '../../components/authRoute';
 import CardsWorkflow from '../../components/CardsWorkflow';
 import {useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import dynamic from 'next/dynamic';
 import {urlCloud} from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 type Props = {}
 
@@ -71,7 +71,6 @@ type workflow = {
   }
 
 const Board = ( props: PropsResponse) => {
-  const router = useRouter();
   const {t} = useTranslation('common');
   const InterfaceDropdown = dynamic(import('../../components/InterfaceDropdown'), {ssr:false});
 
@@ -84,8 +83,7 @@ const Board = ( props: PropsResponse) => {
     "workflow_id": -1,
     "columns": [] 
   });
-  const query = router.query;
-  const board_id = query.board_id;
+  const board_id = useSearchParams();
   const board = props.data;
 
   const getWorkflow = (workflowid : number) => {

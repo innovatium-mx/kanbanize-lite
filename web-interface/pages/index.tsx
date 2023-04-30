@@ -11,6 +11,7 @@ const cookieCutter= require('cookie-cutter');
 import { useTranslation, Trans, i18n } from 'next-i18next';
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { useEffect } from 'react';
 
 type Props = {
     // Add custom props here
@@ -138,7 +139,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                         title: signedInSuccess
                       })
     
-                    router.push('/myBoards');
+                    router.replace({pathname: 'myBoards'});
                     /////////////
     
                 }else{
@@ -171,6 +172,17 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
 
     };
+
+    useEffect(() => {
+      const checkToken = () => {
+        const token = cookieCutter.get('apikey');
+        if (token) 
+        {
+          router.replace({pathname: 'myBoards'});
+        } 
+      }
+      checkToken();
+    });
 
 
     return (

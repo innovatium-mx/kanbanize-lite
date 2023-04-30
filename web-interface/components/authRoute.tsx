@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import {urlCloud} from '../constants'
 import {useEffect, useState } from "react";
 const cookieCutter= require('cookie-cutter');
@@ -13,7 +13,7 @@ const authRoute = (Component : any) => {
         const token = cookieCutter.get('apikey');
         if (!token) 
         {
-          router.push('/');
+          router.replace({pathname: '/'});
         } 
         else 
         {

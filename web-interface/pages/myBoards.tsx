@@ -2,7 +2,7 @@ import { useTranslation} from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetServerSideProps} from 'next'
 import {useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import authRoute from '../components/authRoute';
 import dynamic from 'next/dynamic';
 import Dashboard from '../components/Dashboard'
@@ -90,7 +90,7 @@ const MyBoards = ( props: PropsResponse) => {
           cookieCutter.set('host', '', { expires: new Date(0) })
           cookieCutter.set('email', '', { expires: new Date(0) })
           cookieCutter.set('userid', '', { expires: new Date(0) })
-          router.push('/');
+          router.replace({pathname: '/'});
         }
       }
       else{
@@ -98,7 +98,7 @@ const MyBoards = ( props: PropsResponse) => {
         cookieCutter.set('host', '', { expires: new Date(0) })
         cookieCutter.set('email', '', { expires: new Date(0) })
         cookieCutter.set('userid', '', { expires: new Date(0) })
-        router.push('/');
+        router.replace({pathname: '/'});
       }
     }
 
