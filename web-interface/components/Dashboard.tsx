@@ -1,6 +1,6 @@
 import boardStyle from '../styles/Board.module.css';
 import { useState, useEffect } from 'react';
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export type boardCard = {
     board_id: number,
@@ -42,7 +42,6 @@ const DashBoard = ({board_id, workspace_id, is_archived, name, description, inde
     }
 
     const handleClick = () => {
-        console.log('handleClick called with board_id:', board_id);
         router.replace({pathname: 'board/[board_id]', query: { board_id: board_id}});
     };
 

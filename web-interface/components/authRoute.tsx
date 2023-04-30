@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import {urlCloud} from '../constants'
 import {useEffect, useState } from "react";
 const cookieCutter= require('cookie-cutter');
@@ -31,5 +31,4 @@ const authRoute = (Component : any) => {
   }
 };
 
-authRoute.displayName = 'authRoute';
 export default authRoute;

@@ -1,4 +1,4 @@
-div.index{
+div.index {
     justify-content: center;
 }
 
@@ -12,19 +12,19 @@ div.grid {
     box-sizing: border-box;
 }
 
-div.dropdownFragment{
+div.dropdownFragment {
     position: fixed;
-       /* set position */
-       top: 0.5em;
-       right: 2em;
-   
-       /* must have dimension */
-       width: 100px;
-       height: auto;
+    /* set position */
+    top: 0.5em;
+    right: 2em;
+
+    /* must have dimension */
+    width: 100px;
+    height: auto;
 
 }
 
-.labelContainer{
+.labelContainer {
     padding-top: 0em !important;
     display: flex !important;
     align-items: flex-end !important;
@@ -37,11 +37,11 @@ div.formHeader {
     margin-bottom: .3em;
 }
 
-div.buttonAlign{
+div.buttonAlign {
     display: flex;
 }
 
-img.logo{
+.logo {
     max-width: 25em;
     height: auto;
 }
@@ -62,7 +62,7 @@ button.languageButton {
     -o-transition: all .3s ease;
 }
 
-div.iconPlacement{
+div.iconPlacement {
     padding: 1em .5em;
     display: flex;
 
@@ -123,7 +123,8 @@ button.formBtnSubmitLogin {
     -o-transition: all .3s ease;
 }
 
-button.formBtnSubmitLogin:hover, button.formBtnSubmitLogin:focus {
+button.formBtnSubmitLogin:hover,
+button.formBtnSubmitLogin:focus {
     outline: none;
     transform: scale(1.01);
     -webkit-transform: scale(1.01);
@@ -152,7 +153,7 @@ input.inputLogin:is([type=email], [type=password]) {
     font-size: 1rem;
     width: 100%;
     margin-bottom: .3em;
-    box-sizing:border-box;
+    box-sizing: border-box;
     text-align: relative;
     display: inline-block;
     transition: all .3s ease;
@@ -171,19 +172,21 @@ input.inputLogin:focus:is([type=email], [type=password]) {
 
 @media screen and (max-width: 415px) {
 
-    form.form{
+    form.form {
         width: 22em;
     }
-    img.logo{
+
+    img.logo {
         width: 22em;
     }
 }
 
 @media screen and (max-width: 365px) {
-    form.form{
+    form.form {
         width: 18em;
     }
-    img.logo{
+
+    img.logo {
         width: 18em;
     }
 }

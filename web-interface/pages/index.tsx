@@ -1,6 +1,6 @@
 import login from '../styles/Login.module.css'
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router'
 import Image from "next/image";
 import {urlCloud} from '../constants'
 import dynamic from 'next/dynamic';
@@ -30,9 +30,6 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
     const invalidCompany = t('login.invalidCompany');
     const emptyCredentials = t('login.emptyFields');
 
-    //
-
-    const Kb_logo = require('../images/Kanbanize_logo.png')
     const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
 
     if (typeof window !== 'undefined') {
@@ -139,7 +136,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                         title: signedInSuccess
                       })
     
-                    router.replace({pathname: 'myBoards'});
+                    router.replace({pathname: 'dashboard'});
                     /////////////
     
                 }else{
@@ -178,7 +175,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
         const token = cookieCutter.get('apikey');
         if (token) 
         {
-          router.replace({pathname: 'myBoards'});
+          router.replace({pathname: 'dashboard'});
         } 
       }
       checkToken();
@@ -204,7 +201,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
             <div className={login.grid}>
 
                 <div >
-                    <Image src={Kb_logo} alt="Kanbanize-logo" className={login.logo}/>
+                    <img src="/Kanbanize_logo.png" alt="Kanbanize-logo" className={login.logo}/>
                 </div>
 
                 <form className={login.form}>
