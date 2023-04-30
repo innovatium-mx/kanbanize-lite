@@ -1,6 +1,6 @@
 import login from '../styles/Login.module.css'
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router'
 import Image from "next/image";
 import {urlCloud} from '../constants'
 import dynamic from 'next/dynamic';
@@ -11,6 +11,7 @@ const cookieCutter= require('cookie-cutter');
 import { useTranslation, Trans, i18n } from 'next-i18next';
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { useEffect } from 'react';
 
 type Props = {
     // Add custom props here
@@ -29,9 +30,6 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
     const invalidCompany = t('login.invalidCompany');
     const emptyCredentials = t('login.emptyFields');
 
-    //
-
-    const Kb_logo = require('../images/Kanbanize_logo.png')
     const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
 
     if (typeof window !== 'undefined') {
@@ -114,10 +112,11 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
             .then((data) => {
                 if(data.apikey){
                     // Set a cookie
-	                cookieCutter.set('apikey', data.apikey);
-                    cookieCutter.set('host', loginCompany);
-                    cookieCutter.set('email', data.email);
-                    cookieCutter.set('userid', data.userid);
+                    const now = new Date();
+	                cookieCutter.set('apikey', data.apikey, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000)});
+                    cookieCutter.set('host', loginCompany, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000)});
+                    cookieCutter.set('email', data.email, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000)});
+                    cookieCutter.set('userid', data.userid, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000)});
 
                     const signedInSuccess = t('login.success')
                     const Toast = Swal.mixin({
@@ -137,7 +136,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                         title: signedInSuccess
                       })
     
-                    router.push('/myBoards');
+                    router.replace({pathname: 'dashboard'});
                     /////////////
     
                 }else{
@@ -171,6 +170,17 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     };
 
+    useEffect(() => {
+      const checkToken = () => {
+        const token = cookieCutter.get('apikey');
+        if (token) 
+        {
+          router.replace({pathname: 'dashboard'});
+        } 
+      }
+      checkToken();
+    });
+
 
     return (
         <>
@@ -191,7 +201,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
             <div className={login.grid}>
 
                 <div >
-                    <Image src={Kb_logo} alt="Kanbanize-logo" className={login.logo}/>
+                    <img src="/Kanbanize_logo.png" alt="Kanbanize-logo" className={login.logo}/>
                 </div>
 
                 <form className={login.form}>

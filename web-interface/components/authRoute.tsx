@@ -13,7 +13,7 @@ const authRoute = (Component : any) => {
         const token = cookieCutter.get('apikey');
         if (!token) 
         {
-          router.push('/');
+          router.replace({pathname: '/'});
         } 
         else 
         {
@@ -31,5 +31,4 @@ const authRoute = (Component : any) => {
   }
 };
 
-authRoute.displayName = 'authRoute';
 export default authRoute;
