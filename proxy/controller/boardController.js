@@ -66,6 +66,9 @@ module.exports.boardDetails = async (req,res) =>{
         if (response1.ok){
             const data1 = await response1.json()
             const boardWorkflow = data1.data;
+            boardWorkflow.sort(function(a , b){
+                return a.position - b.position;
+            });
             const response2 = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/columns`, {
                 method: "GET",
                 headers: {
@@ -95,6 +98,9 @@ module.exports.boardDetails = async (req,res) =>{
                             })
                         }
                     })
+                    columns.sort(function(a , b){
+                        return a.section - b.section;
+                    });
                     boardWorkflow[i].columns = columns;
                 }
                 const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${1}`, {
@@ -180,6 +186,9 @@ module.exports.boardDetails = async (req,res) =>{
                                 }
                             })
                             if(columnCards.length != 0){
+                                columnCards.sort(function(a , b){
+                                    return a.position - b.position;
+                                });
                                 boardWorkflow[x].columns[y].cards = columnCards;
                             }
                         } 
