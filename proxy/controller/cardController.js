@@ -5,6 +5,7 @@ module.exports.cardDetails = async (req,res) =>{
     const cardid = req.params.cardid;
     const apikey = req.headers.apikey;
     var users = [];
+    var comments = [];
     const co_owner__username = [];
     const co_owner__avatar = [];
 
@@ -24,12 +25,25 @@ module.exports.cardDetails = async (req,res) =>{
                     "apikey": apikey
                 },
             });
-            if(responseUsers.ok){
+
+            const responseComments = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}/comments`, {
+                method: "GET",
+                headers: {
+                    "apikey": apikey
+                },
+            });
+
+            if(responseUsers.ok && responseComments.ok){
                 const rawUsers = await responseUsers.json();
                 users = rawUsers.data;
+                const rawComments = await responseComments.json();
+                comments = rawComments.data;
             }
             else{
-                res.json({"error": responseUsers.status});
+                res.json({"error": {
+                    "UsersStatus" : responseUsers.status,
+                    "CommentsStatus": responseComments.status
+                }});
             }
             if(cardDetails.owner_user_id){
                 const userObject = users.find(function(item, i){
@@ -54,6 +68,19 @@ module.exports.cardDetails = async (req,res) =>{
                 }
                 cardDetails.co_owner_usernames = co_owner__username;
                 cardDetails.co_owner_avatars = co_owner__avatar;
+            }
+            if(comments.length > 0){
+                for(var x =0; x < comments.length; x++){
+                    const authorObject = users.find(function(item, i){
+                        if(item.user_id === comments[x].author.value){
+                          index = i;
+                          return i;
+                        }
+                    });
+                    comments[x].author.avatar = authorObject.avatar;
+                    comments[x].author.username = authorObject.username;
+                }
+                cardDetails.comments = comments;
             }
             res.json(cardDetails);
         }
