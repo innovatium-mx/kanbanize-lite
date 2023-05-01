@@ -21,7 +21,7 @@ module.exports.workSpaces = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.json({"error": error});
+        res.json({"error": 500});
     }
 }
 
@@ -47,7 +47,7 @@ module.exports.boards = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.json({"error": error});
+        res.json({"error": 500});
     }
 }
 
@@ -200,6 +200,6 @@ module.exports.boardDetails = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.json({"error": error});
+        res.json({"error": 500});
     }
 }
