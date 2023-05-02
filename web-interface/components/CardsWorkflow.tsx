@@ -34,7 +34,8 @@ type column = {
 };
 
 type CardsWorkflowProps = {
-    data: Array<column>
+    data: Array<column>,
+    workflow_name: string
 }
 
 type showButtons = {
@@ -42,8 +43,7 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data} : CardsWorkflowProps) => {
-
+const CardsWorkflow = ({data, workflow_name} : CardsWorkflowProps) => {
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
@@ -79,7 +79,7 @@ const CardsWorkflow = ({data} : CardsWorkflowProps) => {
     return(
         <>
             <div>
-                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse}/>
+                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name}/>
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
                         <ActivityCard key={element.key} color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username}/>
