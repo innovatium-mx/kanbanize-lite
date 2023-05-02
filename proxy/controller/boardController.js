@@ -116,7 +116,6 @@ module.exports.boardDetails = async (req,res) =>{
                             for(var y = 0; y < element.parent_column_id.length; y++){
                                 const indexToDelete = columns.findIndex(ele=> ele.column_id === element.parent_column_id[y].parent_id);
                                 if(indexToDelete !== -1){
-                                    console.log(columns[indexToDelete].name);
                                     columns.splice(indexToDelete, 1);
                                 }
                             }
