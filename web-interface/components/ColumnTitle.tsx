@@ -2,16 +2,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import columntitle from '../styles/ColumnTitle.module.css';
 
+type parent_columns = {
+    parent_id: number,
+    parent_name: string,
+    parent_section: number,
+    parent_position: number,
+} 
+
 type ColumnTitleProps = {
     name: string,
     left: boolean,
     right: boolean,
     color: string,
     returnResponse: any,
+    parent_column_id: Array<parent_columns> | null,
+    workflow_name: string
 }
 
-const ColumnTitle = ({name, left, right, color, returnResponse} : ColumnTitleProps) => {
-    console.log(color);
+const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id, workflow_name} : ColumnTitleProps) => {
+    var breadcrumb_trail = workflow_name;
+    if(parent_column_id !== null){
+        parent_column_id.map(function(element){
+            breadcrumb_trail += '/' + element.parent_name;
+        })
+        breadcrumb_trail += '/' + name;
+    }else {
+        breadcrumb_trail += '/' + name;
+    }
     const handleLeftClick = () => {
         returnResponse(-1);
     }
@@ -23,19 +40,20 @@ const ColumnTitle = ({name, left, right, color, returnResponse} : ColumnTitlePro
     return(
         <>
             <div className={columntitle.container} style={{ backgroundColor: color }}>
-                <label className={columntitle.innercontainer}>
-                    <label className={columntitle.buttons} onClick={() => handleLeftClick()}>
+                <div className={columntitle.breadcrumb_trail}>{breadcrumb_trail}</div>
+                <div className={columntitle.innercontainer}>
+                    <div className={columntitle.buttons} onClick={() => handleLeftClick()}>
                         { left && 
                             <FontAwesomeIcon  icon={faAngleLeft} size="xl"/>
                         }
-                    </label>
-                    <label className={columntitle.title}>{name}</label>
-                    <label className={columntitle.buttons} onClick={() => handleRightClick()}>
+                    </div>
+                    <div className={columntitle.title}>{name}</div>
+                    <div className={columntitle.buttons} onClick={() => handleRightClick()}>
                         { right && 
                             <FontAwesomeIcon icon={faAngleRight} size="xl"/>
                         }
-                    </label>
-                </label>
+                    </div>
+                </div>
             </div >
         </>
     )

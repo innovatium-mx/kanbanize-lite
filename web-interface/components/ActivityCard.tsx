@@ -16,7 +16,6 @@ const ActivityCard = ({color, owner_avatar, title, owner_username} : ActivityCar
 
     const newColor = '#' + color;
     const boardCardColor = adjustColor(newColor, 175);
-    console.log(color);
 
     /*
     if (typeof window !== 'undefined') {
@@ -37,9 +36,6 @@ const ActivityCard = ({color, owner_avatar, title, owner_username} : ActivityCar
     else{
         nonPhoto = actCard.noPhoto_user;
         letter = owner_username.charAt(0);
-        console.log(color)
-        console.log(owner_username);
-        console.log(letter = owner_username.charAt(0));
         letterBackground = newColor;
     }
 
