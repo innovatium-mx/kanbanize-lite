@@ -4,6 +4,13 @@ import dynamic from 'next/dynamic';
 import Dynamicboard from '../styles/Dynamicboard.module.css';
 import { response } from 'express';
 
+type parent_columns = {
+    parent_id: number,
+    parent_name: string,
+    parent_section: number,
+    parent_position: number,
+} 
+
 type card = {
     "card_id": number,
     "custom_id": number | null,
@@ -19,19 +26,21 @@ type card = {
 };
 
 type column = {
-    "column_id": number,
-    "section": number,
-    "parent_column_id": number,
-    "position": number,
-    "name": string,
-    "description": string,
-    "color": string,
-    "limit": number,
-    "cards_per_row": number,
-    "flow_type": number,
-    "card_ordering": string | null,
-    "cards": Array<card>  | null
-};
+  "column_id": number,
+  "workflow_id": number,
+  "section": number,
+  "parent_column_id": Array<parent_columns> | null ,
+  "position": number,
+  "name": string,
+  "description": string,
+  "color": string,
+  "limit": number,
+  "cards_per_row": number,
+  "flow_type": number,
+  "card_ordering": string | null,
+  "cards": Array<card> | null,
+  "order": number
+}
 
 type CardsWorkflowProps = {
     data: Array<column>,
