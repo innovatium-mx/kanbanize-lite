@@ -46,23 +46,13 @@ module.exports.cardDetails = async (req,res) =>{
                 }});
             }
             if(cardDetails.owner_user_id){
-                const userObject = users.find(function(item, i){
-                    if(item.user_id === cardDetails.owner_user_id){
-                      index = i;
-                      return i;
-                    }
-                });
+                const userObject = users.find(item => item.user_id === cardDetails.owner_user_id);
                 cardDetails.owner_username = userObject.username;
                 cardDetails.owner_avatar = userObject.avatar;
             }
             if(cardDetails.co_owner_ids.length > 0){
                 for(var x =0; x < cardDetails.co_owner_ids.length; x++){
-                    const coOwnerObject = users.find(function(item, i){
-                        if(item.user_id === cardDetails.co_owner_ids[x]){
-                          index = i;
-                          return i;
-                        }
-                    });
+                    const coOwnerObject = users.find(item => item.user_id === cardDetails.co_owner_ids[x])
                     co_owner__username.push(coOwnerObject.username);
                     co_owner__avatar.push(coOwnerObject.avatar);
                 }
@@ -71,12 +61,7 @@ module.exports.cardDetails = async (req,res) =>{
             }
             if(comments.length > 0){
                 for(var x =0; x < comments.length; x++){
-                    const authorObject = users.find(function(item, i){
-                        if(item.user_id === comments[x].author.value){
-                          index = i;
-                          return i;
-                        }
-                    });
+                    const authorObject = users.find(item => item.user_id === comments[x].author.value);
                     comments[x].author.avatar = authorObject.avatar;
                     comments[x].author.username = authorObject.username;
                 }
