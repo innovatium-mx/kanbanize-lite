@@ -1,5 +1,25 @@
 const fetch = require('node-fetch');
 
+function FindParents(element, columns){
+    var parent_list = [];
+    const parent = columns.find(item => item.column_id === element.parent_column_id);
+    const parentData = {parent_id: parent.column_id, parent_name: parent.name, parent_section: parent.section, parent_position: parent.position};
+    parent_list.push(parentData);
+    if(parent.parent_column_id !== null){
+        if(Array.isArray(parent.parent_column_id)){
+            parent_list = parent_list.concat(parent.parent_column_id);
+            return parent_list;
+        }
+        else{
+            parent_list = parent_list.concat(FindParents(parent, columns));
+            return parent_list;
+        }
+    }
+    else{
+        return parent_list;
+    }
+}
+
 module.exports.workSpaces = async (req,res) =>{
     const host = req.params.host;
     const apikey = req.headers.apikey;
@@ -21,7 +41,7 @@ module.exports.workSpaces = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.json({"error": error});
+        res.json({"error": 500});
     }
 }
 
@@ -47,7 +67,7 @@ module.exports.boards = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.json({"error": error});
+        res.json({"error": 500});
     }
 }
 
@@ -66,6 +86,9 @@ module.exports.boardDetails = async (req,res) =>{
         if (response1.ok){
             const data1 = await response1.json()
             const boardWorkflow = data1.data;
+            boardWorkflow.sort(function(a , b){
+                return a.position - b.position;
+            });
             const response2 = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/columns`, {
                 method: "GET",
                 headers: {
@@ -77,24 +100,39 @@ module.exports.boardDetails = async (req,res) =>{
                 const boardColumns = data2.data;
                 for(var i=0; i<boardWorkflow.length;i++){
                     const workflowid = boardWorkflow[i].workflow_id;
-                    const columns = [];
+                    var columns = [];
                     boardColumns.map( function(element){
-                        if(element.workflow_id == workflowid){
-                            columns.push({
-                            "column_id": element.column_id, 
-                            "section": element.section, 
-                            "parent_column_id": element.parent_column_id,
-                            "position": element.position,
-                            "name": element.name,
-                            "description": element.description,
-                            "color": element.color,
-                            "limit": element.limit,
-                            "cards_per_row": element.cards_per_row,
-                            "flow_type": element.flow_type,
-                            "card_ordering": element.card_ordering
-                            })
+                        if(element.workflow_id === workflowid){
+                            columns.push(element)
                         }
                     })
+                    for(var x = 0; x < columns.length; x++){
+                        if(columns[x].parent_column_id !== null){
+                            columns[x].parent_column_id = FindParents(columns[x], columns);
+                        }
+                    }
+                    columns.map(function(element){
+                        if(element.parent_column_id !== null){
+                            for(var y = 0; y < element.parent_column_id.length; y++){
+                                const indexToDelete = columns.findIndex(ele=> ele.column_id === element.parent_column_id[y].parent_id);
+                                if(indexToDelete !== -1){
+                                    columns.splice(indexToDelete, 1);
+                                }
+                            }
+                        }
+                    })
+                    for(var x = 0; x < columns.length; x++){
+                        if(columns[x].parent_column_id !== null){
+                            const columnsLength = columns[x].parent_column_id.length;
+                            columns[x].order = columns[x].parent_column_id[ columnsLength - 1].parent_section + ((1.0 / (columnsLength + 1.0)) * columns[x].position );
+                        }
+                        else{
+                            columns[x].order = columns[x].section * 1.0;
+                        }
+                    }
+                    columns.sort(function(a , b){
+                        return a.order - b.order;
+                    });
                     boardWorkflow[i].columns = columns;
                 }
                 const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${1}`, {
@@ -142,15 +180,9 @@ module.exports.boardDetails = async (req,res) =>{
                             const columnid = boardWorkflow[x].columns[y].column_id;
                             const columnCards = [];
                             boardCards.map( async function(element){
-                                if(element.column_id == columnid){
+                                if(element.column_id === columnid){
                                     if(element.owner_user_id){
-                                        var index = -1;
-                                        const userObject = users.find(function(item, i){
-                                            if(item.user_id === element.owner_user_id){
-                                              index = i;
-                                              return i;
-                                            }
-                                        });
+                                        const userObject = users.find(item => item.user_id === element.owner_user_id);
                                         columnCards.push({
                                             "card_id": element.card_id,
                                             "custom_id": element.custom_id,
@@ -180,6 +212,9 @@ module.exports.boardDetails = async (req,res) =>{
                                 }
                             })
                             if(columnCards.length != 0){
+                                columnCards.sort(function(a , b){
+                                    return a.position - b.position;
+                                });
                                 boardWorkflow[x].columns[y].cards = columnCards;
                             }
                         } 
@@ -200,6 +235,6 @@ module.exports.boardDetails = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.json({"error": error});
+        res.json({"error": 500});
     }
 }
