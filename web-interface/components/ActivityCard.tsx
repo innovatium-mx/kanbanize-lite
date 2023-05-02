@@ -1,6 +1,4 @@
-import dynamic from 'next/dynamic';
 import actCard from '../styles/Activitycard.module.css';
-import Image from 'next/image';
 import adjustColor from '../helpers/lightenColor';
 import { Console } from 'console';
 

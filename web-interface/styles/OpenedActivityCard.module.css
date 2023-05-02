@@ -1,0 +1,200 @@
+div.Card{
+    position: relative;
+    display: flex;
+    width: 25em;
+    height: auto;
+    border: 1px solid black;
+    background-clip: padding-box;
+    border-radius: 0.5em;
+    flex-direction: column;
+    padding-bottom: 3em;
+}
+
+div.CardWithComments{
+    position: relative;
+    display: flex;
+    width: 25em;
+    height: var(--dynamic-height-);
+    border: 1px solid black;
+    background-clip: padding-box;
+    border-radius: 0.5em;
+    flex-direction: column;
+    padding-bottom: 3em;
+}
+
+div.close{
+    display: flex;
+    justify-content: flex-end;
+}
+
+div.title{
+    width: 21em;
+    position: relative;
+    padding-left: 2em;
+    padding-right: 2em;
+    overflow-wrap: break-word;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+
+}
+
+div.ownersWrap{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1.5em;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+div.owner{
+    padding-left: 2em;
+    justify-content: center;
+    text-align: center;
+}
+
+img.ownerPhoto{
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+}
+
+div.coOwners{
+    padding-right: 3em;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+img.image1{
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: -0.7em;
+    z-index: 1;
+}
+
+
+img.image2{
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: relative;
+    top: 0em;
+    left: 2em;
+    z-index: 0;
+}
+
+img.image3{
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: relative;
+    top: 0em;
+    left: 0.7em;
+    z-index: -1;
+}
+
+div.coOwnerText{
+    padding-left: 1.8em;
+}
+
+div.description{
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-top: 1em;
+    overflow-wrap: break-word;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #505050;
+}
+
+div.addComment{
+    display: flex;
+    justify-content: center;
+    padding-top: 2em;
+    width: 100%;
+}
+
+
+input.inputComment{
+    width: 78%;
+    border: none;
+    background-color: #eaeaea;
+    padding: .8em;
+    font-size: 1rem;
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+
+}
+
+div.sendIcon{
+    background: url('../icons/send_plane.png');
+}
+
+
+div.commentsWrap{
+    display: flex;
+    color: #505050;
+}
+
+div.commentsText{
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: left;
+
+    padding-left: 3em;
+    padding-top: 2em;
+    
+}
+
+.rotate {
+    animation: rotate-keyframes 1s;
+   }
+   
+   @keyframes rotate-keyframes {
+    from {
+     transform: rotate(0deg);
+    }
+   
+    to {
+     transform: rotate(180deg);
+    }
+   }
+
+.arrowDown{
+    padding-left: 0.5em;
+    height: 1.3em;
+    padding-top: 2.2em;
+}
+
+.arrowDownAnimated{
+    padding-left: 0.5em;
+    height: 1.3em;
+    padding-top: 2.2em;
+    transform: rotate(90deg);
+}
+
+
+button.closeButton{
+    background-color: white;
+    border: none;
+    margin-top: 1em;
+    margin-right: 1em;
+    margin-bottom: 0.5em;
+    border-radius: 50%;
+}
+
+div.modalBackground {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(200, 200, 200);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
