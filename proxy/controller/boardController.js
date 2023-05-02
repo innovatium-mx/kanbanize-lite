@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 function FindParents(element, columns){
     var parent_list = [];
     const parent = columns.find(item => item.column_id === element.parent_column_id);
-    const parentData = {parent_id: parent.column_id, parent_name: parent.name};
+    const parentData = {parent_id: parent.column_id, parent_name: parent.name, parent_section: parent.section, parent_position: parent.position};
     parent_list.push(parentData);
     if(parent.parent_column_id !== null){
         if(Array.isArray(parent.parent_column_id)){
@@ -100,20 +100,47 @@ module.exports.boardDetails = async (req,res) =>{
                 const boardColumns = data2.data;
                 for(var i=0; i<boardWorkflow.length;i++){
                     const workflowid = boardWorkflow[i].workflow_id;
-                    const columns = [];
+                    var columns = [];
                     boardColumns.map( function(element){
                         if(element.workflow_id === workflowid){
                             columns.push(element)
                         }
                     })
-                    columns.sort(function(a , b){
+                    /*columns.sort(function(a , b){
                         return a.section - b.section;
-                    });
+                    })*/
                     for(var x = 0; x < columns.length; x++){
                         if(columns[x].parent_column_id !== null){
                             columns[x].parent_column_id = FindParents(columns[x], columns);
                         }
                     }
+                    /*for(var x = 0, len = columns.length ; x < len ; x++){
+                        if(columns[x].parent_column_id !== null){
+                            for(var y = 0; y < columns[x].parent_column_id.length; y++){
+                                var indexToDelete = -1;
+                                const deleteObject = columns.find(function(item, i){
+                                    if(item.column_id === columns[x].parent_column_id[y].parent_id){
+                                        indexToDelete = i;
+                                        return i; 
+                                    }
+                                });
+                                columns.splice(indexToDelete, indexToDelete+1);
+                                len = columns.length;
+                            }
+                        }
+                    }*/
+                    for(var x = 0; x < columns.length; x++){
+                        if(columns[x].parent_column_id !== null){
+                            const columnsLength = columns[x].parent_column_id.length;
+                            columns[x].order = columns[x].parent_column_id[ columnsLength - 1].parent_section + ((1.0 / (columnsLength + 1.0)) * columns[x].position );
+                        }
+                        else{
+                            columns[x].order = columns[x].section * 1.0;
+                        }
+                    }
+                    columns.sort(function(a , b){
+                        return a.order - b.order;
+                    });
                     boardWorkflow[i].columns = columns;
                 }
                 const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${1}`, {
