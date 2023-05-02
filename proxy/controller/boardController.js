@@ -123,6 +123,7 @@ module.exports.boardDetails = async (req,res) =>{
                     })
                     for(var x = 0; x < columns.length; x++){
                         if(columns[x].parent_column_id !== null){
+                            columns[x].parent_column_id = columns[x].parent_column_id.reverse();
                             const columnsLength = columns[x].parent_column_id.length;
                             columns[x].order = columns[x].parent_column_id[ columnsLength - 1].parent_section + ((1.0 / (columnsLength + 1.0)) * columns[x].position );
                         }
