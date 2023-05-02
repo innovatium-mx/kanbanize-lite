@@ -106,29 +106,22 @@ module.exports.boardDetails = async (req,res) =>{
                             columns.push(element)
                         }
                     })
-                    /*columns.sort(function(a , b){
-                        return a.section - b.section;
-                    })*/
                     for(var x = 0; x < columns.length; x++){
                         if(columns[x].parent_column_id !== null){
                             columns[x].parent_column_id = FindParents(columns[x], columns);
                         }
                     }
-                    /*for(var x = 0, len = columns.length ; x < len ; x++){
-                        if(columns[x].parent_column_id !== null){
-                            for(var y = 0; y < columns[x].parent_column_id.length; y++){
-                                var indexToDelete = -1;
-                                const deleteObject = columns.find(function(item, i){
-                                    if(item.column_id === columns[x].parent_column_id[y].parent_id){
-                                        indexToDelete = i;
-                                        return i; 
-                                    }
-                                });
-                                columns.splice(indexToDelete, indexToDelete+1);
-                                len = columns.length;
+                    columns.map(function(element){
+                        if(element.parent_column_id !== null){
+                            for(var y = 0; y < element.parent_column_id.length; y++){
+                                const indexToDelete = columns.findIndex(ele=> ele.column_id === element.parent_column_id[y].parent_id);
+                                if(indexToDelete !== -1){
+                                    console.log(columns[indexToDelete].name);
+                                    columns.splice(indexToDelete, 1);
+                                }
                             }
                         }
-                    }*/
+                    })
                     for(var x = 0; x < columns.length; x++){
                         if(columns[x].parent_column_id !== null){
                             const columnsLength = columns[x].parent_column_id.length;
