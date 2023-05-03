@@ -11,7 +11,6 @@ type ColumnTitleProps = {
 }
 
 const ColumnTitle = ({name, left, right, color, returnResponse} : ColumnTitleProps) => {
-    console.log(color);
     const handleLeftClick = () => {
         returnResponse(-1);
     }

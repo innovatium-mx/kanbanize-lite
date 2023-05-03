@@ -74,6 +74,8 @@ const CardsWorkflow = ({data} : CardsWorkflowProps) => {
         else{
             setColor('#'+data[index+response].color);
         }
+
+        console.log()
     };
 
     return(

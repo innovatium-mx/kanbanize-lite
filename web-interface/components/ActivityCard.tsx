@@ -1,12 +1,14 @@
 import actCard from '../styles/Activitycard.module.css';
 import adjustColor from '../helpers/lightenColor';
 import { Console } from 'console';
+import dynamic from 'next/dynamic';
+import { useState } from 'react';
 
 export type ActivityCardProps = {
     "color": string,
     "owner_avatar": string | null,
-    "title": string,
-    "owner_username": string | null,
+    "title": string, 
+    "owner_username": string | null
 }
 
 
@@ -14,7 +16,9 @@ const ActivityCard = ({color, owner_avatar, title, owner_username} : ActivityCar
 
     const newColor = '#' + color;
     const boardCardColor = adjustColor(newColor, 175);
-    console.log(color);
+
+    const OpenedActivityCard = dynamic(import('../components/OpenedActivityCard'), {ssr:false});
+    const [displayCard, setDisplayCard] = useState(false);
 
     /*
     if (typeof window !== 'undefined') {
@@ -22,6 +26,16 @@ const ActivityCard = ({color, owner_avatar, title, owner_username} : ActivityCar
         document.documentElement.style.setProperty('--card-color-', newColor);
         document.documentElement.style.setProperty('--bottom-card-color-', newColor);
     }*/
+
+    const openCard = () =>{
+        console.log(owner_avatar);
+        console.log(owner_username);
+        setDisplayCard(!displayCard);
+        //console.log(co_owner_avatars);
+
+    }
+
+
 
     var nonPhoto;
     var letter = '';
@@ -35,15 +49,12 @@ const ActivityCard = ({color, owner_avatar, title, owner_username} : ActivityCar
     else{
         nonPhoto = actCard.noPhoto_user;
         letter = owner_username.charAt(0);
-        console.log(color)
-        console.log(owner_username);
-        console.log(letter = owner_username.charAt(0));
         letterBackground = newColor;
     }
 
     return(
         <>
-            <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}}>
+            <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}} onClick={()=> openCard()}>
                 <div className={actCard.text}>{title}</div>
                     <div className={actCard.imageSection}>
                         {owner_avatar !=  null ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
@@ -53,6 +64,7 @@ const ActivityCard = ({color, owner_avatar, title, owner_username} : ActivityCar
             </div>
             <footer className={actCard.bottom} style={{backgroundColor:newColor}}></footer>
         
+        {displayCard && owner_avatar!= null && owner_username!=null  && <OpenedActivityCard title={title} owner={owner_username} owner_avatar={owner_avatar}/>}
         </>
     )
 

@@ -92,6 +92,8 @@ const Board = ( props: PropsResponse) => {
     setWorkflow(board.filter(function(item) { return item.workflow_id === workflowid; })[0]);
   }
 
+  console.log(workflow.columns);
+
   return (
 
     <>

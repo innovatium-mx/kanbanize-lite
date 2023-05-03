@@ -10,12 +10,9 @@ export type OpenedActivityCardProps = {
     "owner_avatar" : string,
     "co_owners"  : Array<string>,
     "co_owners_avatars" : Array<string>,
-    "comments" : Array<string>,
-    "comments_dates" : Array<string> 
 }
 
-
-const OpenedActivityCard = ({title, owner, owner_avatar, co_owners, co_owners_avatars, comments, comments_dates, description}: OpenedActivityCardProps) =>{
+const OpenedActivityCard = ({title, owner, owner_avatar, co_owners, co_owners_avatars, description}: OpenedActivityCardProps) =>{
 
     const [openComments, setOpenComments] = useState(false);
     var arrowDown = openedCard.arrowDown
@@ -40,7 +37,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owners, co_owners_av
     }*/
 
     return(
-        <>
+    <>
+        <div className={openedCard.modalBackground}>
            <div className={openedCard.Card}>
                 <div className={openedCard.close}>
                     <button className={openedCard.closeButton}>
@@ -82,7 +80,9 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owners, co_owners_av
                     </div>
 
             </div>
-        </>
+        </div>
+        
+    </>
 
     )
 
