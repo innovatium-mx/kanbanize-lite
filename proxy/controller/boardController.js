@@ -125,6 +125,7 @@ module.exports.boardDetails = async (req,res) =>{
                         if(columns[x].parent_column_id !== null){
                             const columnsLength = columns[x].parent_column_id.length;
                             columns[x].order = columns[x].parent_column_id[ columnsLength - 1].parent_section + ((1.0 / (columnsLength + 1.0)) * columns[x].position );
+                            columns[x].parent_column_id = columns[x].parent_column_id.reverse();
                         }
                         else{
                             columns[x].order = columns[x].section * 1.0;

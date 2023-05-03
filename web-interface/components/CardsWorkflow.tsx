@@ -4,6 +4,13 @@ import dynamic from 'next/dynamic';
 import Dynamicboard from '../styles/Dynamicboard.module.css';
 import { response } from 'express';
 
+type parent_columns = {
+    parent_id: number,
+    parent_name: string,
+    parent_section: number,
+    parent_position: number,
+} 
+
 type card = {
     "card_id": number,
     "custom_id": number | null,
@@ -19,22 +26,25 @@ type card = {
 };
 
 type column = {
-    "column_id": number,
-    "section": number,
-    "parent_column_id": number,
-    "position": number,
-    "name": string,
-    "description": string,
-    "color": string,
-    "limit": number,
-    "cards_per_row": number,
-    "flow_type": number,
-    "card_ordering": string | null,
-    "cards": Array<card>  | null
-};
+  "column_id": number,
+  "workflow_id": number,
+  "section": number,
+  "parent_column_id": Array<parent_columns> | null ,
+  "position": number,
+  "name": string,
+  "description": string,
+  "color": string,
+  "limit": number,
+  "cards_per_row": number,
+  "flow_type": number,
+  "card_ordering": string | null,
+  "cards": Array<card> | null,
+  "order": number
+}
 
 type CardsWorkflowProps = {
-    data: Array<column>
+    data: Array<column>,
+    workflow_name: string
 }
 
 type showButtons = {
@@ -42,8 +52,7 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data} : CardsWorkflowProps) => {
-
+const CardsWorkflow = ({data, workflow_name} : CardsWorkflowProps) => {
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
@@ -81,7 +90,7 @@ const CardsWorkflow = ({data} : CardsWorkflowProps) => {
     return(
         <>
             <div>
-                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse}/>
+                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name}/>
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
                         <ActivityCard key={element.key} color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username}/>
