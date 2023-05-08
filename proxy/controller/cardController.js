@@ -78,3 +78,50 @@ module.exports.cardDetails = async (req,res) =>{
         res.json({"error": 500});
     }
 };
+
+module.exports.comments = async (req,res) =>{
+    const host = req.params.host;
+    const cardid = req.params.cardid;
+    const apikey = req.headers.apikey;
+    try{
+         const responseUsers = await  fetch(`https://${host}.kanbanize.com/api/v2/users`, {
+            method: "GET",
+            headers: {
+                "apikey": apikey
+            },
+        });
+
+        const responseComments = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}/comments`, {
+            method: "GET",
+            headers: {
+                "apikey": apikey
+            },
+        });
+
+        if(responseUsers.ok && responseComments.ok){
+            const rawUsers = await responseUsers.json();
+            users = rawUsers.data;
+            const rawComments = await responseComments.json();
+            comments = rawComments.data;
+            if(comments.length > 0){
+                for(var x =0; x < comments.length; x++){
+                    const authorObject = users.find(item => item.user_id === comments[x].author.value);
+                    comments[x].author.avatar = authorObject.avatar;
+                    comments[x].author.username = authorObject.username;
+                }
+            }
+            res.json(comments);
+        }
+        else{
+            res.json({"error": {
+                "UsersStatus" : responseUsers.status,
+                "CommentsStatus": responseComments.status
+            }});
+        }
+
+    }
+    catch(error){
+        console.error(error);
+        res.json({"error": 500});
+    }
+}
