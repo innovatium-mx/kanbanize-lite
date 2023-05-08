@@ -136,7 +136,7 @@ module.exports.boardDetails = async (req,res) =>{
                     });
                     boardWorkflow[i].columns = columns;
                 }
-                const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${1}`, {
+                const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${1}&fields=card_id,title,description,custom_id,owner_user_id,type_id,size,priority,color,deadline,reporter,created_at,revision,last_modified,in_current_position_since,board_id,workflow_id,column_id,lane_id,section,position,last_column_id,last_lane_id,version_id,archived_at,reason_id,discard_comment,discarded_at,is_blocked,block_reason,current_block_time,current_logged_time,current_cycle_time,child_card_stats,finished_subtask_count,unfinished_subtask_count,comment_count&expand=co_owner_ids,subtasks,linked_cards`, {
                     method: "GET",
                     headers: {
                         "apikey": apikey
@@ -148,7 +148,7 @@ module.exports.boardDetails = async (req,res) =>{
                     const pages = data3.data.pagination.all_pages;
                     if( pages > 1){
                         for(var page = 2; page <= pages; page++){
-                            const responseCardPages = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${page}`, {
+                            const responseCardPages = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${page}&fields=card_id,title,description,custom_id,owner_user_id,type_id,size,priority,color,deadline,reporter,created_at,revision,last_modified,in_current_position_since,board_id,workflow_id,column_id,lane_id,section,position,last_column_id,last_lane_id,version_id,archived_at,reason_id,discard_comment,discarded_at,is_blocked,block_reason,current_block_time,current_logged_time,current_cycle_time,child_card_stats,finished_subtask_count,unfinished_subtask_count,comment_count&expand=co_owner_ids,subtasks,linked_cards`, {
                                 method: "GET",
                                 headers: {
                                     "apikey": apikey
@@ -182,34 +182,24 @@ module.exports.boardDetails = async (req,res) =>{
                             const columnCards = [];
                             boardCards.map( async function(element){
                                 if(element.column_id === columnid){
-                                    if(element.owner_user_id){
+                                    const tempCard = element;
+                                    if(tempCard.owner_user_id){
                                         const userObject = users.find(item => item.user_id === element.owner_user_id);
-                                        columnCards.push({
-                                            "card_id": element.card_id,
-                                            "custom_id": element.custom_id,
-                                            "title": element.title,
-                                            "owner_user_id": element.owner_user_id,
-                                            "owner_username": userObject.username,
-                                            "owner_avatar": userObject.avatar,
-                                            "type_id": element.type_id,
-                                            "color": element.color,
-                                            "section": element.section,
-                                            "lane_id": element.lane_id,
-                                            "position": element.position
-                                        })
+                                        tempCard.owner_username = userObject.username;
+                                        tempCard.owner_avatar = userObject.avatar;
                                     }
-                                    else{
-                                        columnCards.push({
-                                            "card_id": element.card_id,
-                                            "custom_id": element.custom_id,
-                                            "title": element.title,
-                                            "type_id": element.type_id,
-                                            "color": element.color,
-                                            "section": element.section,
-                                            "lane_id": element.lane_id,
-                                            "position": element.position
-                                        })
+                                    if(tempCard.co_owner_ids.length > 0){
+                                        const co_owner_usernames = []
+                                        const co_owner_avatars = [];
+                                        for(var x =0; x < tempCard.co_owner_ids.length; x++){
+                                            const coOwnerObject = users.find(item => item.user_id === tempCard.co_owner_ids[x])
+                                            co_owner_usernames.push(coOwnerObject.username);
+                                            co_owner_avatars.push(coOwnerObject.avatar);
+                                        }
+                                        tempCard.co_owner_usernames = co_owner_usernames;
+                                        tempCard.co_owner_avatars = co_owner_avatars;
                                     }
+                                    columnCards.push(tempCard);
                                 }
                             })
                             if(columnCards.length != 0){
