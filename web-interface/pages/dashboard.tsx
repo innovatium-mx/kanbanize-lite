@@ -21,6 +21,7 @@ interface Data {
   type: number,
   is_archived: number,
   name: string,
+  boards: Array<boardCard> | null
 }
 
   type NextJsI18NConfig = {
@@ -56,7 +57,7 @@ const MyBoards = ( props: PropsResponse) => {
 
     const router = useRouter();
     const [value, setValue] = useState(0);
-    const [boards, setBoards] = useState<Array<boardCard>>([]);
+    const [boards, setBoards] = useState<Array<boardCard> | null>([]);
 
     const {t} = useTranslation('common');
     const LanguageDropdown = dynamic(import('../components/LanguageDropdown'),{ssr:false});
@@ -71,35 +72,9 @@ const MyBoards = ( props: PropsResponse) => {
     };
 
 
-    const getBoards = async (boardid : number) => {
-      const apikey = cookieCutter.get('apikey');
-      const host = cookieCutter.get('host');
-      const response = await fetch(urlCloud + `boards/${host}/${boardid}`, {
-        method: "GET",
-        headers: {
-          "apikey": apikey,
-        },
-      });
-      if(response.ok){
-        const data: any = await response.json();
-        if(!data.error){
-          setBoards(data);
-        }
-        else{
-          cookieCutter.set('apikey', '', { expires: new Date(0) })
-          cookieCutter.set('host', '', { expires: new Date(0) })
-          cookieCutter.set('email', '', { expires: new Date(0) })
-          cookieCutter.set('userid', '', { expires: new Date(0) })
-          router.replace({pathname: '/'});
-        }
-      }
-      else{
-        cookieCutter.set('apikey', '', { expires: new Date(0) })
-        cookieCutter.set('host', '', { expires: new Date(0) })
-        cookieCutter.set('email', '', { expires: new Date(0) })
-        cookieCutter.set('userid', '', { expires: new Date(0) })
-        router.replace({pathname: '/'});
-      }
+    const getBoards = async (workspace_id : number) => {
+      const workspaceSelected = workspaces.find(item => item.workspace_id === workspace_id);
+      workspaceSelected !== undefined && setBoards(workspaceSelected.boards);
     }
 
     return (
@@ -119,7 +94,7 @@ const MyBoards = ( props: PropsResponse) => {
             <div className={dashboard.grid}>
               {/*<div className={dashboard.title}>{t("myBoards.myBoards")}</div>*/}
 
-              {boards.map((element: any, index)=> 
+              {boards !== null && boards.map((element: any, index)=> 
                     <Dashboard key={element.key} board_id={element.board_id} workspace_id={element.workspace_id} is_archived={element.is_archived} name={element.name} description={element.description} index={index} />
               )}
 
