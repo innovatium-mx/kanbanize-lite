@@ -19,9 +19,6 @@ type ColumnTitleProps = {
     workflow_name: string
 }
 
-<<<<<<< HEAD
-const ColumnTitle = ({name, left, right, color, returnResponse} : ColumnTitleProps) => {
-=======
 const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id, workflow_name} : ColumnTitleProps) => {
     var breadcrumb_trail = workflow_name;
     if(parent_column_id !== null){
@@ -32,7 +29,6 @@ const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id
     }else {
         breadcrumb_trail += '/' + name;
     }
->>>>>>> ffe8dde9d65f89a4a90ada27be4177af930023a8
     const handleLeftClick = () => {
         returnResponse(-1);
     }
