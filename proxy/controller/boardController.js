@@ -33,7 +33,31 @@ module.exports.workSpaces = async (req,res) =>{
         if (response.ok){
             const data = await response.json();
             const workSpaces = data.data;
-            res.json(workSpaces);
+            const responseBoard = await  fetch(`https://${host}.kanbanize.com/api/v2/boards?if_assigned=1&is_archived=0`, {
+                method: "GET",
+                headers: {
+                    "apikey": apikey
+                },
+            });
+            if (responseBoard.ok){
+                const rawBoards = await responseBoard.json();
+                const boards = rawBoards.data;
+                for(var x=0; x < workSpaces.length; x++){
+                    const finalBoards = [];
+                    for(var y=0; y < boards.length; y++){
+                        if(workSpaces[x].workspace_id === boards[y].workspace_id){
+                            finalBoards.push(boards[y]);
+                        }
+                    }
+                    if(finalBoards.length > 0){
+                        workSpaces[x].boards = finalBoards;
+                    }
+                }
+                res.json(workSpaces);
+            }
+            else{
+                res.json({"error": responseBoard.status});
+            }
         }
         else{
             res.json({"error": response.status});
