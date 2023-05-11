@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 
 type Props = {
     // Add custom props here
-  }
+}
 
 const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 

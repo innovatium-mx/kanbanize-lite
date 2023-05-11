@@ -31,7 +31,10 @@ type card = {
   "color": string,
   "section": number,
   "lane_id": number,
-  "position": number
+  "position": number,
+  "co_owner_usernames" : Array<string> | null,
+  "co_owner_avatars" : Array<string> | null,
+  "description" : string
 }
 
 type column = {
@@ -83,6 +86,11 @@ const Board = ( props: PropsResponse) => {
   const router = useRouter();
   const {t} = useTranslation('common');
   const InterfaceDropdown = dynamic(import('../../components/InterfaceDropdown'), {ssr:false});
+  const OpenedActivityCard = dynamic(import('../../components/OpenedActivityCard'), {ssr:false});
+
+  const [currentCard, setCurrentCard] = useState<card>()
+  const [displayCard, setDisplayCard] = useState(false);
+
 
   const [workflow, setWorkflow] = useState<workflow>({
     "type": -1,
@@ -93,6 +101,8 @@ const Board = ( props: PropsResponse) => {
     "workflow_id": -1,
     "columns": [] 
   });
+
+
   const query = router.query;
   const board_id = query.board_id;
   const board = props.data;
@@ -101,10 +111,43 @@ const Board = ( props: PropsResponse) => {
     setWorkflow(board.filter(function(item) { return item.workflow_id === workflowid; })[0]);
   }
 
+  const updateCurrentCard = (curr: card) =>{
+    setCurrentCard(curr);
+  }
+
+  const showModal = (value: boolean) =>{
+    setDisplayCard(value);
+  }
+
+  /*
+  console.log(cardIndex);
+  console.log();
+
+  if(workflow.type!=-1){
+    console.log(workflow.columns[0].cards[0]);
+  }
+  else{
+    console.log(workflow.columns[0]);
+  }*/
+
+  console.log(currentCard);
+  console.log(displayCard);
+  
   return (
 
     <>
-    <div>
+
+    <div className={dashboard.modalWrap}>
+        {/*displayCard && currentCard?.owner_avatar!= null && currentCard?.owner_username!=null  && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard}/>*/}
+            
+        {/*<OpenedActivityCard title={"T2.HU10.- Crear componente de sidebar con Perfil, organización, idioma, link a workspaces y cerrar sesión."} owner={""} owner_avatar={"https://s3.amazonaws.com/kanbamne/attachments/university6y/avatar_80x80_10.jpg"} co_owner_usernames={[]} co_owner_avatars={[]}  description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in "}/>*/}
+    
+    
+        {displayCard && currentCard!=undefined && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard}/>}
+    
+    </div>
+
+    <div className={dashboard.boardPageWrap}>
         <div className={dashboard.topBar}>
             <div className={dashboard.dropdownFragment}>
               <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow}/>
@@ -114,7 +157,7 @@ const Board = ( props: PropsResponse) => {
         </div>
       <div>
         { workflow.type === 0 && 
-          <CardsWorkflow data={workflow.columns} workflow_name={workflow.name}/>
+          <CardsWorkflow data={workflow.columns} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal}/>
         }
       </div>
 
