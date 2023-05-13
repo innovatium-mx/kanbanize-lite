@@ -164,8 +164,9 @@ div.addComment{
 
 
 input.inputComment{
-    width: 78%;
+    width: 15em;
     border: none;
+    border-radius: 0px;
     background-color: #eaeaea;
     padding: .8em;
     font-size: 1rem;
@@ -178,10 +179,30 @@ input.inputComment{
 }
 
 button.sendButton{
-    border: none;
     background-color: #eaeaea;
+    border: 1px solid #eaeaea;
 }
 
+img.send{
+    background-color:#eaeaea;
+    width: 2em;
+}
+
+.arrowDown{
+
+}
+
+.rotated{
+    margin-top: 2.4em;
+    margin-left: 0.4em ;
+    transform: rotate(180deg);
+}
+
+.nonRotated{
+    padding-top: 2.4em;
+    padding-left: 0.4em;
+    transform: rotate(0);
+}
 
 
 div.commentsWrap{
@@ -203,18 +224,6 @@ div.ownerExistsButNoPhoto{
     border-radius: 50%;
     width: 4em;
     height: 4em;
-}
-
-div.coOwnerExistsButNoPhoto1{
-
-}
-
-div.coOwnerExistsButNoPhoto2{
-    
-}
-
-div.coOwnerExistsButNoPhoto3{
-    
 }
 
 button.closeButton{
