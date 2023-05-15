@@ -80,23 +80,21 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         }
     }
 
-    for(var z=0; z<3; z++){
-        var decoy : string | undefined= ''
+    /* for(var z=0; z<3; z++){
         if(letterCoBg[z]!=null || letterCoBg[z]!=undefined){
             decoy = letterCoBg[z];
         }
-        useLayoutEffect(()=>{
-            if(z==0){
-                setCurrCoBg1(decoy)
-            }
-            else if(z==1){
-                setCurrCoBg2(decoy)
-            }
-            else{
-                setCurrCoBg3(decoy)
-            }
-        })
-    }
+
+    } */
+/* 
+    var decoy : string | undefined= '' */
+
+
+    useLayoutEffect(()=>{
+            setCurrCoBg1(letterCoBg[0])
+            setCurrCoBg2(letterCoBg[1])
+            setCurrCoBg3(letterCoBg[2])
+    })
 
  
     return(
