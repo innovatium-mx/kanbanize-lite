@@ -189,4 +189,37 @@ module.exports.moveCard = async (req,res) =>{
 module.exports.addCard = async (req,res) =>{
     const host = req.params.host;
     const apikey = req.headers.apikey;
+    const lane_id = req.body.lane_id;
+    const column_id = req.body.column_id;
+    const title = req.body.title;
+    const description = req.body.description;
+    const owner_user_id = req.body.owner_user_id;
+    
+    const formData = JSON.stringify({
+        "lane_id": lane_id,
+        "column_id": column_id,
+        "title": title,
+        "description": description,
+        "owner_user_id": owner_user_id
+    });
+    try{
+        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": apikey
+            },
+            body: formData,
+        });
+        if(response.ok){
+            res.json({"Successful": response.status});
+        }
+        else{
+            res.json({"error": response.status});
+        }
+    }
+    catch(error){
+        console.error(error);
+        res.json({"error": 500});
+    }
 }
