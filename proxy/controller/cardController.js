@@ -126,6 +126,36 @@ module.exports.comments = async (req,res) =>{
     }
 }
 
+module.exports.addComment= async (req,res) =>{
+    const host = req.params.host;
+    const cardid = req.params.cardid;
+    const apikey = req.headers.apikey;
+    const text = req.body.text;
+    const formData = JSON.stringify({
+        "text": text,
+    });
+    try{
+        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}/comments`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": apikey
+            },
+            body: formData,
+        });
+        if(response.ok){
+            res.json({"Successful": response.status});
+        }
+        else{
+            res.json({"error": response.status});
+        }
+    }
+    catch(error){
+        console.error(error);
+        res.json({"error": 500});
+    }
+}
+
 module.exports.moveCard = async (req,res) =>{
     const host = req.params.host;
     const cardid = req.params.cardid;
@@ -154,4 +184,9 @@ module.exports.moveCard = async (req,res) =>{
         console.error(error);
         res.json({"error": 500});
     }
+}
+
+module.exports.addCard = async (req,res) =>{
+    const host = req.params.host;
+    const apikey = req.headers.apikey;
 }
