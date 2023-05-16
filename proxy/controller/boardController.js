@@ -232,6 +232,9 @@ module.exports.boardDetails = async (req,res) =>{
                                 });
                                 boardWorkflow[x].columns[y].cards = columnCards;
                             }
+                            else{
+                                boardWorkflow[x].columns[y].cards = [];
+                            }
                         } 
                     }
                     res.json(boardWorkflow);
