@@ -124,20 +124,23 @@ div.imageSection {
     .photo {
         height: 2.7em;
         width: 2.7em;
-        margin-left: 0.4em;
+        margin-left: 0.3em;
+        margin-right: 0.3em;
     }
 
     .noPhoto_noUser {
         height: 2.7em;
         width: 2.7em;
-        margin-left: 0.4em;
+        margin-left: 0.3em;
+        margin-right: 0.3em;
 
     }
 
     .noPhoto_user {
         height: 2.7em;
         width: 2.7em;
-        margin-left: 0.4em;
+        margin-left: 0.3em;
+        margin-right: 0.3em;
     }
 
     div.letter {
