@@ -68,6 +68,7 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal, mo
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
     const [activities, setActivities] = useState<Array<card> | null>([]);
+    const columns = data;
 
     const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
     const [cardIndex, setCardIndex] = useState(0);
@@ -115,7 +116,24 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal, mo
             }
             else {
                 const cardIndex = activities ? activities.findIndex((ele : card )=> ele.card_id === card_id) : -1;
-                moveCards(index, cardIndex, index -1)
+                moveCards(index, cardIndex, index -1);
+                setIndex(index-1);
+                if(index-1 === 0){
+                    setButtons({left: false, right: true})
+                }
+                else if(index-1 === data.length-1){
+                    setButtons({left: true, right: false})
+                }
+                else{
+                    setButtons({left: true, right: true})
+                }
+        
+                if(columns[index-1].color === ''){
+                    setColor('#9e9e9e');
+                }
+                else{
+                    setColor('#'+columns[index-1].color);
+                }
             }
         }
         else {
@@ -153,6 +171,23 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal, mo
             else{
                 const cardIndex = activities ? activities.findIndex((ele : card )=> ele.card_id === card_id) : -1;
                 moveCards(index, cardIndex, index + 1)
+                setIndex(index+1);
+                if(index+1 === 0){
+                    setButtons({left: false, right: true})
+                }
+                else if(index+1 === data.length-1){
+                    setButtons({left: true, right: false})
+                }
+                else{
+                    setButtons({left: true, right: true})
+                }
+        
+                if(columns[index+1].color === ''){
+                    setColor('#9e9e9e');
+                }
+                else{
+                    setColor('#'+columns[index+1].color);
+                }
             }
         }
         else {
