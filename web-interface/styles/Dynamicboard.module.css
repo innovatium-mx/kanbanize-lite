@@ -6,3 +6,20 @@ div.grid{
     box-sizing: border-box;
 }
 
+div.cardContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttons {
+    margin: 0.6em;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    .buttons:hover {
+        transform: scale(1.65);
+    }
+}

@@ -2,7 +2,8 @@ import ColumnTitle from './ColumnTitle';
 import {useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
 import Dynamicboard from '../styles/Dynamicboard.module.css';
-import { response } from 'express';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCircleArrowLeft, faCircleArrowRight} from '@fortawesome/free-solid-svg-icons';
 
 type parent_columns = {
     parent_id: number,
@@ -84,6 +85,13 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : 
 
     }
 
+    const handleLeftClick = () => {
+        console.log("left");
+    }
+
+    const handleRightClick = () => {
+        console.log("right");
+    }
 
 
 
@@ -117,7 +125,17 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : 
                 <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name}/>
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
-                        <ActivityCard key={element.key} card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} co_owner_usernames={element.co_owner_usernames} co_owner_avatars={element.co_owner_avatars} description={element.description} retrieveIndex={retrieveIndex} displayModal={displayModal}/>
+                        <div className={Dynamicboard.cardContainer}>
+                            <div className={Dynamicboard.buttons} onClick={() => handleLeftClick()}>
+                                <FontAwesomeIcon icon={faCircleArrowLeft} style={{color: "#000000"}} />
+                            </div>
+                            <ActivityCard key={element.key} card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} co_owner_usernames={element.co_owner_usernames} co_owner_avatars={element.co_owner_avatars} description={element.description} retrieveIndex={retrieveIndex} displayModal={displayModal}/>
+                            <div className={Dynamicboard.buttons} onClick={() => handleRightClick()}>
+                                { !element.is_blocked &&
+                                    <FontAwesomeIcon icon={faCircleArrowRight} style={{color: "#000000"}} />
+                                }
+                            </div>
+                        </div>
                     )}
                 </div>
             </div>
