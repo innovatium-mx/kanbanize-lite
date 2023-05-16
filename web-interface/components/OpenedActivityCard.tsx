@@ -3,6 +3,12 @@ import React, { useState, useLayoutEffect, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faXmark, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import adjustColor from '../helpers/lightenColor';
+import dynamic from 'next/dynamic';
+import {getCommentsEndpoint} from '../constants'
+import { response } from 'express';
+import { useRouter } from 'next/router';
+
+const cookieCutter= require('cookie-cutter');
 
 export type OpenedActivityCardProps = {
     "title" : string,
@@ -12,32 +18,150 @@ export type OpenedActivityCardProps = {
     "co_owner_avatars" : Array<string> | null,
     "description": string,
     "setDisplayCard": any,
-    "color": string
+    "color": string,
+    "card_id" : number
 }
 
-const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color}: OpenedActivityCardProps) =>{
+export type Author = {
+    "type" : string,
+    "value" : number,
+    "avatar" : string | null,
+    "username" : string | null
+}
 
-    const [openComments, setOpenComments] = useState(false);
+export type comment = {
+    "text": string,
+    "last_modified": string,
+    "author": Author
+}
 
+const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id}: OpenedActivityCardProps) =>{
+    const router = useRouter();
+    const [openComments, setOpenComments] = useState<boolean>(false);
     const [arrowDown, setArrowDown] = useState(openedCard.nonRotated);
+    const [isExpanded, setIsExpanded] = useState('none');
     
     const [currCoBg1, setCurrCoBg1] = useState<string | undefined>('#ff0000');
     const [currCoBg2, setCurrCoBg2] = useState<string | undefined>('#ff0000');
     const [currCoBg3, setCurrCoBg3] = useState<string | undefined>('#ff0000');
 
+    const Comment = dynamic(import('../components/Comment'), {ssr: false});
+    const [commentsArray, setCommentsArray] = useState<Array<comment | null>>([]);
+    const [newComment, setNewComment] = useState<string>("");
+    const [justDone, setJustDone] = useState<boolean>(false);
+
+    const apikey = cookieCutter.get('apikey');
+    const host = cookieCutter.get('host');
+
     const handleOpenComments = () =>{
         setOpenComments(!openComments);
-        
+
         if(openComments){
             setArrowDown(openedCard.rotated);
+            setIsExpanded('block');
+
+            //get comments request
+            
+                fetch(getCommentsEndpoint + host + '/'+card_id, {
+                    method: "GET",
+                    headers: {
+                    "apikey": apikey
+                    }
+                })
+                
+                .then(response => response.json())
+                .then((data)=>{
+                    if(data.error){
+                        //error
+                        cookieCutter.set('apikey', '', { expires: new Date(0) })
+                        cookieCutter.set('host', '', { expires: new Date(0) })
+                        cookieCutter.set('email', '', { expires: new Date(0) })
+                        cookieCutter.set('userid', '', { expires: new Date(0) }) 
+                        router.replace({pathname: '/'});
+                    }
+                    else{
+                        var currentText;
+                        var currentLastModified;
+                        var currentAuthor;
+    
+                        var currentComment: comment = {"text" : "", "last_modified" : "", "author" : {"type" : "", "value" : 0, "avatar" : "", "username": ""}};
+                        var currentArray: Array<comment> = ([]);
+    
+                        for(var x = 0; x<data.length; x++){
+                            currentText = data[x].text;
+                            currentLastModified = data[x].last_modified;
+                            currentAuthor = data[x].author;
+    
+                            currentComment = {
+                                "text" : currentText,
+                                "last_modified" : currentLastModified,
+                                "author": currentAuthor
+                            }
+    
+                            currentArray.push(currentComment);
+                        }
+                        setCommentsArray(currentArray);
+                    }
+                    
+                })
+                .catch((error) => {
+                    console.log(error);
+                    cookieCutter.set('apikey', '', { expires: new Date(0) })
+                    cookieCutter.set('host', '', { expires: new Date(0) })
+                    cookieCutter.set('email', '', { expires: new Date(0) })
+                    cookieCutter.set('userid', '', { expires: new Date(0) }) 
+                    router.replace({pathname: '/'});
+                });
         }
         else{
-            setArrowDown(openedCard.nonRotated);
+            setIsExpanded('none');
         }
 
-        console.log(openComments)
-        console.log(arrowDown)
     } 
+
+    const handleNewComment = (e: {
+        target: { value: React.SetStateAction<string> };
+      }) =>{
+        setNewComment(e.target.value);
+    }
+
+    let formData : string = JSON.stringify({
+        "text" : newComment
+    });
+
+    const handleSend = async () =>{
+        fetch(getCommentsEndpoint + host + '/' + card_id, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "apikey" : apikey
+            },
+            body: formData,
+        })
+        .then((response) => response.json())
+        .then((data) =>{
+            console.log(data);
+            if(data.error){
+                cookieCutter.set('apikey', '', { expires: new Date(0) })
+                cookieCutter.set('host', '', { expires: new Date(0) })
+                cookieCutter.set('email', '', { expires: new Date(0) })
+                cookieCutter.set('userid', '', { expires: new Date(0) }) 
+                router.replace({pathname: '/'});
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            cookieCutter.set('apikey', '', { expires: new Date(0) })
+            cookieCutter.set('host', '', { expires: new Date(0) })
+            cookieCutter.set('email', '', { expires: new Date(0) })
+            cookieCutter.set('userid', '', { expires: new Date(0) }) 
+            router.replace({pathname: '/'});
+        })
+    }
+
+    useLayoutEffect(()=>{
+        document.documentElement.style.setProperty('--comments-display-', isExpanded);
+    })
 
     const onCloseClick = () =>{
         setDisplayCard(false);
@@ -56,7 +180,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         letterBackground = '#' + color;
     }
 
-
     var letterCo : Array<string | undefined> = [undefined, undefined, undefined] 
     var letterCoBg : Array<string | undefined> = [undefined, undefined, undefined] 
     const grays : Array<string> = ['#6c6c6c','#929292','#cfcfcf'];
@@ -68,7 +191,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             if(co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[x]==undefined){ // coOwners exist, but don't have avatar
                 letterCo[x]=co_owner_usernames[x].charAt(0);
                 letterCoBg[x]=adjustColor('#' + color, 600*(x+0.7)/10);
-                //letterCoBg[x] = adjustColor('#' + '000080', 600*(x+0.7)/10) // 900, 1500
             }
         }
     }
@@ -80,23 +202,13 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         }
     }
 
-    /* for(var z=0; z<3; z++){
-        if(letterCoBg[z]!=null || letterCoBg[z]!=undefined){
-            decoy = letterCoBg[z];
-        }
-
-    } */
-/* 
-    var decoy : string | undefined= '' */
-
-
     useLayoutEffect(()=>{
             setCurrCoBg1(letterCoBg[0])
             setCurrCoBg2(letterCoBg[1])
             setCurrCoBg3(letterCoBg[2])
     })
 
- 
+
     return(
     <>
         <div className={openedCard.modalBackground}>
@@ -155,9 +267,9 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 </div>
 
                 <div className={openedCard.addComment}>
-                    <input type="password" className={openedCard.inputComment} name = 'password' placeholder={'Agregar comentario...'} title="Enter your password"></input>
+                    <input type="text" className={openedCard.inputComment} name = 'password' placeholder={'Agregar comentario...'} onChange={handleNewComment}></input>
 
-                    <button className={openedCard.sendButton}>
+                    <button className={openedCard.sendButton} onClick={()=>{handleSend()}}>
                         <img src="/send/blue_send_button.png" className={openedCard.send}></img>
                     </button>    
                     
@@ -168,16 +280,19 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                         Comentarios
                     </div>
                         <FontAwesomeIcon icon={faChevronDown} className={arrowDown} onClick={()=>{handleOpenComments()}}/>
-                    </div>
+                </div>
+
+                <div className={openedCard.commentsContainer}>
+                     {commentsArray.map((element: any, index)=> 
+                        <Comment key={element.key} text={element.text} last_modified={element.last_modified} avatar={element.author.avatar}/>
+                    )} 
+                </div>
 
             </div>
         </div>
         
     </>
-
     )
-
-
 }
 
 export default OpenedActivityCard;
