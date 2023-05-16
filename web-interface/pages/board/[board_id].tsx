@@ -50,7 +50,7 @@ type column = {
   "cards_per_row": number,
   "flow_type": number,
   "card_ordering": string | null,
-  "cards": Array<card> | null,
+  "cards": Array<card> ,
   "order": number
 }
 
@@ -115,6 +115,13 @@ const Board = ( props: PropsResponse) => {
     setCurrentCard(curr);
   }
 
+  const moveCards = (current : number, cardIndex : number, destiny: number ) =>{
+    const tempWorkflow = workflow;
+    tempWorkflow.columns[destiny].cards.push(tempWorkflow.columns[current].cards[cardIndex]);
+    tempWorkflow.columns[current].cards.splice(cardIndex, 1);
+    setWorkflow(tempWorkflow)
+  }
+
   const showModal = (value: boolean) =>{
     setDisplayCard(value);
   }
@@ -155,7 +162,7 @@ const Board = ( props: PropsResponse) => {
         </div>
       <div>
         { workflow.type === 0 && 
-          <CardsWorkflow data={workflow.columns} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal}/>
+          <CardsWorkflow data={workflow.columns} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}/>
         }
       </div>
 

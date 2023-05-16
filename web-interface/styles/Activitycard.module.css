@@ -1,25 +1,26 @@
-div.boardCard{
+div.boardCard {
     position: relative;
 
     display: flex;
     text-align: left;
-    align-items:center;
+    align-items: center;
     width: 30em;
     height: auto;
 
     background-clip: padding-box;
     border-top-right-radius: 0.4rem;
     border-top-left-radius: 0.4rem;
+    cursor: pointer;
 }
 
-footer.bottom{
+footer.bottom {
     border-bottom-left-radius: .3em;
     border-bottom-right-radius: .3em;
     padding-bottom: 0.3em;
     text-align: right;
     color: white;
     width: 30em;
-    
+
     height: 0em;
     margin-bottom: 2em;
 }
@@ -40,7 +41,7 @@ div.boardCard::before{
     z-index: -1;
 }*/
 
-div.text{
+div.text {
     text-align: center;
     padding-left: 1em;
     padding-top: 1em;
@@ -52,11 +53,11 @@ div.text{
     font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-div.name{
+div.name {
     font-size: 1em
 }
 
-.photo{
+.photo {
     margin-top: 1em;
     margin-bottom: 1em;
     margin-right: auto;
@@ -65,11 +66,11 @@ div.name{
     width: 4em;
     border: 1px solid white;
     border-radius: 50%;
-    filter: drop-shadow(.2em 1em .3em rgba(0,0,0,0.06));
+    filter: drop-shadow(.2em 1em .3em rgba(0, 0, 0, 0.06));
     z-index: 1;
 }
 
-.noPhoto_noUser{
+.noPhoto_noUser {
     margin-top: 1em;
     margin-bottom: 1em;
     margin-right: auto;
@@ -78,12 +79,12 @@ div.name{
     width: 4em;
     border-radius: 50%;
     z-index: 1;
-    filter: drop-shadow(.2em 1em .3em rgba(0,0,0,0.06));
+    filter: drop-shadow(.2em 1em .3em rgba(0, 0, 0, 0.06));
     border: 1px solid white;
 
 }
 
-.noPhoto_user{
+.noPhoto_user {
     margin-top: 1em;
     margin-bottom: 1em;
     margin-right: auto;
@@ -92,18 +93,18 @@ div.name{
     width: 4em;
     border-radius: 50%;
     z-index: 1;
-    filter: drop-shadow(.2em 1em .3em rgba(0,0,0,0.06));
+    filter: drop-shadow(.2em 1em .3em rgba(0, 0, 0, 0.06));
     border: 1px solid white;
 }
 
-div.letter{
+div.letter {
     color: white;
     text-align: center;
     padding-top: 0.2em;
     font-size: 2em;
 }
 
-div.imageSection{
+div.imageSection {
     display: grid;
     text-align: center;
     place-items: center;
@@ -111,80 +112,126 @@ div.imageSection{
     font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-@media screen and (max-width: 500px) {
-    div.boardCard{
-        width: 23em;
+@media screen and (max-width: 550px) {
+    div.boardCard {
+        width: 20em;
     }
 
-    footer.bottom{
-        width: 23em;
-    }
-    
-    .photo{
-        height: 3em;
-        width: 3em;
-        margin-left: 0.4em;
+    footer.bottom {
+        width: 20em;
     }
 
-    .noPhoto_noUser{
-        height: 3em;
-        width: 3em;
-        margin-left: 0.4em;
+    .photo {
+        height: 2.7em;
+        width: 2.7em;
+        margin-left: 0.3em;
+        margin-right: 0.3em;
+    }
+
+    .noPhoto_noUser {
+        height: 2.7em;
+        width: 2.7em;
+        margin-left: 0.3em;
+        margin-right: 0.3em;
 
     }
 
-    .noPhoto_user{
-        height: 3em;
-        width: 3em;
+    .noPhoto_user {
+        height: 2.7em;
+        width: 2.7em;
+        margin-left: 0.3em;
+        margin-right: 0.3em;
     }
 
-    div.letter{
+    div.letter {
         font-size: 1.5em;
     }
 
-    div.text{
+    div.text {
         font-size: 95%;
         width: 20em;
     }
 }
 
 @media screen and (max-width: 392px) {
-    div.boardCard{
-        width: 17em;
-    }
-    
-    footer.bottom{
-        width: 17em;
+    div.boardCard {
+        width: 16em;
     }
 
-    .photo{
-        height: 2.7em;
-        width: 2.7em;
-        margin-left: 0.3em;
-        margin-right: 0.3em;
+    footer.bottom {
+        width: 16em;
     }
 
-    .noPhoto_noUser{
-        height: 2.7em;
-        width: 2.7em;
-        margin-left: 0.3em;
-        margin-right: 0.3em;
-
+    .photo {
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.25em;
+        margin-right: 0.25em;
     }
 
-    .noPhoto_user{
-        height: 2.7em;
-        width: 2.7em;
-        margin-left: 0.3em;
-        margin-right: 0.3em;
+    .noPhoto_noUser {
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.25em;
+        margin-right: 0.25em;
 
     }
 
-    div.letter{
+    .noPhoto_user {
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.25em;
+        margin-right: 0.25em;
+
+    }
+
+    div.letter {
         font-size: 1.5em;
     }
 
-    div.text{
+    div.text {
+        font-size: 90%;
+        width: 20em;
+    }
+}
+
+@media screen and (max-width: 325px) {
+    div.boardCard {
+        width: 12em;
+    }
+
+    footer.bottom {
+        width: 12em;
+    }
+
+    .photo {
+        height: 2.3em;
+        width: 2.3em;
+        margin-left: 0.25em;
+        margin-right: 0.25em;
+    }
+
+    .noPhoto_noUser {
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.05em;
+        margin-right: 0.25em;
+
+    }
+
+    .noPhoto_user {
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.05em;
+        margin-right: 0.05em;
+
+    }
+
+    div.letter {
+        font-size: 1.5em;
+    }
+
+    div.text {
         font-size: 90%;
         width: 20em;
     }
