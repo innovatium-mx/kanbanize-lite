@@ -53,7 +53,7 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_o
     }
 
     return(
-        <>
+        <div>
            {/*displayCard && owner_avatar!= null && owner_username!=null  && <OpenedActivityCard title={title} owner={owner_username} owner_avatar={owner_avatar} co_owner_usernames={co_owner_usernames} co_owner_avatars={co_owner_avatars} description={description}/>*/}
 
             <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}} onClick={()=> handleClick()}>
@@ -66,7 +66,7 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_o
             </div>
             <footer className={actCard.bottom} style={{backgroundColor:newColor}}></footer>
         
-        </>
+        </div>
     )
 
 
