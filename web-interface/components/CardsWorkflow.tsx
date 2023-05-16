@@ -53,7 +53,8 @@ type CardsWorkflowProps = {
     data: Array<column>,
     workflow_name: string,
     updateCurrentCard: any,
-    displayModal: any
+    displayModal: any,
+    moveCards: any
 }
 
 type showButtons = {
@@ -61,7 +62,7 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : CardsWorkflowProps) => {
+const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal, moveCards} : CardsWorkflowProps) => {
     const router = useRouter();
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
@@ -92,8 +93,6 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : 
     const handleLeftClick = async (card_id : number) => {
         const apikey = cookieCutter.get('apikey');
         const host = cookieCutter.get('host');
-        console.log(card_id)
-        console.log(data[index - 1].column_id)
         const formData = JSON.stringify({
             "column_id": data[index - 1].column_id,
         });
@@ -111,8 +110,12 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : 
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
-                cookieCutter.set('userid', '', { expires: new Date(0) })
+                cookieCutter.set('userid', '', { expires: new Date(0) }) 
                 router.replace({pathname: '/'});
+            }
+            else {
+                const cardIndex = activities ? activities.findIndex((ele : card )=> ele.card_id === card_id) : -1;
+                moveCards(index, cardIndex, index -1)
             }
         }
         else {
@@ -127,7 +130,6 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : 
     const handleRightClick =  async (card_id : number) => {
         const apikey = cookieCutter.get('apikey');
         const host = cookieCutter.get('host');
-        console.log(data[index + 1].column_id)
         const formData = JSON.stringify({
             "column_id": data[index + 1].column_id,
         });
@@ -147,6 +149,10 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : 
                 cookieCutter.set('email', '', { expires: new Date(0) })
                 cookieCutter.set('userid', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
+            }
+            else{
+                const cardIndex = activities ? activities.findIndex((ele : card )=> ele.card_id === card_id) : -1;
+                moveCards(index, cardIndex, index + 1)
             }
         }
         else {
@@ -190,13 +196,15 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : 
                 <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name}/>
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
-                        <div className={Dynamicboard.cardContainer}>
+                        <div key={element.key} className={Dynamicboard.cardContainer}>
                             <div className={Dynamicboard.buttons} onClick={() => handleLeftClick(element.card_id)}>
-                                <FontAwesomeIcon icon={faCircleArrowLeft} style={{color: "#000000"}} />
+                                {  buttons.left &&
+                                    <FontAwesomeIcon icon={faCircleArrowLeft} style={{color: "#000000"}} />
+                                }
                             </div>
-                            <ActivityCard key={element.key} card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} co_owner_usernames={element.co_owner_usernames} co_owner_avatars={element.co_owner_avatars} description={element.description} retrieveIndex={retrieveIndex} displayModal={displayModal}/>
+                            <ActivityCard card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} co_owner_usernames={element.co_owner_usernames} co_owner_avatars={element.co_owner_avatars} description={element.description} retrieveIndex={retrieveIndex} displayModal={displayModal}/>
                             <div className={Dynamicboard.buttons} onClick={() => handleRightClick(element.card_id)}>
-                                { !element.is_blocked &&
+                                { !element.is_blocked && buttons.right &&
                                     <FontAwesomeIcon icon={faCircleArrowRight} style={{color: "#000000"}} />
                                 }
                             </div>
