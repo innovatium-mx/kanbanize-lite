@@ -1,9 +1,12 @@
 import ColumnTitle from './ColumnTitle';
 import {useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router'
 import Dynamicboard from '../styles/Dynamicboard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleArrowLeft, faCircleArrowRight} from '@fortawesome/free-solid-svg-icons';
+import {urlCloud} from '../constants'
+const cookieCutter= require('cookie-cutter');
 
 type parent_columns = {
     parent_id: number,
@@ -59,6 +62,7 @@ type showButtons = {
 };
 
 const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : CardsWorkflowProps) => {
+    const router = useRouter();
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
@@ -85,13 +89,74 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : 
 
     }
 
-    const handleLeftClick = () => {
-        console.log("left");
-    }
+    const handleLeftClick = async (card_id : number) => {
+        const apikey = cookieCutter.get('apikey');
+        const host = cookieCutter.get('host');
+        console.log(card_id)
+        console.log(data[index - 1].column_id)
+        const formData = JSON.stringify({
+            "column_id": data[index - 1].column_id,
+        });
+        const response = await  fetch(urlCloud+`moveCard/${host}/${card_id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": apikey
+            },
+            body: formData
+        })
+        if(response.ok) {
+            const data : any = await response.json();
+            if(data.error){
+                cookieCutter.set('apikey', '', { expires: new Date(0) })
+                cookieCutter.set('host', '', { expires: new Date(0) })
+                cookieCutter.set('email', '', { expires: new Date(0) })
+                cookieCutter.set('userid', '', { expires: new Date(0) })
+                router.replace({pathname: '/'});
+            }
+        }
+        else {
+            cookieCutter.set('apikey', '', { expires: new Date(0) })
+            cookieCutter.set('host', '', { expires: new Date(0) })
+            cookieCutter.set('email', '', { expires: new Date(0) })
+            cookieCutter.set('userid', '', { expires: new Date(0) })
+            router.replace({pathname: '/'});
+        }
+    };
 
-    const handleRightClick = () => {
-        console.log("right");
-    }
+    const handleRightClick =  async (card_id : number) => {
+        const apikey = cookieCutter.get('apikey');
+        const host = cookieCutter.get('host');
+        console.log(data[index + 1].column_id)
+        const formData = JSON.stringify({
+            "column_id": data[index + 1].column_id,
+        });
+        const response = await  fetch(urlCloud+`moveCard/${host}/${card_id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": apikey
+            },
+            body: formData
+        })
+        if(response.ok) {
+            const data : any = await response.json();
+            if(data.error){
+                cookieCutter.set('apikey', '', { expires: new Date(0) })
+                cookieCutter.set('host', '', { expires: new Date(0) })
+                cookieCutter.set('email', '', { expires: new Date(0) })
+                cookieCutter.set('userid', '', { expires: new Date(0) })
+                router.replace({pathname: '/'});
+            }
+        }
+        else {
+            cookieCutter.set('apikey', '', { expires: new Date(0) })
+            cookieCutter.set('host', '', { expires: new Date(0) })
+            cookieCutter.set('email', '', { expires: new Date(0) })
+            cookieCutter.set('userid', '', { expires: new Date(0) })
+            router.replace({pathname: '/'});
+        }
+    };
 
 
 
@@ -126,11 +191,11 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal} : 
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
                         <div className={Dynamicboard.cardContainer}>
-                            <div className={Dynamicboard.buttons} onClick={() => handleLeftClick()}>
+                            <div className={Dynamicboard.buttons} onClick={() => handleLeftClick(element.card_id)}>
                                 <FontAwesomeIcon icon={faCircleArrowLeft} style={{color: "#000000"}} />
                             </div>
                             <ActivityCard key={element.key} card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} co_owner_usernames={element.co_owner_usernames} co_owner_avatars={element.co_owner_avatars} description={element.description} retrieveIndex={retrieveIndex} displayModal={displayModal}/>
-                            <div className={Dynamicboard.buttons} onClick={() => handleRightClick()}>
+                            <div className={Dynamicboard.buttons} onClick={() => handleRightClick(element.card_id)}>
                                 { !element.is_blocked &&
                                     <FontAwesomeIcon icon={faCircleArrowRight} style={{color: "#000000"}} />
                                 }
