@@ -100,7 +100,7 @@ module.exports.boardDetails = async (req,res) =>{
     const boardid = req.params.boardid;
     const apikey = req.headers.apikey;
     var users = [];
-    const boardUsers = [];
+    var boardUsers = [];
     try{
         const response1 = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/workflows`, {
             method: "GET",
@@ -239,12 +239,11 @@ module.exports.boardDetails = async (req,res) =>{
                             else{
                                 boardWorkflow[x].columns[y].cards = [];
                             }
-                        } 
+                        }
+                        boardWorkflow[x].users = boardUsers;
+                        boardUsers = [];
                     }
-                    res.json({
-                        users: boardUsers,
-                        board: boardWorkflow
-                    });
+                    res.json(boardWorkflow);
                 }
                 else{
                     res.json({"error": response3.status});
