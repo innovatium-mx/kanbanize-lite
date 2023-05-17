@@ -3,7 +3,7 @@ import comment from '../styles/Comment.module.css'
 export type CommentProps = {
     "text" : string,
     "last_modified" : string,
-    "avatar" : string
+    "avatar" : string,
 }
 
 const Comment = ({text, last_modified, avatar}: CommentProps) =>{
@@ -11,9 +11,6 @@ const Comment = ({text, last_modified, avatar}: CommentProps) =>{
 
     const position = last_modified.search('T');
     const finalDate = last_modified.slice(position+1, position+9);
-
-
-
 
     return (
 

@@ -10,6 +10,7 @@ import {urlCloud} from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies';
 import {useRouter} from 'next/router';
+import {card} from '../../components/CardsWorkflow';
 
 type Props = {}
 
@@ -18,23 +19,6 @@ type parent_columns = {
     parent_name: string,
     parent_section: number,
     parent_position: number,
-} 
-
-type card = {
-  "card_id": number,
-  "custom_id": number | null,
-  "title": string,
-  "owner_user_id": number | null,
-  "owner_username": string | null,
-  "owner_avatar": string | null,
-  "type_id": number | null,
-  "color": string,
-  "section": number,
-  "lane_id": number,
-  "position": number,
-  "co_owner_usernames" : Array<string> | null,
-  "co_owner_avatars" : Array<string> | null,
-  "description" : string
 }
 
 type column = {
@@ -91,7 +75,6 @@ const Board = ( props: PropsResponse) => {
   const [currentCard, setCurrentCard] = useState<card>()
   const [displayCard, setDisplayCard] = useState(false);
 
-
   const [workflow, setWorkflow] = useState<workflow>({
     "type": -1,
     "position": -1,
@@ -126,20 +109,6 @@ const Board = ( props: PropsResponse) => {
     setDisplayCard(value);
   }
 
-  /*
-  console.log(cardIndex);
-  console.log();
-
-  if(workflow.type!=-1){
-    console.log(workflow.columns[0].cards[0]);
-  }
-  else{
-    console.log(workflow.columns[0]);
-  }*/
-
-  console.log(currentCard);
-  console.log(displayCard);
-  
   return (
 
     <>

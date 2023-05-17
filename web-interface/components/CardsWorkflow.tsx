@@ -15,7 +15,7 @@ type parent_columns = {
     parent_position: number,
 } 
 
-type card = {
+export type card = {
     "card_id": number,
     "custom_id": number | null,
     "title": string,
@@ -77,14 +77,10 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal, mo
         setActivities(data[index].cards) 
     }, [data, index]);
 
-    //console.log(data);
-
-
 
     const retrieveIndex = (cardIndex: number) =>{
         //retrieve cards index
         setCardIndex(cardIndex);
-        console.log(cardIndex);
         const curr = activities!=null ? activities.find(item => item.card_id === cardIndex) : [];
 
         updateCurrentCard(curr);
