@@ -1,6 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import columntitle from '../styles/ColumnTitle.module.css';
+import Filter from './Filter';
+
+type user = {
+    user_id: number,
+    username: string,
+    realname: string,
+    avatar: string
+}
 
 type parent_columns = {
     parent_id: number,
@@ -16,10 +24,11 @@ type ColumnTitleProps = {
     color: string,
     returnResponse: any,
     parent_column_id: Array<parent_columns> | null,
-    workflow_name: string
+    workflow_name: string,
+    users: Array<user>
 }
 
-const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id, workflow_name} : ColumnTitleProps) => {
+const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id, workflow_name, users} : ColumnTitleProps) => {
     var breadcrumb_trail = workflow_name;
     if(parent_column_id !== null){
         parent_column_id.map(function(element){
@@ -53,6 +62,9 @@ const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id
                             <FontAwesomeIcon icon={faAngleRight} size="xl"/>
                         }
                     </div>
+                </div>
+                <div>
+                    <Filter users={users} />
                 </div>
             </div >
         </>

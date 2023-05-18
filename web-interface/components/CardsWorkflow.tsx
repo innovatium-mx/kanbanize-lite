@@ -8,6 +8,13 @@ import {faCircleArrowLeft, faCircleArrowRight} from '@fortawesome/free-solid-svg
 import {urlCloud} from '../constants'
 const cookieCutter= require('cookie-cutter');
 
+type user = {
+    user_id: number,
+    username: string,
+    realname: string,
+    avatar: string
+}
+
 type parent_columns = {
     parent_id: number,
     parent_name: string,
@@ -51,6 +58,7 @@ type column = {
 
 type CardsWorkflowProps = {
     data: Array<column>,
+    users: Array<user>,
     workflow_name: string,
     updateCurrentCard: any,
     displayModal: any,
@@ -62,7 +70,7 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal, moveCards} : CardsWorkflowProps) => {
+const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards} : CardsWorkflowProps) => {
     const router = useRouter();
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
@@ -228,7 +236,7 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal, mo
             
 
             <div className={Dynamicboard.workflowWrap}>
-                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name}/>
+                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users}/>
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
                         <div key={element.key} className={Dynamicboard.cardContainer}>

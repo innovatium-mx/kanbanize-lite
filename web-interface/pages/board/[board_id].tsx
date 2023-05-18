@@ -162,7 +162,7 @@ const Board = ( props: PropsResponse) => {
         </div>
       <div>
         { workflow.type === 0 && 
-          <CardsWorkflow data={workflow.columns} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}/>
+          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}/>
         }
       </div>
 
