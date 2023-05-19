@@ -47,8 +47,8 @@ const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id
     }
 
     return(
-        <>
-            <div className={columntitle.container} style={{ backgroundColor: color }}>
+        <div className={columntitle.container} style={{ backgroundColor: color }}>
+            <div className={columntitle.grid}>
                 <div className={columntitle.breadcrumb_trail}>{breadcrumb_trail}</div>
                 <div className={columntitle.innercontainer}>
                     <div className={columntitle.buttons} onClick={() => handleLeftClick()}>
@@ -63,11 +63,11 @@ const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id
                         }
                     </div>
                 </div>
-                <div>
-                    <Filter users={users} />
-                </div>
-            </div >
-        </>
+            </div>
+            <div className={columntitle.filter}>
+                <Filter  users={users} />
+            </div>
+        </div >
     )
 }
 
