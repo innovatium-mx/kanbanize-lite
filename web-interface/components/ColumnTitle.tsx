@@ -5,12 +5,12 @@ import Filter from './Filter';
 import OpenFilter from './OpenFilter';
 
 type selection = {
-    user_id: number,
+    user_id: number | null,
     checked: boolean
 }
 
 type user = {
-    user_id: number,
+    user_id: number | null,
     username: string,
     realname: string,
     avatar: string

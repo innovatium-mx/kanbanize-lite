@@ -9,7 +9,7 @@ import {urlCloud} from '../constants'
 const cookieCutter= require('cookie-cutter');
 
 type selection = {
-    user_id: number,
+    user_id: number | null,
     checked: boolean
 }
 
@@ -57,7 +57,7 @@ type column = {
   "cards_per_row": number,
   "flow_type": number,
   "card_ordering": string | null,
-  "cards": Array<card> | null,
+  "cards": Array<card>,
   "order": number
 }
 
@@ -80,8 +80,8 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
-    const [activities, setActivities] = useState<Array<card> | null>([]);
-    const [filtered, setFiltered] = useState<Array<card> | null>([]);
+    const [activities, setActivities] = useState<Array<card>>([]);
+    const [filtered, setFiltered] = useState<Array<card>>([]);
     const [selected, setSelected] = useState<Array<selection>>([]);
     const columns = data;
 
@@ -100,7 +100,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         setActivities(filtered);
     }, [filtered]);
 
-    const setAllSelected = (u) => {
+    const setAllSelected = (u : Array<user>) => {
         const usersselection : Array<selection> = [];
         u.map((element: user) =>{
             usersselection.push({user_id: element.user_id, checked: true});
@@ -109,37 +109,27 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         setFiltered(data[index].cards);
     }
 
-    const setFilteredActivities = (d, i, s) =>{ 
+    const setFilteredActivities = (d: Array<column>, i: number, s:Array<selection>) =>{ 
         const filteredData :  Array<card> = [];
-        if(d !== null){
-            d[i].cards.map((element: any) => {
+        d[i].cards.map((element: any) => {
                 const found = s.find(item => item.user_id == element.owner_user_id);
                 if(found !== undefined && found.checked){
                     filteredData.push(element);
                 }
-            })
-            setFiltered(filteredData)
-        }
-        else{
-            setFiltered(null);
-        }
+        })
+        setFiltered(filteredData)
     }
 
     const setFilter = (temp : Array<selection>) =>{
         setSelected(temp);
         const filteredData :  Array<card> = [];
-        if(data !== null){
-            data[index].cards.map((element: any) => {
-                const found = temp.find(item => item.user_id == element.owner_user_id);
-                if(found !== undefined && found.checked){
-                    filteredData.push(element);
-                }
-            })
-            setFiltered(filteredData)
-        }
-        else{
-            setFiltered(data[index].cards)
-        }
+        data[index].cards.map((element: any) => {
+            const found = temp.find(item => item.user_id == element.owner_user_id);
+            if(found !== undefined && found.checked){
+                filteredData.push(element);
+            }
+        })
+        setFiltered(filteredData)
     }
 
     const retrieveIndex = (cardIndex: number) =>{

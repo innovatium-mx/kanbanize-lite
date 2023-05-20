@@ -2,7 +2,7 @@ import { useState , useEffect} from "react";
 import CardFilter from '../styles/Filter.module.css';
 
 type selection = {
-    user_id: number,
+    user_id: number | null,
     checked: boolean
 }
 
@@ -46,13 +46,13 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
     }
   }, [checked]);
 
-    const handleChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
         const temp = checked;
         if( e.target.value === "") {
             temp[temp.length -1 ].checked = !temp[temp.length -1 ].checked;
         }
         else{
-            const found = checked.findIndex(item => item.user_id == e.target.value);
+            const found = checked.findIndex(item => item.user_id !== null && item.user_id.toString() === e.target.value);
             temp[found].checked = !temp[found].checked;
         }
 
@@ -72,7 +72,7 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
         setFilter(temp);
     };
 
-    const handleCheckAllChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleCheckAllChange = (e : React.ChangeEvent<HTMLInputElement>) => {
         const temp = checked;
         if(checkedAll){
             for (var i=0; i< temp.length; i++){
@@ -110,7 +110,7 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
                             {element.username}
                         </div>
                         <div className={CardFilter.checkbox}>
-                            <input type="checkbox" value={element.user_id} checked={checked.find( item => item.user_id == element.user_id).checked} onChange={handleChange}/>
+                            <input type="checkbox" value={element.user_id} checked={checked[checked.findIndex( item => item.user_id == element.user_id)].checked} onChange={handleChange}/>
                         </div>
 
                     </div>

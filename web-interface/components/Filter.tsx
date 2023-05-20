@@ -3,7 +3,7 @@ import OpenFilter from './OpenFilter';
 import CardFilter from '../styles/Filter.module.css';
 
 type selection = {
-    user_id: number,
+    user_id: number | null,
     checked: boolean
 }
 
