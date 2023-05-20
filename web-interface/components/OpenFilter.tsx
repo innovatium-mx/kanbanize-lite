@@ -1,6 +1,11 @@
 import { useState , useEffect} from "react";
 import CardFilter from '../styles/Filter.module.css';
 
+type selection = {
+    user_id: number,
+    checked: boolean
+}
+
 type user = {
     user_id: number,
     username: string,
@@ -10,17 +15,21 @@ type user = {
 
 interface FilterProps {
     users : Array<user>,
-    selected: Array<number>
+    selected: Array<selection>,
+    setFilter: any
 }
 
 
-const OpenFilter = ({users, selected} : FilterProps) => {
+const OpenFilter = ({users, selected, setFilter} : FilterProps) => {  
 
-    const [selectedFilter, setSelectedFilter] = useState<Array<number>>([])
-
-    useEffect(()=>{
-        setSelectedFilter(selected);
-    });
+    const handleChange = (e: {
+        target: { value: React.SetStateAction<number> };
+      }) => {
+        const found = selected.findIndex(item => item.user_id == e.target.value);
+        const temp = selected;
+        temp[found].checked = !temp[found].checked;
+        setFilter(temp);
+      };
 
     return (
          <div className={CardFilter.open}>
@@ -35,8 +44,9 @@ const OpenFilter = ({users, selected} : FilterProps) => {
                         </div>
                         <div className={CardFilter.checkbox}>
                             {
-                                selectedFilter.find(item => item === element.user_id) !== undefined ?
-                                <input type="checkbox" value={element.user_id} defaultChecked={true}/> : <input type="checkbox" value={element.user_id}/>
+                                selected[selected.findIndex(item => item.user_id == element.user_id)].checked ?
+                                <input type="checkbox" value={element.user_id} defaultChecked={true} onChange={handleChange}/> :
+                                <input type="checkbox" value={element.user_id} defaultChecked={false} onChange={handleChange}/>
                             }
                         </div>
 

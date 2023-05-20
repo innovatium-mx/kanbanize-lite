@@ -2,6 +2,11 @@ import { useState } from "react";
 import OpenFilter from './OpenFilter';
 import CardFilter from '../styles/Filter.module.css';
 
+type selection = {
+    user_id: number,
+    checked: boolean
+}
+
 type user = {
     user_id: number,
     username: string,
@@ -12,10 +17,11 @@ type user = {
 
 interface FilterProps {
     users : Array<user>,
-    selected: Array<number>
+    selected: Array<selection>,
+    setFilter: any
 }
 
-const Filter = ({users, selected} : FilterProps) => {
+const Filter = ({users, selected, setFilter} : FilterProps) => {
 
     const [isOpen, setIsOpen] = useState(false);
     
@@ -26,7 +32,7 @@ const Filter = ({users, selected} : FilterProps) => {
             </div>
             {
                 isOpen && (
-                   <OpenFilter users={users} selected={selected}/>
+                   <OpenFilter users={users} selected={selected} setFilter={setFilter}/>
                 )
             }
         </div>

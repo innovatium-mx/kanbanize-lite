@@ -4,6 +4,11 @@ import columntitle from '../styles/ColumnTitle.module.css';
 import Filter from './Filter';
 import OpenFilter from './OpenFilter';
 
+type selection = {
+    user_id: number,
+    checked: boolean
+}
+
 type user = {
     user_id: number,
     username: string,
@@ -27,10 +32,11 @@ type ColumnTitleProps = {
     parent_column_id: Array<parent_columns> | null,
     workflow_name: string,
     users: Array<user>,
-    selected: Array<number>
+    selected: Array<selection>,
+    setFilter: any
 }
 
-const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id, workflow_name, users, selected} : ColumnTitleProps) => {
+const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id, workflow_name, users, selected, setFilter} : ColumnTitleProps) => {
     var breadcrumb_trail = workflow_name;
     if(parent_column_id !== null){
         parent_column_id.map(function(element){
@@ -66,7 +72,7 @@ const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id
                     </div>
                 </div>
             </div>
-            <Filter  users={users} selected={selected}/>
+            <Filter  users={users} selected={selected} setFilter={setFilter}/>
         </div >
     )
 }
