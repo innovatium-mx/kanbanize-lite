@@ -17,16 +17,25 @@ const OpenFilter = ({users} : FilterProps) => {
     const [boardUsers, setBoardUsers] = useState<Array<user>>([])
 
     useEffect(()=>{
-        //console.log(users)
         setBoardUsers(users)
     }, [users]);
-
-    console.log(boardUsers)
     
     return (
          <div className={CardFilter.open}>
             {
-                boardUsers.map((element : user) => <label>{element.username}</label>
+                boardUsers.map((element : user) => 
+                    <div className={CardFilter.content}>
+                        <div className={CardFilter.imagecontainer}>
+                            <img src={element.avatar} className={CardFilter.image}/>
+                        </div>
+                        <div className={CardFilter.username}>
+                            {element.username}
+                        </div>
+                        <div className={CardFilter.checkbox}>
+                            <input type="checkbox" value={element.user_id}/>
+                        </div>
+
+                    </div>
                 )
             }
         </div>
