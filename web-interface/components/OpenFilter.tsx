@@ -23,35 +23,57 @@ interface FilterProps {
 const OpenFilter = ({users, selected, setFilter} : FilterProps) => {  
 
     const [checkedAll, setCheckedAll] = useState(false);
+    const [checked, setChecked] = useState<Array<selection>>([]);
+    const [options, setOptions] = useState<Array<user>>([])
+
+    useEffect(() => {
+        setChecked(selected);
+        setOptions(users)
+    }, [selected, users]);
+    
 
     useEffect(() => {
     let allChecked = true;
-    for (var i=0; i< selected.length; i++) {
-      if (selected[i].checked === false) {
-        allChecked = false;
-      }
+    for (var i=0; i< checked.length; i++) {
+        if (checked[i].checked === false) {
+            allChecked = false;
+        }
     }
     if (allChecked) {
       setCheckedAll(true);
     } else {
       setCheckedAll(false);
     }
-  }, [selected]);
+  }, [checked]);
 
     const handleChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
-        const temp = selected;
+        const temp = checked;
         if( e.target.value === "") {
             temp[temp.length -1 ].checked = !temp[temp.length -1 ].checked;
         }
         else{
-            const found = selected.findIndex(item => item.user_id == e.target.value);
+            const found = checked.findIndex(item => item.user_id == e.target.value);
             temp[found].checked = !temp[found].checked;
         }
+
+        let allChecked = true;
+        for (var i=0; i< temp.length; i++) {
+            if (temp[i].checked === false) {
+                allChecked = false;
+            }
+        }
+        if (allChecked) {
+        setCheckedAll(true);
+        } 
+        else {
+        setCheckedAll(false);
+        }
+        setChecked(temp);
         setFilter(temp);
     };
 
     const handleCheckAllChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
-        const temp = selected;
+        const temp = checked;
         if(checkedAll){
             for (var i=0; i< temp.length; i++){
                 temp[i].checked = false;
@@ -64,6 +86,7 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
             }
             setCheckedAll(true);
         }
+        setChecked(temp);
         setFilter(temp);
     };
 
@@ -78,7 +101,7 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
                 </div>
             </div>
             {
-                users.map((element : any) => 
+                options.map((element : any) => 
                     <div className={CardFilter.content} key={element.key}>
                         <div className={CardFilter.imagecontainer}>
                             <img src={element.avatar} className={CardFilter.image}/>
@@ -87,11 +110,7 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
                             {element.username}
                         </div>
                         <div className={CardFilter.checkbox}>
-                            {
-                                selected[selected.findIndex(item => item.user_id == element.user_id)].checked ?
-                                <input type="checkbox" value={element.user_id} defaultChecked={true} onChange={handleChange}/> :
-                                <input type="checkbox" value={element.user_id} defaultChecked={false} onChange={handleChange}/>
-                            }
+                            <input type="checkbox" value={element.user_id} checked={checked.find( item => item.user_id == element.user_id).checked} onChange={handleChange}/>
                         </div>
 
                     </div>
