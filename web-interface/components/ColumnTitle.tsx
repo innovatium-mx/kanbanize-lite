@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import columntitle from '../styles/ColumnTitle.module.css';
 import Filter from './Filter';
+import OpenFilter from './OpenFilter';
 
 type user = {
     user_id: number,
@@ -64,9 +65,7 @@ const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id
                     </div>
                 </div>
             </div>
-            <div className={columntitle.filter}>
-                <Filter  users={users} />
-            </div>
+            <Filter  users={users} />
         </div >
     )
 }

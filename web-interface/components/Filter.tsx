@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MultiSelectComponent, FilteringEventArgs } from '@syncfusion/ej2-react-dropdowns';
+import OpenFilter from './OpenFilter';
 import CardFilter from '../styles/Filter.module.css';
 
 type user = {
@@ -15,14 +15,19 @@ interface FilterProps {
 }
 
 const Filter = ({users} : FilterProps) => {
-    
-    const handleClick = () =>{
-        console.log(users);
-    }
 
+    const [isOpen, setIsOpen] = useState(false);
+    
     return (
-        <div onClick={handleClick}>
-                <img src="/filter.png" width="32" height="32"/>
+        <div className={CardFilter.filter}>
+            <div onClick={() => setIsOpen(!isOpen)}>
+                    <img src="/filter.png" width="32" height="32"/>
+            </div>
+            {
+                isOpen && (
+                   <OpenFilter users={users}/>
+                )
+            }
         </div>
     );
 }

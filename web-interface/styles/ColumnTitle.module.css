@@ -31,6 +31,7 @@
     display: grid;
     justify-content: center;
     align-items: center;
+    padding-left: 3em;
 }
 
 .innercontainer {
@@ -38,11 +39,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.filter {
-    padding-left: 2em;
-    cursor: pointer;
 }
 
 @media (hover: hover) {
