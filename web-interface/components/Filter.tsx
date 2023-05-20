@@ -8,7 +8,7 @@ type selection = {
 }
 
 type user = {
-    user_id: number,
+    user_id: number | null,
     username: string,
     realname: string,
     avatar: string

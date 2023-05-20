@@ -7,7 +7,7 @@ type selection = {
 }
 
 type user = {
-    user_id: number,
+    user_id: number | null,
     username: string,
     realname: string,
     avatar: string
@@ -22,13 +22,17 @@ interface FilterProps {
 
 const OpenFilter = ({users, selected, setFilter} : FilterProps) => {  
 
-    const handleChange = (e: {
-        target: { value: React.SetStateAction<number> };
-      }) => {
-        const found = selected.findIndex(item => item.user_id == e.target.value);
+    const handleChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
         const temp = selected;
-        temp[found].checked = !temp[found].checked;
-        setFilter(temp);
+        if( e.target.value === "") {
+            temp[temp.length -1 ].checked = !temp[temp.length -1 ].checked;
+            setFilter(temp)
+        }
+        else{
+            const found = selected.findIndex(item => item.user_id == e.target.value);
+            temp[found].checked = !temp[found].checked;
+            setFilter(temp);
+        }
       };
 
     return (

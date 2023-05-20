@@ -14,7 +14,7 @@ type selection = {
 }
 
 type user = {
-    user_id: number,
+    user_id: number | null,
     username: string,
     realname: string,
     avatar: string
@@ -81,21 +81,19 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
     const [activities, setActivities] = useState<Array<card> | null>([]);
-    const [selected, setSelected] = useState<Array<selection>>([]);
+    const [selected, setSelected] = useState<Array<selection>>([{user_id: null, checked: true}]);
     const columns = data;
 
     const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
     const [cardIndex, setCardIndex] = useState(0);
 
     useEffect(()=>{
-        setActivities(data[index].cards)
-    }, [data, index]);
-
-    useEffect(()=>{
         setAllSelected(users);
     }, [users]);
 
-    
+    useEffect(()=>{
+        setFilteredActivities(data, index, selected);
+    }, [data, index, selected]);
 
     //console.log(data);
 
@@ -107,7 +105,24 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         setSelected(usersselection);
     }
 
-    const setFilter = (temp : Array<number>) =>{
+    const setFilteredActivities = (d, i, s) =>{ 
+        const filteredData :  Array<card> = [];
+        if(d !== null){
+            d[i].cards.map((element: any) => {
+                const found = s.find(item => item.user_id == element.owner_user_id);
+                if(found !== undefined && found.checked){
+                    filteredData.push(element);
+                }
+            })
+            setActivities(filteredData)
+        }
+        else{
+            setActivities(d[i].cards)
+        }
+        
+    }
+
+    const setFilter = (temp : Array<selection>) =>{
         setSelected(temp);
     }
 

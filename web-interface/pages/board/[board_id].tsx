@@ -15,7 +15,7 @@ import {card} from '../../components/CardsWorkflow';
 type Props = {}
 
 type user = {
-    user_id: number,
+    user_id: number | null,
     username: string,
     realname: string,
     avatar: string
@@ -100,7 +100,13 @@ const Board = ( props: PropsResponse) => {
   const board = props.data;
 
   const getWorkflow = (workflowid : number) => {
-    setWorkflow(board.filter(function(item) { return item.workflow_id === workflowid; })[0]);
+    const temp = board.filter(function(item) { return item.workflow_id === workflowid; })[0];
+    temp.users.push({user_id: null,
+    username: "Not Assigned",
+    realname: "None",
+    avatar: "/None.jpg"
+    })
+    setWorkflow(temp);
   }
 
   const updateCurrentCard = (curr: card) =>{
