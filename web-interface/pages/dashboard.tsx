@@ -1,7 +1,7 @@
 import { useTranslation} from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetServerSideProps} from 'next'
-import {useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from 'next/router'
 import authRoute from '../components/authRoute';
 import dynamic from 'next/dynamic';
@@ -9,7 +9,6 @@ import Dashboard from '../components/Dashboard'
 import type { boardCard } from '../components/Dashboard';
 import {urlCloud} from '../constants'
 import dashboard from '../styles/Dashboards.module.css';
-import login from '../styles/Login.module.css';
 
 import Cookies from 'cookies'
 const cookieCutter= require('cookie-cutter');

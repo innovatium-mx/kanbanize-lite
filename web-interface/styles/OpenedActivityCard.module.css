@@ -10,17 +10,6 @@ div.Card{
     padding-bottom: 3em;
 }
 
-div.CardWithComments{
-    position: relative;
-    display: flex;
-    width: 25em;
-    height: var(--dynamic-height-);
-    border: 1px solid black;
-    background-clip: padding-box;
-    border-radius: 0.5em;
-    flex-direction: column;
-    padding-bottom: 3em;
-}
 
 div.close{
     display: flex;
@@ -188,10 +177,6 @@ img.send{
     width: 2em;
 }
 
-.arrowDown{
-
-}
-
 .rotated{
     margin-top: 2.4em;
     margin-left: 0.4em ;
@@ -245,4 +230,15 @@ div.modalBackground {
 
     background-color:rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(0.5em);
+}
+
+div.commentsContainer{
+    margin-top: 1em;
+    height: 10.5em;
+    align-self: center;
+    display: var(--comments-display-);
+    overflow:scroll;
+    overflow-x: hidden;
+    scrollbar-color: red;
+
 }
