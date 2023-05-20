@@ -81,7 +81,8 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
     const [activities, setActivities] = useState<Array<card> | null>([]);
-    const [selected, setSelected] = useState<Array<selection>>([{user_id: null, checked: true}]);
+    const [filtered, setFiltered] = useState<Array<card> | null>([]);
+    const [selected, setSelected] = useState<Array<selection>>([]);
     const columns = data;
 
     const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
@@ -95,7 +96,9 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         setFilteredActivities(data, index, selected);
     }, [data, index, selected]);
 
-    //console.log(data);
+    useEffect(()=>{
+        setActivities(filtered);
+    }, [filtered]);
 
     const setAllSelected = (u) => {
         const usersselection : Array<selection> = [];
@@ -103,6 +106,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             usersselection.push({user_id: element.user_id, checked: true});
         })
         setSelected(usersselection);
+        setFiltered(data[index].cards);
     }
 
     const setFilteredActivities = (d, i, s) =>{ 
@@ -114,16 +118,28 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                     filteredData.push(element);
                 }
             })
-            setActivities(filteredData)
+            setFiltered(filteredData)
         }
         else{
-            setActivities(d[i].cards)
+            setFiltered(null);
         }
-        
     }
 
     const setFilter = (temp : Array<selection>) =>{
         setSelected(temp);
+        const filteredData :  Array<card> = [];
+        if(data !== null){
+            data[index].cards.map((element: any) => {
+                const found = temp.find(item => item.user_id == element.owner_user_id);
+                if(found !== undefined && found.checked){
+                    filteredData.push(element);
+                }
+            })
+            setFiltered(filteredData)
+        }
+        else{
+            setFiltered(data[index].cards)
+        }
     }
 
     const retrieveIndex = (cardIndex: number) =>{
