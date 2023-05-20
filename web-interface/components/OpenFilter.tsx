@@ -22,21 +22,61 @@ interface FilterProps {
 
 const OpenFilter = ({users, selected, setFilter} : FilterProps) => {  
 
+    const [checkedAll, setCheckedAll] = useState(false);
+
+    useEffect(() => {
+    let allChecked = true;
+    for (var i=0; i< selected.length; i++) {
+      if (selected[i].checked === false) {
+        allChecked = false;
+      }
+    }
+    if (allChecked) {
+      setCheckedAll(true);
+    } else {
+      setCheckedAll(false);
+    }
+  }, [selected]);
+
     const handleChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
         const temp = selected;
         if( e.target.value === "") {
             temp[temp.length -1 ].checked = !temp[temp.length -1 ].checked;
-            setFilter(temp)
         }
         else{
             const found = selected.findIndex(item => item.user_id == e.target.value);
             temp[found].checked = !temp[found].checked;
-            setFilter(temp);
         }
-      };
+        setFilter(temp);
+    };
+
+    const handleCheckAllChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
+        const temp = selected;
+        if(checkedAll){
+            for (var i=0; i< temp.length; i++){
+                temp[i].checked = false;
+            }
+            setCheckedAll(false);
+        }
+        else{
+            for (var i=0; i< temp.length; i++){
+                temp[i].checked = true;
+            }
+            setCheckedAll(true);
+        }
+        setFilter(temp);
+    };
 
     return (
          <div className={CardFilter.open}>
+            <div className={CardFilter.content} >
+                <div className={CardFilter.username}>
+                    Select All
+                </div>
+                <div className={CardFilter.checkbox}>
+                    <input type="checkbox" value={0} checked={ checkedAll} onChange={handleCheckAllChange}/>
+                </div>
+            </div>
             {
                 users.map((element : any) => 
                     <div className={CardFilter.content} key={element.key}>
