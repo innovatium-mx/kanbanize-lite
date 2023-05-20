@@ -13,6 +13,13 @@ import {useRouter} from 'next/router';
 
 type Props = {}
 
+type user = {
+    user_id: number,
+    username: string,
+    realname: string,
+    avatar: string
+}
+
 type parent_columns = {
     parent_id: number,
     parent_name: string,
@@ -62,6 +69,7 @@ type workflow = {
   "is_collapsible": number,
   "name": string,
   "workflow_id": number,
+  "users": Array<user>,
   "columns": Array<column>
 }
 
@@ -99,6 +107,7 @@ const Board = ( props: PropsResponse) => {
     "is_collapsible": -1,
     "name": "",
     "workflow_id": -1,
+    "users" : [],
     "columns": [] 
   });
 

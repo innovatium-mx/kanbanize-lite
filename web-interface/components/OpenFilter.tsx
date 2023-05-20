@@ -9,22 +9,24 @@ type user = {
 }
 
 interface FilterProps {
-    users : Array<user>
+    users : Array<user>,
+    selected: Array<number>
 }
 
 
-const OpenFilter = ({users} : FilterProps) => {
-    const [boardUsers, setBoardUsers] = useState<Array<user>>([])
+const OpenFilter = ({users, selected} : FilterProps) => {
+
+    const [selectedFilter, setSelectedFilter] = useState<Array<number>>([])
 
     useEffect(()=>{
-        setBoardUsers(users)
-    }, [users]);
-    
+        setSelectedFilter(selected);
+    });
+
     return (
          <div className={CardFilter.open}>
             {
-                boardUsers.map((element : user) => 
-                    <div className={CardFilter.content}>
+                users.map((element : any) => 
+                    <div className={CardFilter.content} key={element.key}>
                         <div className={CardFilter.imagecontainer}>
                             <img src={element.avatar} className={CardFilter.image}/>
                         </div>
@@ -32,7 +34,10 @@ const OpenFilter = ({users} : FilterProps) => {
                             {element.username}
                         </div>
                         <div className={CardFilter.checkbox}>
-                            <input type="checkbox" value={element.user_id}/>
+                            {
+                                selectedFilter.find(item => item === element.user_id) !== undefined ?
+                                <input type="checkbox" value={element.user_id} defaultChecked={true}/> : <input type="checkbox" value={element.user_id}/>
+                            }
                         </div>
 
                     </div>

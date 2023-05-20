@@ -76,18 +76,28 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
     const [activities, setActivities] = useState<Array<card> | null>([]);
+    const [selected, setSelected] = useState<Array<number>>([]);
     const columns = data;
 
     const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
     const [cardIndex, setCardIndex] = useState(0);
 
     useEffect(()=>{
-        setActivities(data[index].cards) 
-    }, [data, index]);
+        setActivities(data[index].cards)
+        setAllSelected()
+    }, [data, index, users]);
+
+    
 
     //console.log(data);
 
-
+    const setAllSelected = () => {
+        const userids : Array<number> = [];
+        users.map((element: user) =>{
+            userids.push(element.user_id);
+        })
+        setSelected(userids);
+    }
 
     const retrieveIndex = (cardIndex: number) =>{
         //retrieve cards index
@@ -236,7 +246,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             
 
             <div className={Dynamicboard.workflowWrap}>
-                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users}/>
+                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users} selected={selected}/>
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
                         <div key={element.key} className={Dynamicboard.cardContainer}>

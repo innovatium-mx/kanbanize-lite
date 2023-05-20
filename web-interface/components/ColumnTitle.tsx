@@ -26,10 +26,11 @@ type ColumnTitleProps = {
     returnResponse: any,
     parent_column_id: Array<parent_columns> | null,
     workflow_name: string,
-    users: Array<user>
+    users: Array<user>,
+    selected: Array<number>
 }
 
-const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id, workflow_name, users} : ColumnTitleProps) => {
+const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id, workflow_name, users, selected} : ColumnTitleProps) => {
     var breadcrumb_trail = workflow_name;
     if(parent_column_id !== null){
         parent_column_id.map(function(element){
@@ -65,7 +66,7 @@ const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id
                     </div>
                 </div>
             </div>
-            <Filter  users={users} />
+            <Filter  users={users} selected={selected}/>
         </div >
     )
 }

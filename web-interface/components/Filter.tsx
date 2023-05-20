@@ -11,10 +11,11 @@ type user = {
 
 
 interface FilterProps {
-    users : Array<user>
+    users : Array<user>,
+    selected: Array<number>
 }
 
-const Filter = ({users} : FilterProps) => {
+const Filter = ({users, selected} : FilterProps) => {
 
     const [isOpen, setIsOpen] = useState(false);
     
@@ -25,7 +26,7 @@ const Filter = ({users} : FilterProps) => {
             </div>
             {
                 isOpen && (
-                   <OpenFilter users={users}/>
+                   <OpenFilter users={users} selected={selected}/>
                 )
             }
         </div>
