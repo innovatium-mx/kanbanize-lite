@@ -47,3 +47,9 @@
 .checkbox {
     padding: 0.25em;
 }
+
+@media screen and (max-width: 307px) {
+    .filter {
+        padding-left: 1em;
+    }
+}
