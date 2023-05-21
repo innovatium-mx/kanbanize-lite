@@ -1,13 +1,16 @@
 const { MongoClient, GridFSBucket, ObjectId } = require('mongodb');
 const fetch = require('node-fetch');
-require('dotenv').config();
+const DBUSER="A01423221"
+const DBPASSWORD="KanbanizeLite-JA2023"
+const DBHOSTNAME="clusterkanbanizelite.guwfmbn.mongodb.net"
+const DBNAME="attachments"
 
-const uri = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBHOSTNAME}/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${DBUSER}:${DBPASSWORD}@${DBHOSTNAME}/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
 
 const connect = async () => {
     await client.connect();
-    return client.db(process.env.DBNAME);
+    return client.db(DBNAME);
 }
 
 module.exports.downloadAttachment = async (req,res) =>{
