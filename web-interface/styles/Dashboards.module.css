@@ -13,10 +13,16 @@
     width: 100%;
 }
 
-div.boardPageWrap{
+div.boardPageWrapScroll{
     z-index: 0;
     position: relative;
 
+}
+
+div.boardPageWrapScrollHidden{
+    z-index: 0;
+    position: relative;
+    overflow-y: hidden;
 }
 
 div.modalWrap{

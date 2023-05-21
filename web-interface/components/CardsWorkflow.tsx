@@ -29,7 +29,8 @@ export type card = {
     "position": number,
     "co_owner_usernames" : Array<string> | null,
     "co_owner_avatars" : Array<string> | null,
-    "description" : string
+    "description" : string,
+    "comment_count" : number
 };
 
 type column = {

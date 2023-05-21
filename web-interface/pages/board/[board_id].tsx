@@ -4,7 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetServerSideProps} from 'next'
 import authRoute from '../../components/authRoute';
 import CardsWorkflow from '../../components/CardsWorkflow';
-import {useEffect, useState } from "react";
+import {useEffect, useState, useLayoutEffect } from "react";
 import dynamic from 'next/dynamic';
 import {urlCloud} from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
@@ -74,6 +74,7 @@ const Board = ( props: PropsResponse) => {
 
   const [currentCard, setCurrentCard] = useState<card>()
   const [displayCard, setDisplayCard] = useState(false);
+  const [backgroundOverflowY, setBackgroundOverflowY] = useState(dashboard.boardPageWrapScroll);
 
   const [workflow, setWorkflow] = useState<workflow>({
     "type": -1,
@@ -109,19 +110,41 @@ const Board = ( props: PropsResponse) => {
     setDisplayCard(value);
   }
 
+  // if modal is displayed, overflow-y is hidden
+
+  if(displayCard){
+    useEffect(()=>{
+      setBackgroundOverflowY(dashboard.boardPageWrapScrollHidden);
+    })
+   /*  if (typeof window != 'undefined' && window.document) {
+      document.body.style.overflow = 'hidden';
+  } */
+
+  }
+  else{
+    useEffect(()=>{
+      setBackgroundOverflowY(dashboard.boardPageWrapScroll);
+    })
+    
+  }
+
+  console.log(backgroundOverflowY);
+
   return (
 
     <>
 
+    
     <div className={dashboard.modalWrap}>
         {/*displayCard && currentCard?.owner_avatar!= null && currentCard?.owner_username!=null  && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard}/>*/}
         {/*<OpenedActivityCard title={"T2.HU10.- Crear componente de sidebar con Perfil, organización, idioma, link a workspaces y cerrar sesión."} owner={""} owner_avatar={"https://s3.amazonaws.com/kanbamne/attachments/university6y/avatar_80x80_10.jpg"} co_owner_usernames={[]} co_owner_avatars={[]}  description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in "}/>*/}
     
-        {displayCard && currentCard!=undefined && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id}/>}
+        {displayCard && currentCard!=undefined && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
     
     </div>
-
-    <div className={dashboard.boardPageWrap}>
+    
+    {/* overflow-y hiddens when opened card modal is shown */}
+    <div className={backgroundOverflowY}>
         <div className={dashboard.topBar}>
             <div className={dashboard.dropdownFragment}>
               <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow}/>
@@ -136,6 +159,7 @@ const Board = ( props: PropsResponse) => {
       </div>
 
     </div>
+
     </>
     
   );

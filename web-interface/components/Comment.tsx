@@ -27,7 +27,6 @@ const Comment = ({text, last_modified, avatar}: CommentProps) =>{
 
             </div>
 
-
         </>
     )
 
