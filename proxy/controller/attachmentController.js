@@ -62,10 +62,11 @@ module.exports.uploadAttachment = async (req,res) =>{
             return res.status(400).send('No files were uploaded.');
         }
         const database = await connect();
-        const file = req.files.archivo;
+        const file = req.files.file;
+        const filename = file.name;
         const bucket = new GridFSBucket(database, { bucketName: 'bucket' });
 
-        const uploadStream = bucket.openUploadStream(file.name, { chunkSizeBytes: 1048576, metadata: { field: 'contentType', value: file.mimetype } });
+        const uploadStream = bucket.openUploadStream(filename, { chunkSizeBytes: 1048576, metadata: { field: 'contentType', value: file.mimetype } });
         const buffer = file.data;
 
         uploadStream.write(buffer);
@@ -76,7 +77,7 @@ module.exports.uploadAttachment = async (req,res) =>{
         });
 
         const formData = JSON.stringify({
-            "file_name": file.name,
+            "file_name": filename,
             "link": `https://fs96h11zh9.execute-api.us-east-1.amazonaws.com/downlodAttachment/${uploadStream.id}`,
             "position": 0
         });
