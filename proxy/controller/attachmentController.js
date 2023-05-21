@@ -1,4 +1,5 @@
 const { MongoClient, GridFSBucket, ObjectId } = require('mongodb');
+const fetch = require('node-fetch');
 require('dotenv').config();
 
 const uri = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBHOSTNAME}/?retryWrites=true&w=majority`;
@@ -49,6 +50,9 @@ module.exports.downloadAttachment = async (req,res) =>{
 }
 
 module.exports.uploadAttachment = async (req,res) =>{
+    const host = req.params.host;
+    const cardid = req.params.cardid;
+    const apikey = req.headers.apikey;
 
     try{
         if (!req.files || Object.keys(req.files).length === 0) {
@@ -65,9 +69,29 @@ module.exports.uploadAttachment = async (req,res) =>{
         uploadStream.end();
 
         uploadStream.on('finish', () => {
-            res.send(`File uploaded with id ${uploadStream.id}`);
-        });  
+            console.log(`File uploaded with id ${uploadStream.id}`);
+        });
 
+        const formData = JSON.stringify({
+            "file_name": file.name,
+            "link": `https://fs96h11zh9.execute-api.us-east-1.amazonaws.com/downlodAttachment/${uploadStream.id}`,
+            "position": 0
+        });
+
+        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": apikey
+            },
+            body: formData,
+        });
+        if(response.ok){
+            res.json({"Successful": response.status});
+        }
+        else{
+            res.json({"error": response.status});
+        }
     }
     catch(error){
         console.error(error);
