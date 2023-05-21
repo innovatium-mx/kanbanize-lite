@@ -1,11 +1,12 @@
 import openedCard from '../styles/OpenedActivityCard.module.css';
 import React, { useState, useLayoutEffect, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faXmark, faChevronDown, faL } from '@fortawesome/free-solid-svg-icons';
+import {faXmark, faChevronDown, faCamera, faL} from '@fortawesome/free-solid-svg-icons';
 import adjustColor from '../helpers/lightenColor';
 import dynamic from 'next/dynamic';
 import {getCommentsEndpoint} from '../constants'
 import { useRouter } from 'next/router';
+import CommentContainer from './CommentContainer';
 
 const cookieCutter= require('cookie-cutter');
 
@@ -18,7 +19,8 @@ export type OpenedActivityCardProps = {
     "description": string,
     "setDisplayCard": any,
     "color": string,
-    "card_id" : number
+    "card_id" : number,
+    "comment_count" : number
 }
 
 export type Author = {
@@ -34,8 +36,9 @@ export type comment = {
     "author": Author
 }
 
-const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id}: OpenedActivityCardProps) =>{
+const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count}: OpenedActivityCardProps) =>{
     const router = useRouter();
+
     const [openComments, setOpenComments] = useState<boolean>(false);
     const [arrowDown, setArrowDown] = useState(openedCard.nonRotated);
     const [isExpanded, setIsExpanded] = useState('none');
@@ -49,8 +52,64 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const [newComment, setNewComment] = useState<string>("");
     const [justDone, setJustDone] = useState<boolean>(false);
 
+    const [justSent, setJustSent] = useState<string>('');
+
+    const windowHeight = useRef([window.innerHeight]);
+    const componentRef = useRef<any>(null);
+    const [openedCardHeight, setOpenedCardHeight] = useState({height:0})
+    const [scrollClass, setScrollClass] = useState(openedCard.nonScroll);
+    const [justResized, setJustResized] = useState<boolean>(false);
+
     const apikey = cookieCutter.get('apikey');
     const host = cookieCutter.get('host');
+
+    var today : Date = new Date();
+    const [currentTime, setCurrentTime]= useState<string>(today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds());
+    var time : string = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+    const[localCommentsCount, setLocalCommentsCount] = useState<number>(comment_count);
+
+    const getCurrentTime = () =>{
+        setCurrentTime(today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds());
+        return currentTime;
+    }
+
+
+    useLayoutEffect(()=>{
+        if(componentRef.current) {
+            setOpenedCardHeight({height: componentRef.current.clientHeight})
+        }
+    },[])
+
+    useLayoutEffect(()=>{
+        if((openedCardHeight.height > windowHeight.current[0]) && justResized == false){
+                setScrollClass(openedCard.scroll)
+                if (typeof window !== 'undefined') {
+                    document.documentElement.style.setProperty('--dynamic-opened-card-height-', (windowHeight.current[0]-500).toString() + 'px');
+                }
+            setJustResized(true);
+        }
+        else if(justResized && scrollClass==openedCard.nonScroll){
+            //setJustResized(false);
+            setScrollClass(openedCard.nonScroll)
+        }
+    })
+
+    
+    const pushComment = (text: string, last_modified: string, author: Author) =>{
+        var decoyCommentsArray : Array<comment | null> = ([]);
+        decoyCommentsArray = commentsArray;
+
+        const newComment : comment= {
+            "text" : text,
+            "last_modified" : last_modified,
+            "author": author
+        }
+
+        decoyCommentsArray.push(newComment);
+        setCommentsArray(decoyCommentsArray);
+
+    }
 
     const getComments =()=>{
 
@@ -73,30 +132,13 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             }
             else{
                 //data exists
-                var currentText;
-                var currentLastModified;
-                var currentAuthor;
-
-                var currentComment: comment = {"text" : "", "last_modified" : "", "author" : {"type" : "", "value" : 0, "avatar" : "", "username": ""}};
-                var currentArray: Array<comment> = ([]);
 
                 for(var x = 0; x<data.length; x++){
-                    currentText = data[x].text;
-                    currentLastModified = data[x].last_modified;
-                    currentAuthor = data[x].author;
-
-                    currentComment = {
-                        "text" : currentText,
-                        "last_modified" : currentLastModified,
-                        "author": currentAuthor
-                    }
-
-                    currentArray.push(currentComment);
+                    pushComment(data[x].text, data[x].last_modified, data[x].author);
                 }
-                setCommentsArray(currentArray);
 
                 //renders comments component only if comments array isn't empty
-                if(currentArray.length > 0){
+                if(commentsArray.length > 0){
                     setIsExpanded('block');
                 }
                 else{
@@ -120,15 +162,19 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         if(openComments){
             setArrowDown(openedCard.rotated);
             setJustDone(false);
-            getComments();
-            
+
+            //fetch is done only if comment count > 0
+            if(localCommentsCount>0){
+                getComments();
+            }
+                
         }
         else{
             setIsExpanded('none');
             setArrowDown(openedCard.nonRotated);
         }
 
-    } 
+    }
 
     const handleNewComment = (e: {
         target: { value: React.SetStateAction<string> };
@@ -154,7 +200,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         })
         .then((response) => response.json())
         .then((data) =>{
-            console.log(data);
             if(data.error){
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
@@ -163,18 +208,31 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 router.replace({pathname: '/'});
             }
             else{
-                // re renders comments area
-                getComments();
+                // comments array updated locally and displayed
+                //getComments();
+
+                const newAuthor: Author = {
+                    "avatar": owner_avatar,
+                    "type" : "internal",
+                    "username" : owner,
+                    "value" : 0
+                }
+
+                pushComment(newComment, getCurrentTime(), newAuthor);
+                setLocalCommentsCount(localCommentsCount+1);
             }
         })
         .catch((error) => {
-            console.log(error);
             cookieCutter.set('apikey', '', { expires: new Date(0) })
             cookieCutter.set('host', '', { expires: new Date(0) })
             cookieCutter.set('email', '', { expires: new Date(0) })
             cookieCutter.set('userid', '', { expires: new Date(0) }) 
             router.replace({pathname: '/'});
         })
+        
+        //sets variable that rerenders comments component
+        setJustSent('');
+
     }
 
     useLayoutEffect(()=>{
@@ -229,83 +287,94 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     return(
     <>
         <div className={openedCard.modalBackground}>
-           <div className={openedCard.Card}>
-                <div className={openedCard.close}>
-                    <button className={openedCard.closeButton} onClick={() => onCloseClick()}>
-                        <FontAwesomeIcon icon={faXmark} style={{color: "#62656a", height: "2em"}} />
-                    </button>
-                </div>
 
-                <div className={openedCard.title}>
-                    {title}
-                </div>
+            <div className={scrollClass} ref={componentRef}>
 
-                <div className={openedCard.ownersWrap}>
-                    
-                    <div className={openedCard.owner}>
-                        {owner_avatar!=null && <img src={owner_avatar} alt="owner_avatar" className={openedCard.ownerPhoto}/> /*user exists and have photo*/} 
-                        {owner==null && owner_avatar==null && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user doesn't exis*/}
-                        {owner!=null && owner_avatar==null && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
-
-                        <div>Owner</div>
+                <div className={openedCard.Card}>
+                    <div className={openedCard.close}>
+                        <button className={openedCard.closeButton} onClick={() => onCloseClick()}>
+                            <FontAwesomeIcon icon={faXmark} style={{color: "#62656a", height: "2em"}} />
+                        </button>
                     </div>
 
-                    <div className={openedCard.coOwners}>
+                    <div className={openedCard.title}>
+                        {title}
+                    </div>
 
-                        {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[0]!=null && <img src={co_owner_avatars[0]} alt="owner_avatar1" className={openedCard.image1}/>}
-                        {/*coOwners exists, coOwner1 have photo*/}
-                        {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[0]==null && <div className={openedCard.image1} style={{backgroundColor:currCoBg1}}><div className={openedCard.letter}>{letterCo[0]}</div></div>}
-                        {/*coOwners exists, coOwner1 doesn't have photo*/}
-                        {co_owner_usernames==null && <div className={openedCard.image1} style={ {backgroundColor:currCoBg1}}><div className={openedCard.letter}>{letterCo[0]}</div></div>}
-                        {/*coOwners doesn't exist*/}
+                    <div className={openedCard.ownersWrap}>
                         
-                        {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[1]!=null && <img src={co_owner_avatars[1]} alt="owner_avatar1" className={openedCard.image2}/>}
-                        {/*coOwners exists, coOwner2 have photo*/}
-                        {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[1]==null && <div className={openedCard.image2} style={{backgroundColor:currCoBg2}}><div className={openedCard.letter}>{letterCo[1]}</div></div>}
-                        {/*coOwners exists, coOwner2 doesn't have photo*/}
-                        {co_owner_usernames==null && <div className={openedCard.image2} style={{backgroundColor:currCoBg2}}><div className={openedCard.letter}>{letterCo[1]}</div></div>}
-                        {/*coOwners doesn't exist*/}
+                        <div className={openedCard.owner}>
+                            {owner_avatar!=null && <img src={owner_avatar} alt="owner_avatar" className={openedCard.ownerPhoto}/> /*user exists and have photo*/} 
+                            {owner==null && owner_avatar==null && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user doesn't exis*/}
+                            {owner!=null && owner_avatar==null && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
 
-                        {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[2]!=null && <img src={co_owner_avatars[2]} alt="owner_avatar1" className={openedCard.image3}/>}
-                        {/*coOwners exists, coOwner3 have photo*/}
-                        {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[2]==null && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
-                        {/*coOwners exists, coOwner3 doesn't have photo*/}
-                        {co_owner_usernames==null && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
-                        {/*coOwners doesn't exist*/}
+                            <div>Owner</div>
+                        </div>
 
-                        {<div>Co-Owner</div>}
+
+                        <div className={openedCard.coOwners}>
+
+                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[0]!=null && <img src={co_owner_avatars[0]} alt="owner_avatar1" className={openedCard.image1}/>}
+                            {/*coOwners exists, coOwner1 have photo*/}
+                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[0]==null && <div className={openedCard.image1} style={{backgroundColor:currCoBg1}}><div className={openedCard.letter}>{letterCo[0]}</div></div>}
+                            {/*coOwners exists, coOwner1 doesn't have photo*/}
+                            {co_owner_usernames==null && <div className={openedCard.image1} style={ {backgroundColor:currCoBg1}}><div className={openedCard.letter}>{letterCo[0]}</div></div>}
+                            {/*coOwners doesn't exist*/}
+                            
+                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[1]!=null && <img src={co_owner_avatars[1]} alt="owner_avatar1" className={openedCard.image2}/>}
+                            {/*coOwners exists, coOwner2 have photo*/}
+                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[1]==null && <div className={openedCard.image2} style={{backgroundColor:currCoBg2}}><div className={openedCard.letter}>{letterCo[1]}</div></div>}
+                            {/*coOwners exists, coOwner2 doesn't have photo*/}
+                            {co_owner_usernames==null && <div className={openedCard.image2} style={{backgroundColor:currCoBg2}}><div className={openedCard.letter}>{letterCo[1]}</div></div>}
+                            {/*coOwners doesn't exist*/}
+
+                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[2]!=null && <img src={co_owner_avatars[2]} alt="owner_avatar1" className={openedCard.image3}/>}
+                            {/*coOwners exists, coOwner3 have photo*/}
+                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[2]==null && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
+                            {/*coOwners exists, coOwner3 doesn't have photo*/}
+                            {co_owner_usernames==null && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
+                            {/*coOwners doesn't exist*/}
+
+                            {<div>Co-Owner</div>}
+
+                        </div>
 
                     </div>
 
-                </div>
-
-                <div className={openedCard.description}>
-                    {description}
-                </div>
-
-                <div className={openedCard.addComment}>
-                    <input type="text" className={openedCard.inputComment} name = 'password' placeholder={'Agregar comentario...'} onChange={handleNewComment} value={newComment}></input>
-
-                    <button className={openedCard.sendButton} onClick={()=>{handleSend()}}>
-                        <img src="/send/blue_send_button.png" className={openedCard.send}></img>
-                    </button>    
-                    
-                </div>
-
-                <div className={openedCard.commentsWrap}>
-                    <div className={openedCard.commentsText}>
-                        Comentarios
+                    <div className={openedCard.description}>
+                        {<div dangerouslySetInnerHTML={{ __html: description }} />}
                     </div>
-                        <FontAwesomeIcon icon={faChevronDown} className={arrowDown} onClick={()=>{handleOpenComments()}}/>
-                </div>
 
-                <div className={openedCard.commentsContainer}>
-                     {commentsArray.map((element: any, index)=> 
-                        <Comment key={element.key} text={element.text} last_modified={element.last_modified} avatar={element.author.avatar}/>
-                    )} 
+                    <div className={openedCard.addComment}>
+
+                        <button className={openedCard.cameraIcon}>
+                            <FontAwesomeIcon icon={faCamera} style={{color:'gray'}}/>
+                        </button>
+
+                        <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={'Agregar comentario...'} onChange={handleNewComment} value={newComment}></input>
+
+                        <button className={openedCard.sendButton} onClick={()=>{handleSend()}}>
+                            <img src="/send/blue_send_button.png" className={openedCard.send}></img>
+                        </button>    
+                        
+                    </div>
+
+                    <div className={openedCard.commentsWrap}>
+                        <div className={openedCard.commentsText}>
+                            Comentarios
+                        </div>
+
+                        <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton}>
+                            <FontAwesomeIcon icon={faChevronDown} className={arrowDown}/>
+                        </button>
+                    </div>
+
+                    <CommentContainer commentsArray={commentsArray} justSent={justSent} arrowDown={arrowDown}/>
+
                 </div>
 
             </div>
+           
         </div>
         
     </>

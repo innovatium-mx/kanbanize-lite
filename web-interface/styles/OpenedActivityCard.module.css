@@ -1,5 +1,5 @@
 div.Card{
-    position: relative;
+    box-sizing: border-box;
     display: flex;
     width: 22em;
     height: auto;
@@ -8,6 +8,8 @@ div.Card{
     border-radius: 0.5em;
     flex-direction: column;
     padding-bottom: 3em;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 
@@ -153,7 +155,7 @@ div.addComment{
 
 
 input.inputComment{
-    width: 15em;
+    width: 14em;
     border: none;
     border-radius: 0px;
     background-color: #eaeaea;
@@ -178,13 +180,11 @@ img.send{
 }
 
 .rotated{
-    margin-top: 2.4em;
     margin-left: 0.4em ;
     transform: rotate(180deg);
 }
 
 .nonRotated{
-    padding-top: 2.4em;
     padding-left: 0.4em;
     transform: rotate(0);
 }
@@ -239,6 +239,29 @@ div.commentsContainer{
     display: var(--comments-display-);
     overflow:scroll;
     overflow-x: hidden;
-    scrollbar-color: red;
 
+}
+
+button.cameraIcon{
+    border: none;
+    background-color: white;
+    margin: 0.2em;
+}
+
+div.scroll{
+    /*height: var(--dynamic-opened-card-height-);*/
+    height: 40em;
+    overflow-y:scroll;
+    overflow-x: hidden;
+}
+
+div.nonScroll{
+    height: auto;
+}
+
+button.arrowButton{
+    margin-top: 1.8em;
+    border: none;
+    background-color: white;
+    height: 2em;
 }
