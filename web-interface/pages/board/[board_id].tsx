@@ -82,7 +82,6 @@ const Board = ( props: PropsResponse) => {
 
   const [currentCard, setCurrentCard] = useState<card>()
   const [displayCard, setDisplayCard] = useState(false);
-  const [backgroundOverflowY, setBackgroundOverflowY] = useState(dashboard.boardPageWrapScroll);
 
   const [workflow, setWorkflow] = useState<workflow>({
     "type": -1,
@@ -125,30 +124,9 @@ const Board = ( props: PropsResponse) => {
     setDisplayCard(value);
   }
 
-  // if modal is displayed, overflow-y is hidden
-
-  if(displayCard){
-    useEffect(()=>{
-      setBackgroundOverflowY(dashboard.boardPageWrapScrollHidden);
-    })
-   /*  if (typeof window != 'undefined' && window.document) {
-      document.body.style.overflow = 'hidden';
-  } */
-
-  }
-  else{
-    useEffect(()=>{
-      setBackgroundOverflowY(dashboard.boardPageWrapScroll);
-    })
-    
-  }
-
-  console.log(backgroundOverflowY);
 
   return (
-
     <>
-
     
     <div className={dashboard.modalWrap}>
         {/*displayCard && currentCard?.owner_avatar!= null && currentCard?.owner_username!=null  && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard}/>*/}
@@ -159,7 +137,7 @@ const Board = ( props: PropsResponse) => {
     </div>
     
     {/* overflow-y hiddens when opened card modal is shown */}
-    <div className={backgroundOverflowY}>
+    <div className={dashboard.boardPageWrapScroll}>
         <div className={dashboard.topBar}>
             <div className={dashboard.dropdownFragment}>
               <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow}/>

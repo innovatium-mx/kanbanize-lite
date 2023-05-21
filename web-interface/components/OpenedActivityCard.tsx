@@ -7,7 +7,6 @@ import dynamic from 'next/dynamic';
 import {getCommentsEndpoint} from '../constants'
 import { useRouter } from 'next/router';
 import CommentContainer from './CommentContainer';
-import { text } from 'stream/consumers';
 
 const cookieCutter= require('cookie-cutter');
 
@@ -107,15 +106,10 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             "author": author
         }
 
-        console.log(decoyCommentsArray);
-        console.log(newComment);        
         decoyCommentsArray.push(newComment);
-        console.log(decoyCommentsArray);
         setCommentsArray(decoyCommentsArray);
 
     }
-
-
 
     const getComments =()=>{
 
@@ -142,7 +136,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 for(var x = 0; x<data.length; x++){
                     pushComment(data[x].text, data[x].last_modified, data[x].author);
                 }
-                console.log(commentsArray);
 
                 //renders comments component only if comments array isn't empty
                 if(commentsArray.length > 0){
@@ -171,16 +164,17 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             setJustDone(false);
 
             //fetch is done only if comment count > 0
-            if(localCommentsCount>0)
+            if(localCommentsCount>0){
                 getComments();
-            
+            }
+                
         }
         else{
             setIsExpanded('none');
             setArrowDown(openedCard.nonRotated);
         }
 
-    } 
+    }
 
     const handleNewComment = (e: {
         target: { value: React.SetStateAction<string> };
@@ -206,7 +200,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         })
         .then((response) => response.json())
         .then((data) =>{
-            console.log(data);
             if(data.error){
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
@@ -230,7 +223,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             }
         })
         .catch((error) => {
-            console.log(error);
             cookieCutter.set('apikey', '', { expires: new Date(0) })
             cookieCutter.set('host', '', { expires: new Date(0) })
             cookieCutter.set('email', '', { expires: new Date(0) })
@@ -371,7 +363,10 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                         <div className={openedCard.commentsText}>
                             Comentarios
                         </div>
-                            <FontAwesomeIcon icon={faChevronDown} className={arrowDown} onClick={()=>{handleOpenComments()}}/>
+
+                        <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton}>
+                            <FontAwesomeIcon icon={faChevronDown} className={arrowDown}/>
+                        </button>
                     </div>
 
                     <CommentContainer commentsArray={commentsArray} justSent={justSent} arrowDown={arrowDown}/>

@@ -14,7 +14,6 @@ const CommentContainer = ({commentsArray, justSent, arrowDown} : CommentContaine
 
     // scrolls to the bottom of the component
     useEffect(()=>{
-        console.log('KITI');
         bottomRef.current?.scrollIntoView({behavior: 'smooth'});
     }, [justSent, arrowDown])
 
