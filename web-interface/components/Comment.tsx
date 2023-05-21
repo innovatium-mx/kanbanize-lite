@@ -3,10 +3,11 @@ import comment from '../styles/Comment.module.css'
 export type CommentProps = {
     "text" : string,
     "last_modified" : string,
-    "avatar" : string,
+    "avatar" : string | null,
+    "color" : string
 }
 
-const Comment = ({text, last_modified, avatar}: CommentProps) =>{
+const Comment = ({text, last_modified, avatar, color}: CommentProps) =>{
 
 
     const position = last_modified.search('T');
@@ -17,7 +18,11 @@ const Comment = ({text, last_modified, avatar}: CommentProps) =>{
         <>
             <div className={comment.comment}>
                 <div className={comment.photoTimeWrap}>
-                    <img src={avatar} alt="owner_avatar" className={comment.photo}/>
+
+                    {avatar && <img src={avatar} alt="owner_avatar" className={comment.photo}/>}
+                    {!avatar && <div className={comment.photo} style={{backgroundColor:color}}></div>}
+
+
                     <span className={comment.time}>{finalDate}</span>
                 </div>
 

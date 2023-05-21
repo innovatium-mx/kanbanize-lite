@@ -12,8 +12,8 @@ const cookieCutter= require('cookie-cutter');
 
 export type OpenedActivityCardProps = {
     "title" : string,
-    "owner" : string | null,
-    "owner_avatar" : string | null,
+    "owner" : string | undefined,
+    "owner_avatar" : string | undefined,
     "co_owner_usernames"  : Array<string> | null,
     "co_owner_avatars" : Array<string> | null,
     "description": string,
@@ -26,8 +26,8 @@ export type OpenedActivityCardProps = {
 export type Author = {
     "type" : string,
     "value" : number,
-    "avatar" : string | null,
-    "username" : string | null
+    "avatar" : string | undefined,
+    "username" : string | undefined
 }
 
 export type comment = {
@@ -247,11 +247,11 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     var letterBackground = ''
 
     //owner existance
-    if(owner==null && owner_avatar==null){
+    if(owner==undefined && owner_avatar==undefined){
         letter = 'N';
         letterBackground = '#505050';
     }
-    else if(owner!=null && owner_avatar==null){
+    else if(owner!=undefined && (owner_avatar=="" || owner_avatar==null)){
         letter = owner.charAt(0);
         letterBackground = '#' + color;
     }
@@ -262,11 +262,11 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
     if(co_owner_usernames!=null && co_owner_usernames!=undefined){
 
-        for(var x = 0; x < co_owner_usernames.length -1; x++){
+        for(var x = 0; x < co_owner_usernames.length; x++){
             //coOwner[x] existance
             if(co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[x]==undefined){ // coOwners exist, but don't have avatar
                 letterCo[x]=co_owner_usernames[x].charAt(0);
-                letterCoBg[x]=adjustColor('#' + color, 600*(x+0.7)/10);
+                letterCoBg[x]=adjustColor('#' + color, 500*(x+0.7)/10);
             }
         }
     }
@@ -283,6 +283,14 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         setCurrCoBg2(letterCoBg[1])
         setCurrCoBg3(letterCoBg[2])
     })
+
+    console.log(owner);
+    console.log(owner_avatar);
+    console.log(owner_avatar==""); //owner_avatar
+    console.log(letterBackground);
+    console.log(co_owner_usernames);
+
+    
 
     return(
     <>
@@ -304,9 +312,9 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     <div className={openedCard.ownersWrap}>
                         
                         <div className={openedCard.owner}>
-                            {owner_avatar!=null && <img src={owner_avatar} alt="owner_avatar" className={openedCard.ownerPhoto}/> /*user exists and have photo*/} 
-                            {owner==null && owner_avatar==null && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user doesn't exis*/}
-                            {owner!=null && owner_avatar==null && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
+                            {owner_avatar!="" && owner_avatar!=undefined && <img src={owner_avatar} alt="owner_avatar" className={openedCard.ownerPhoto}/> /*user exists and have photo*/} 
+                            {owner==undefined && owner_avatar==undefined && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user doesn't exis*/}
+                            {owner!=null && (owner_avatar=="" || owner_avatar== null) && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
 
                             <div>Owner</div>
                         </div>
@@ -369,7 +377,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                         </button>
                     </div>
 
-                    <CommentContainer commentsArray={commentsArray} justSent={justSent} arrowDown={arrowDown}/>
+                    <CommentContainer commentsArray={commentsArray} justSent={justSent} arrowDown={arrowDown} color={color}/>
 
                 </div>
 

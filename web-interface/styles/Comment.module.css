@@ -18,6 +18,12 @@ img.photo{
     height: 2em;
 }
 
+div.photo{
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+}
+
 span.time{
     display: inherit;
     font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;

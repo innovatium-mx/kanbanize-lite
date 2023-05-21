@@ -32,7 +32,7 @@ export type card = {
     "custom_id": number | null,
     "title": string,
     "owner_user_id": number | null,
-    "owner_username": string | null,
+    "owner_username": string | undefined,
     "owner_avatar": string | null,
     "type_id": number | null,
     "color": string,
@@ -137,6 +137,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         //retrieve cards index
         setCardIndex(cardIndex);
         const curr = activities!=null ? activities.find(item => item.card_id === cardIndex) : [];
+        console.log(curr);
 
         updateCurrentCard(curr);
 
