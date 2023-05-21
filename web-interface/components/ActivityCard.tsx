@@ -58,11 +58,10 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_o
 
             <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}} onClick={()=> handleClick()}>
                 <div className={actCard.text}>{title}</div>
-                    <div className={actCard.imageSection}>
-                        {owner_avatar !=  null ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
-                        {/*owner_username != undefined && <div className={actCard.name}>{owner_username}</div>*/}
-
-                    </div>
+                <div className={actCard.imageSection}>
+                    {owner_avatar !=  null ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
+                    {/*owner_username != undefined && <div className={actCard.name}>{owner_username}</div>*/}
+                </div>
             </div>
             <footer className={actCard.bottom} style={{backgroundColor:newColor}}></footer>
         
