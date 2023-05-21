@@ -45,7 +45,7 @@ module.exports.downloadAttachment = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.status(500).send('Error thrown when trying to upload the file');
+        res.status(500).send('Error thrown when trying to download the file');
     }
 }
 
