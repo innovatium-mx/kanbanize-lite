@@ -78,7 +78,7 @@ module.exports.uploadAttachment = async (req,res) =>{
             "position": 0
         });
 
-        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}`, {
+        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}/attachments`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
