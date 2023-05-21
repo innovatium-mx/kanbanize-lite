@@ -23,13 +23,13 @@ const phototesting = () => {
         }
 
         try {
-          const res = await axios.post(
-            "http://localhost:4000/uploadAttachment/university6y/888",
-            formData, config
-          );
-          console.log(res);
-        } catch (ex) {
-          console.log(ex);
+            const res = await axios.post(
+                "https://fs96h11zh9.execute-api.us-east-1.amazonaws.com/uploadAttachment/university6y/888",
+                formData, config
+            );
+        } 
+        catch (ex) {
+            console.log(ex);
         }
         
     }
