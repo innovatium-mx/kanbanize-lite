@@ -100,6 +100,7 @@ module.exports.boardDetails = async (req,res) =>{
     const boardid = req.params.boardid;
     const apikey = req.headers.apikey;
     var users = [];
+    var boardUsers = [];
     try{
         const response1 = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/workflows`, {
             method: "GET",
@@ -211,6 +212,9 @@ module.exports.boardDetails = async (req,res) =>{
                                         const userObject = users.find(item => item.user_id === element.owner_user_id);
                                         tempCard.owner_username = userObject.username;
                                         tempCard.owner_avatar = userObject.avatar;
+                                        if(boardUsers.find(item => item.user_id === userObject.user_id) === undefined){
+                                            boardUsers.push(userObject);
+                                        }
                                     }
                                     if(tempCard.co_owner_ids.length > 0){
                                         const co_owner_usernames = []
@@ -235,7 +239,9 @@ module.exports.boardDetails = async (req,res) =>{
                             else{
                                 boardWorkflow[x].columns[y].cards = [];
                             }
-                        } 
+                        }
+                        boardWorkflow[x].users = boardUsers;
+                        boardUsers = [];
                     }
                     res.json(boardWorkflow);
                 }

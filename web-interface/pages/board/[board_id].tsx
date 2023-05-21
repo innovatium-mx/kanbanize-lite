@@ -14,6 +14,13 @@ import {card} from '../../components/CardsWorkflow';
 
 type Props = {}
 
+type user = {
+    user_id: number | null,
+    username: string,
+    realname: string,
+    avatar: string
+}
+
 type parent_columns = {
     parent_id: number,
     parent_name: string,
@@ -46,6 +53,7 @@ type workflow = {
   "is_collapsible": number,
   "name": string,
   "workflow_id": number,
+  "users": Array<user>,
   "columns": Array<column>
 }
 
@@ -83,6 +91,7 @@ const Board = ( props: PropsResponse) => {
     "is_collapsible": -1,
     "name": "",
     "workflow_id": -1,
+    "users" : [],
     "columns": [] 
   });
 
@@ -92,7 +101,13 @@ const Board = ( props: PropsResponse) => {
   const board = props.data;
 
   const getWorkflow = (workflowid : number) => {
-    setWorkflow(board.filter(function(item) { return item.workflow_id === workflowid; })[0]);
+    const temp = board.filter(function(item) { return item.workflow_id === workflowid; })[0];
+    temp.users.push({user_id: null,
+    username: "Not Assigned",
+    realname: "None",
+    avatar: "/None.jpg"
+    })
+    setWorkflow(temp);
   }
 
   const updateCurrentCard = (curr: card) =>{
@@ -154,7 +169,7 @@ const Board = ( props: PropsResponse) => {
         </div>
       <div>
         { workflow.type === 0 && 
-          <CardsWorkflow data={workflow.columns} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}/>
+          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}/>
         }
       </div>
 

@@ -1,4 +1,4 @@
-div.grid{
+div.grid {
     display: grid;
     place-items: center;
     margin-top: 2rem;

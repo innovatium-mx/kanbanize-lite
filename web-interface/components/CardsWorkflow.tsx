@@ -8,6 +8,18 @@ import {faCircleArrowLeft, faCircleArrowRight} from '@fortawesome/free-solid-svg
 import {urlCloud} from '../constants'
 const cookieCutter= require('cookie-cutter');
 
+type selection = {
+    user_id: number | null,
+    checked: boolean
+}
+
+type user = {
+    user_id: number | null,
+    username: string,
+    realname: string,
+    avatar: string
+}
+
 type parent_columns = {
     parent_id: number,
     parent_name: string,
@@ -46,12 +58,13 @@ type column = {
   "cards_per_row": number,
   "flow_type": number,
   "card_ordering": string | null,
-  "cards": Array<card> | null,
+  "cards": Array<card>,
   "order": number
 }
 
 type CardsWorkflowProps = {
     data: Array<column>,
+    users: Array<user>,
     workflow_name: string,
     updateCurrentCard: any,
     displayModal: any,
@@ -63,21 +76,62 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal, moveCards} : CardsWorkflowProps) => {
+const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards} : CardsWorkflowProps) => {
     const router = useRouter();
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
-    const [activities, setActivities] = useState<Array<card> | null>([]);
+    const [activities, setActivities] = useState<Array<card>>([]);
+    const [filtered, setFiltered] = useState<Array<card>>([]);
+    const [selected, setSelected] = useState<Array<selection>>([]);
     const columns = data;
 
     const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
     const [cardIndex, setCardIndex] = useState(0);
 
     useEffect(()=>{
-        setActivities(data[index].cards) 
-    }, [data, index]);
+        setAllSelected(users);
+    }, [users]);
 
+    useEffect(()=>{
+        setFilteredActivities(data, index, selected);
+    }, [data, index, selected]);
+
+    useEffect(()=>{
+        setActivities(filtered);
+    }, [filtered]);
+
+    const setAllSelected = (u : Array<user>) => {
+        const usersselection : Array<selection> = [];
+        u.map((element: user) =>{
+            usersselection.push({user_id: element.user_id, checked: true});
+        })
+        setSelected(usersselection);
+        setFiltered(data[index].cards);
+    }
+
+    const setFilteredActivities = (d: Array<column>, i: number, s:Array<selection>) =>{ 
+        const filteredData :  Array<card> = [];
+        d[i].cards.map((element: any) => {
+                const found = s.find(item => item.user_id == element.owner_user_id);
+                if(found !== undefined && found.checked){
+                    filteredData.push(element);
+                }
+        })
+        setFiltered(filteredData)
+    }
+
+    const setFilter = (temp : Array<selection>) =>{
+        setSelected(temp);
+        const filteredData :  Array<card> = [];
+        data[index].cards.map((element: any) => {
+            const found = temp.find(item => item.user_id == element.owner_user_id);
+            if(found !== undefined && found.checked){
+                filteredData.push(element);
+            }
+        })
+        setFiltered(filteredData)
+    }
 
     const retrieveIndex = (cardIndex: number) =>{
         //retrieve cards index
@@ -225,7 +279,7 @@ const CardsWorkflow = ({data, workflow_name, updateCurrentCard, displayModal, mo
             
 
             <div className={Dynamicboard.workflowWrap}>
-                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name}/>
+                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users} selected={selected} setFilter={setFilter}/>
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
                         <div key={element.key} className={Dynamicboard.cardContainer}>
