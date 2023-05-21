@@ -9,6 +9,45 @@ const connect = async () => {
     return client.db(process.env.DBNAME);
 }
 
+module.exports.downloadAttachment = async (req,res) =>{
+
+    try{
+        const id = req.params.id;
+
+        const database = await connect();
+        const bucket = new GridFSBucket(database, { bucketName: 'bucket' });
+
+        const file = {
+            name: "",
+            contentType: ""
+        }
+
+        const cursor = bucket.find({ _id: new ObjectId(id) });
+        await cursor.forEach(doc => {
+            file.name = doc.filename;
+            file.contentType = doc.metadata.value;
+        });
+
+        const downloadStream = bucket.openDownloadStream(new ObjectId(id));
+        
+        downloadStream.on('error', (err) => {
+            return res.status(404).send('File not found');
+        });
+
+        res.setHeader('Content-Disposition', `attachment; filename="${file.name}"`);
+        res.setHeader('Content-Type', file.contentType); // 'application/octet-stream'
+        downloadStream.pipe(res);
+
+        downloadStream.on('end', () => {
+            client.close();
+        });
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).send('Error thrown when trying to upload the file');
+    }
+}
+
 module.exports.uploadAttachment = async (req,res) =>{
 
     try{
