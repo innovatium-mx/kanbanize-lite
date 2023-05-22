@@ -265,3 +265,31 @@ button.arrowButton{
     background-color: white;
     height: 2em;
 }
+
+@media screen and (max-width: 380px) {
+    div.Card{
+        width: 18em;
+    }
+    input.inputComment{
+        width: 10.5em;
+    }
+    div.coOwners{
+        padding-right: 4em;
+    }
+}
+
+
+@media screen and (max-width: 300px) {
+    div.Card{
+        width: 16em;
+    }
+    input.inputComment{
+        width: 8.5em;
+    }
+    div.coOwners{
+        padding-right: 3.5em;
+    }
+    div.owner{
+        padding-left: 1em;
+    }
+}
