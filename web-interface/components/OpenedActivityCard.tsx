@@ -13,7 +13,7 @@ const cookieCutter= require('cookie-cutter');
 export type OpenedActivityCardProps = {
     "title" : string,
     "owner" : string | undefined,
-    "owner_avatar" : string | undefined,
+    "owner_avatar" : string | null,
     "co_owner_usernames"  : Array<string> | null,
     "co_owner_avatars" : Array<string> | null,
     "description": string,
@@ -26,7 +26,7 @@ export type OpenedActivityCardProps = {
 export type Author = {
     "type" : string,
     "value" : number,
-    "avatar" : string | undefined,
+    "avatar" : string | null,
     "username" : string | undefined
 }
 
@@ -53,6 +53,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const [justDone, setJustDone] = useState<boolean>(false);
 
     const [justSent, setJustSent] = useState<string>('');
+    const [arrowOpenedCounter, setArrowOpenedCounter] = useState<number>(0);
 
     const windowHeight = useRef([window.innerHeight]);
     const componentRef = useRef<any>(null);
@@ -64,14 +65,16 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const host = cookieCutter.get('host');
 
     var today : Date = new Date();
-    const [currentTime, setCurrentTime]= useState<string>(today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds());
-    var time : string = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
+    //const [currentTime, setCurrentTime]= useState<string>('');
     const[localCommentsCount, setLocalCommentsCount] = useState<number>(comment_count);
 
     const getCurrentTime = () =>{
-        setCurrentTime(today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds());
-        return currentTime;
+        let hours : string = (today.getHours().toString().length == 0 ? '0' + today.getHours().toString() : today.getHours().toString());
+        let minutes : string = (today.getMinutes().toString().length == 0 ? '0' + today.getMinutes().toString() : today.getMinutes().toString());
+        let seconds : string = (today.getSeconds().toString().length == 0 ? '0' + today.getSeconds().toString() : today.getSeconds().toString());
+
+        const finalTime : string= hours + ":" + minutes + ":" + seconds;
+        return finalTime;
     }
 
 
@@ -108,11 +111,9 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
         decoyCommentsArray.push(newComment);
         setCommentsArray(decoyCommentsArray);
-
     }
 
     const getComments =()=>{
-
         //get comments request
         fetch(getCommentsEndpoint + host + '/'+card_id, {
             method: "GET",
@@ -133,17 +134,10 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             else{
                 //data exists
 
-                for(var x = 0; x<data.length; x++){
-                    pushComment(data[x].text, data[x].last_modified, data[x].author);
-                }
-
-                //renders comments component only if comments array isn't empty
-                if(commentsArray.length > 0){
-                    setIsExpanded('block');
-                }
-                else{
-                    setArrowDown(openedCard.nonRotated);
-                }       
+                    for(var x = 0; x<data.length; x++){
+                        pushComment(data[x].text, data[x].last_modified, data[x].author);
+                    }
+                    setArrowOpenedCounter(arrowOpenedCounter+1);
             }
             
         })
@@ -165,7 +159,11 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
             //fetch is done only if comment count > 0
             if(localCommentsCount>0){
-                getComments();
+                if(arrowOpenedCounter == 0){
+                    getComments();
+                }
+                //renders comments component only if comments array isn't empty
+                setIsExpanded('block');
             }
                 
         }
@@ -182,56 +180,59 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         setNewComment(e.target.value);
     }
 
-    let formData : string = JSON.stringify({
-        "text" : newComment
-    });
 
     const handleSend = async () =>{ //when send button is clicked, the comment is post
 
-        setNewComment("");
+        if(newComment != ""){
+            let formData : string = JSON.stringify({
+                "text" : newComment
+            });
 
-        fetch(getCommentsEndpoint + host + '/' + card_id, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "apikey" : apikey
-            },
-            body: formData,
-        })
-        .then((response) => response.json())
-        .then((data) =>{
-            if(data.error){
+            fetch(getCommentsEndpoint + host + '/' + card_id, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "apikey" : apikey
+                },
+                body: formData,
+            })
+            .then((response) => response.json())
+            .then((data) =>{
+                if(data.error){
+                    cookieCutter.set('apikey', '', { expires: new Date(0) })
+                    cookieCutter.set('host', '', { expires: new Date(0) })
+                    cookieCutter.set('email', '', { expires: new Date(0) })
+                    cookieCutter.set('userid', '', { expires: new Date(0) }) 
+                    router.replace({pathname: '/'});
+                }
+                else{
+                    // comments array updated locally and displayed
+                    //getComments();
+    
+                    const newAuthor: Author = {
+                        "avatar": owner_avatar,
+                        "type" : "internal",
+                        "username" : owner,
+                        "value" : 0
+                    }
+    
+                    pushComment(newComment, getCurrentTime(), newAuthor);
+                    setLocalCommentsCount(localCommentsCount+1);
+                }
+            })
+            .catch((error) => {
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
                 cookieCutter.set('userid', '', { expires: new Date(0) }) 
                 router.replace({pathname: '/'});
-            }
-            else{
-                // comments array updated locally and displayed
-                //getComments();
-
-                const newAuthor: Author = {
-                    "avatar": owner_avatar,
-                    "type" : "internal",
-                    "username" : owner,
-                    "value" : 0
-                }
-
-                pushComment(newComment, getCurrentTime(), newAuthor);
-                setLocalCommentsCount(localCommentsCount+1);
-            }
-        })
-        .catch((error) => {
-            cookieCutter.set('apikey', '', { expires: new Date(0) })
-            cookieCutter.set('host', '', { expires: new Date(0) })
-            cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) }) 
-            router.replace({pathname: '/'});
-        })
+            })
+            
+            //sets variable that rerenders comments component
+            setJustSent('');
+        }
         
-        //sets variable that rerenders comments component
-        setJustSent('');
+        setNewComment("");
 
     }
 
@@ -283,13 +284,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         setCurrCoBg2(letterCoBg[1])
         setCurrCoBg3(letterCoBg[2])
     })
-
-    console.log(owner);
-    console.log(owner_avatar);
-    console.log(owner_avatar==""); //owner_avatar
-    console.log(letterBackground);
-    console.log(co_owner_usernames);
-
     
 
     return(

@@ -4,14 +4,16 @@ export type CommentProps = {
     "text" : string,
     "last_modified" : string,
     "avatar" : string | null,
-    "color" : string
+    "color" : string,
+    "username" : string | undefined
 }
 
-const Comment = ({text, last_modified, avatar, color}: CommentProps) =>{
+const Comment = ({text, last_modified, avatar, color, username}: CommentProps) =>{
 
 
     const position = last_modified.search('T');
     const finalDate = last_modified.slice(position+1, position+9);
+
 
     return (
 
@@ -19,8 +21,12 @@ const Comment = ({text, last_modified, avatar, color}: CommentProps) =>{
             <div className={comment.comment}>
                 <div className={comment.photoTimeWrap}>
 
-                    {avatar && <img src={avatar} alt="owner_avatar" className={comment.photo}/>}
-                    {!avatar && <div className={comment.photo} style={{backgroundColor:color}}></div>}
+                    {(avatar && avatar!="") && <img src={avatar} alt="owner_avatar" className={comment.photo}/>}
+                    {(avatar === null || avatar == "") && <div className={comment.photo} style={{backgroundColor:'#'+color}}>
+                        <div className={comment.letter}>
+                            {username?.charAt(0)}    
+                        </div>    
+                    </div>}
 
 
                     <span className={comment.time}>{finalDate}</span>

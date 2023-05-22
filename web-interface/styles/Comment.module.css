@@ -41,3 +41,9 @@ div.text{
     font-weight: 400;
     padding-bottom: 1em;
 }
+
+div.letter{
+    text-align: center;
+    color: white;
+    padding-top: 0.2em;
+}
