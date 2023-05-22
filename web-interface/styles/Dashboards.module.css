@@ -13,7 +13,7 @@
     width: 100%;
 }
 
-div.boardPageWrap{
+div.boardPageWrapScroll{
     z-index: 0;
     position: relative;
 
