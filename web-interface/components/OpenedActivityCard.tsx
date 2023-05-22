@@ -1,7 +1,7 @@
 import openedCard from '../styles/OpenedActivityCard.module.css';
 import React, { useState, useLayoutEffect, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faXmark, faChevronDown, faCamera, faL} from '@fortawesome/free-solid-svg-icons';
+import {faXmark, faChevronDown, faCamera} from '@fortawesome/free-solid-svg-icons';
 import adjustColor from '../helpers/lightenColor';
 import dynamic from 'next/dynamic';
 import {getCommentsEndpoint} from '../constants'
@@ -88,7 +88,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         if((openedCardHeight.height > windowHeight.current[0]) && justResized == false){
                 setScrollClass(openedCard.scroll)
                 if (typeof window !== 'undefined') {
-                    document.documentElement.style.setProperty('--dynamic-opened-card-height-', (windowHeight.current[0]-500).toString() + 'px');
+                    document.documentElement.style.setProperty('--dynamic-opened-card-height-', (windowHeight.current[0]-50).toString() + 'px');
                 }
             setJustResized(true);
         }
