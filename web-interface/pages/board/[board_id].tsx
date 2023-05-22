@@ -4,6 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetServerSideProps} from 'next'
 import authRoute from '../../components/authRoute';
 import CardsWorkflow from '../../components/CardsWorkflow';
+import FloatButton from '../../components/FloatButton';
 import {useEffect, useState, useLayoutEffect } from "react";
 import dynamic from 'next/dynamic';
 import {urlCloud} from '../../constants'
@@ -75,7 +76,7 @@ const Board = ( props: PropsResponse) => {
     const tempWorkflow = workflow;
 
     if(tempWorkflow!=null){
-      
+
       if(tempWorkflow.columns[current].cards != null){
         tempWorkflow.columns[destiny].cards?.push(tempWorkflow.columns[current].cards[cardIndex]);
       }
@@ -116,6 +117,8 @@ const Board = ( props: PropsResponse) => {
       </div>
 
     </div>
+
+        <FloatButton/>
 
     </>
     

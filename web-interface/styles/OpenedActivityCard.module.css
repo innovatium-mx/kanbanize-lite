@@ -249,8 +249,8 @@ button.cameraIcon{
 }
 
 div.scroll{
-    /*height: var(--dynamic-opened-card-height-);*/
-    height: 40em;
+    height: var(--dynamic-opened-card-height-);
+    /* height: 40em; */
     overflow-y:scroll;
     overflow-x: hidden;
 }
