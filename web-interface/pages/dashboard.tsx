@@ -11,8 +11,9 @@ import {urlCloud} from '../constants'
 import dashboard from '../styles/Dashboards.module.css';
 
 import Cookies from 'cookies'
-import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+
+import Navbar from '../components/Navbar';
 const cookieCutter= require('cookie-cutter');
 
 type Props = {}
@@ -80,7 +81,7 @@ const MyBoards = ( props: PropsResponse) => {
 
     return (
         <>
-          
+          <Navbar/>
           <div className={dashboard.topBar}>
               <div className={dashboard.dropdownFragment}>
                 <InterfaceDropdown  data={workspaces} name={"WORKSPACE"} getData={getBoards}/>
