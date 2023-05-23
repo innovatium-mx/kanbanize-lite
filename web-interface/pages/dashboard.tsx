@@ -11,6 +11,8 @@ import {urlCloud} from '../constants'
 import dashboard from '../styles/Dashboards.module.css';
 
 import Cookies from 'cookies'
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 const cookieCutter= require('cookie-cutter');
 
 type Props = {}
@@ -78,17 +80,23 @@ const MyBoards = ( props: PropsResponse) => {
 
     return (
         <>
-        <div>
-        
-        <div className={dashboard.topBar}>
-            <div className={dashboard.dropdownFragment}>
-              <InterfaceDropdown  data={workspaces} name={"WORKSPACE"} getData={getBoards}/>
-            </div>
-            <div className={dashboard.languageDropdown}>
-              <LanguageDropdown/>
-            </div>
+          
+          <div className={dashboard.topBar}>
+              <div className={dashboard.dropdownFragment}>
+                <InterfaceDropdown  data={workspaces} name={"WORKSPACE"} getData={getBoards}/>
+              </div>
               
-        </div>
+              {/*<div className={dashboard.languageDropdown}>
+                <LanguageDropdown/>
+               </div> */}
+
+              <div className='sidebar'>
+                <Sidebar/>
+              </div>
+                
+                
+          </div>
+          
 
             <div className={dashboard.grid}>
               {/*<div className={dashboard.title}>{t("myBoards.myBoards")}</div>*/}
@@ -99,7 +107,6 @@ const MyBoards = ( props: PropsResponse) => {
 
             </div>
  
-        </div>
         </>
     )
 }

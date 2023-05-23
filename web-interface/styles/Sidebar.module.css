@@ -1,0 +1,27 @@
+
+
+.list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0
+}
+
+.list li {
+    margin:0 1rem;
+    color: white;
+    transition: 300ms;
+    background: none;
+}
+
+.list li:active{
+    background: #FFFFFF80;
+    border-radius: 10%;
+}
+
+.button {
+    border: none;
+    background: none;
+    color: white;
+}
+
