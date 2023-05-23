@@ -41,6 +41,12 @@
     align-items: center;
 }
 
+@media screen and (max-width: 307px) {
+    .grid {
+        padding-left: 1em;
+    }
+}
+
 @media (hover: hover) {
     .buttons:hover {
         transform: scale(1.65);
