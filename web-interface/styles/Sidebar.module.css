@@ -7,6 +7,8 @@
     margin: 0;
     justify-content: space-evenly;
     padding: 0rem;
+    margin-right: 1rem;
+    
 }
 
 .list li {
@@ -14,6 +16,8 @@
     color: white;
     transition: 300ms;
     background: none;
+    display: none;
+    
 }
 
 .list li:active{
@@ -27,5 +31,29 @@
     color: white;
 }
 
+.buttonMenu {
+    border: none;
+    background: none;
+    color: white;
+    display: initial;
+    margin-right: 3rem;
+}
 
+.icon {
+    margin-right: 0.5rem;
+}
 
+.navItems{
+    display: flex;
+}
+
+@media screen and (min-width: 1100px) {
+
+    .buttonMenu {
+        display: none;
+    }
+
+    .list li{
+        display: initial;
+     }
+}

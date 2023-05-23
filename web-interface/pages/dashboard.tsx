@@ -13,7 +13,7 @@ import dashboard from '../styles/Dashboards.module.css';
 import Cookies from 'cookies'
 import Sidebar from '../components/Sidebar';
 
-import Navbar from '../components/Navbar';
+//import Navbar from '../components/Navbar';
 const cookieCutter= require('cookie-cutter');
 
 type Props = {}
@@ -56,6 +56,7 @@ const MyBoards = ( props: PropsResponse) => {
         setDropdown(!dropdown);
     }
 
+    const Navbar = dynamic(import('../components/Navbar'), { ssr: false });
 
     const router = useRouter();
     const [value, setValue] = useState(0);
@@ -81,7 +82,13 @@ const MyBoards = ( props: PropsResponse) => {
 
     return (
         <>
-          <Navbar/>
+          <Navbar data={workspaces} _nextI18Next={{
+          defaultLocale: '',
+          domains: undefined,
+          localeDetection: undefined,
+          locales: []
+        }}/>
+
           <div className={dashboard.topBar}>
               <div className={dashboard.dropdownFragment}>
                 <InterfaceDropdown  data={workspaces} name={"WORKSPACE"} getData={getBoards}/>
