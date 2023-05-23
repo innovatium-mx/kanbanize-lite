@@ -6,8 +6,14 @@ import LanguageDropdown from "./LanguageDropdown"
 import { boardCard } from "./Dashboard"
 import Sidebar from "./Sidebar"
 import navbar from '../styles/Navbar.module.css'
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { GetServerSideProps } from "next"
+import Cookies from "cookies"
+import {urlCloud} from '../constants'
 
 
+
+type Props = {}
 
 interface Data {
     workspace_id: number,
@@ -58,5 +64,7 @@ const Navbar = ({data} : PropsResponse) => {
     )
 }
 
+
+  
 export default Navbar
 
