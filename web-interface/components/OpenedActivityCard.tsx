@@ -70,8 +70,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     //const [currentTime, setCurrentTime]= useState<string>('');
     const[localCommentsCount, setLocalCommentsCount] = useState<number>(comment_count);
 
-    const handleChange = async (e) => {
-        if (e.target.files[0]) {
+    const handleChange = async (e : React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
             const file = e.target.files[0];
             if(file.size / 1024 > 15000){
                 console.log(file.type);
@@ -392,7 +392,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     <div className={openedCard.addComment}>
 
                         <div className={openedCard.cameraIcon}>
-                            <label for="file-input">
+                            <label htmlFor="file-input">
                                 <FontAwesomeIcon icon={faCamera} style={{color:'gray'}}/>
                             </label>
                             <input type="file"  id="file-input" name="file" onChange={handleChange} />
