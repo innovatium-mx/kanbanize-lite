@@ -65,6 +65,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
     const apikey = cookieCutter.get('apikey');
     const host = cookieCutter.get('host');
+    const sessionUsername = cookieCutter.get('username');
+    const sessionAvatar = cookieCutter.get('avatar');
 
     var today : Date = new Date();
     //const [currentTime, setCurrentTime]= useState<string>('');
@@ -252,9 +254,9 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     //getComments();
     
                     const newAuthor: Author = {
-                        "avatar": owner_avatar,
+                        "avatar": sessionAvatar,
                         "type" : "internal",
-                        "username" : owner,
+                        "username" : sessionUsername,
                         "value" : 0
                     }
     
