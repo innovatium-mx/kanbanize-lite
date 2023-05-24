@@ -1,18 +1,20 @@
 import openedCard from '../styles/OpenedActivityCard.module.css';
 import React, { useState, useLayoutEffect, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faXmark, faChevronDown, faCamera, faL} from '@fortawesome/free-solid-svg-icons';
+import {faXmark, faChevronDown, faCamera} from '@fortawesome/free-solid-svg-icons';
 import adjustColor from '../helpers/lightenColor';
 import dynamic from 'next/dynamic';
 import {getCommentsEndpoint} from '../constants'
 import { useRouter } from 'next/router';
 import CommentContainer from './CommentContainer';
+import axios from 'axios';
+import {urlCloud} from '../constants';
 
 const cookieCutter= require('cookie-cutter');
 
 export type OpenedActivityCardProps = {
     "title" : string,
-    "owner" : string | null,
+    "owner" : string | undefined,
     "owner_avatar" : string | null,
     "co_owner_usernames"  : Array<string> | null,
     "co_owner_avatars" : Array<string> | null,
@@ -27,7 +29,7 @@ export type Author = {
     "type" : string,
     "value" : number,
     "avatar" : string | null,
-    "username" : string | null
+    "username" : string | undefined
 }
 
 export type comment = {
@@ -53,6 +55,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const [justDone, setJustDone] = useState<boolean>(false);
 
     const [justSent, setJustSent] = useState<string>('');
+    const [arrowOpenedCounter, setArrowOpenedCounter] = useState<number>(0);
 
     const windowHeight = useRef([window.innerHeight]);
     const componentRef = useRef<any>(null);
@@ -62,16 +65,60 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
     const apikey = cookieCutter.get('apikey');
     const host = cookieCutter.get('host');
+    const sessionUsername = cookieCutter.get('username');
+    const sessionAvatar = cookieCutter.get('avatar');
 
     var today : Date = new Date();
-    const [currentTime, setCurrentTime]= useState<string>(today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds());
-    var time : string = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
+    //const [currentTime, setCurrentTime]= useState<string>('');
     const[localCommentsCount, setLocalCommentsCount] = useState<number>(comment_count);
 
+    const handleChange = async (e : React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const file = e.target.files[0];
+            if(file.size / 1024 > 15000){
+                console.log(file.type);
+                alert("File size must not be greater than to 15MB");
+                return;
+            }
+            else{
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("fileName", file.name);
+                const config = {
+                    headers: {
+                        "apikey": apikey
+                    }
+                }
+                try {
+                    const res = await axios.post(
+                        `${urlCloud}uploadAttachment/${host}/${card_id}`,
+                        formData, config
+                    );
+                    if(res.status === 200){
+                        alert(`File ${file.name} succesfully uploaded`);
+                    }
+                    else{
+                        alert("There was an error uploading the file");
+                    }
+                } 
+                catch (ex) {
+                    console.log(ex);
+                }
+            }
+        }
+        else{
+            alert("There was an error uploading the file");
+            return;
+        }
+    };
+
     const getCurrentTime = () =>{
-        setCurrentTime(today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds());
-        return currentTime;
+        let hours : string = (today.getHours().toString().length == 0 ? '0' + today.getHours().toString() : today.getHours().toString());
+        let minutes : string = (today.getMinutes().toString().length == 0 ? '0' + today.getMinutes().toString() : today.getMinutes().toString());
+        let seconds : string = (today.getSeconds().toString().length == 0 ? '0' + today.getSeconds().toString() : today.getSeconds().toString());
+
+        const finalTime : string= hours + ":" + minutes + ":" + seconds;
+        return finalTime;
     }
 
 
@@ -85,7 +132,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         if((openedCardHeight.height > windowHeight.current[0]) && justResized == false){
                 setScrollClass(openedCard.scroll)
                 if (typeof window !== 'undefined') {
-                    document.documentElement.style.setProperty('--dynamic-opened-card-height-', (windowHeight.current[0]-500).toString() + 'px');
+                    document.documentElement.style.setProperty('--dynamic-opened-card-height-', (windowHeight.current[0]-50).toString() + 'px');
                 }
             setJustResized(true);
         }
@@ -108,11 +155,9 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
         decoyCommentsArray.push(newComment);
         setCommentsArray(decoyCommentsArray);
-
     }
 
     const getComments =()=>{
-
         //get comments request
         fetch(getCommentsEndpoint + host + '/'+card_id, {
             method: "GET",
@@ -133,17 +178,10 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             else{
                 //data exists
 
-                for(var x = 0; x<data.length; x++){
-                    pushComment(data[x].text, data[x].last_modified, data[x].author);
-                }
-
-                //renders comments component only if comments array isn't empty
-                if(commentsArray.length > 0){
-                    setIsExpanded('block');
-                }
-                else{
-                    setArrowDown(openedCard.nonRotated);
-                }       
+                    for(var x = 0; x<data.length; x++){
+                        pushComment(data[x].text, data[x].last_modified, data[x].author);
+                    }
+                    setArrowOpenedCounter(arrowOpenedCounter+1);
             }
             
         })
@@ -165,7 +203,11 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
             //fetch is done only if comment count > 0
             if(localCommentsCount>0){
-                getComments();
+                if(arrowOpenedCounter == 0){
+                    getComments();
+                }
+                //renders comments component only if comments array isn't empty
+                setIsExpanded('block');
             }
                 
         }
@@ -182,56 +224,59 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         setNewComment(e.target.value);
     }
 
-    let formData : string = JSON.stringify({
-        "text" : newComment
-    });
 
     const handleSend = async () =>{ //when send button is clicked, the comment is post
 
-        setNewComment("");
+        if(newComment != ""){
+            let formData : string = JSON.stringify({
+                "text" : newComment
+            });
 
-        fetch(getCommentsEndpoint + host + '/' + card_id, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "apikey" : apikey
-            },
-            body: formData,
-        })
-        .then((response) => response.json())
-        .then((data) =>{
-            if(data.error){
+            fetch(getCommentsEndpoint + host + '/' + card_id, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "apikey" : apikey
+                },
+                body: formData,
+            })
+            .then((response) => response.json())
+            .then((data) =>{
+                if(data.error){
+                    cookieCutter.set('apikey', '', { expires: new Date(0) })
+                    cookieCutter.set('host', '', { expires: new Date(0) })
+                    cookieCutter.set('email', '', { expires: new Date(0) })
+                    cookieCutter.set('userid', '', { expires: new Date(0) }) 
+                    router.replace({pathname: '/'});
+                }
+                else{
+                    // comments array updated locally and displayed
+                    //getComments();
+    
+                    const newAuthor: Author = {
+                        "avatar": sessionAvatar,
+                        "type" : "internal",
+                        "username" : sessionUsername,
+                        "value" : 0
+                    }
+    
+                    pushComment(newComment, getCurrentTime(), newAuthor);
+                    setLocalCommentsCount(localCommentsCount+1);
+                }
+            })
+            .catch((error) => {
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
                 cookieCutter.set('userid', '', { expires: new Date(0) }) 
                 router.replace({pathname: '/'});
-            }
-            else{
-                // comments array updated locally and displayed
-                //getComments();
-
-                const newAuthor: Author = {
-                    "avatar": owner_avatar,
-                    "type" : "internal",
-                    "username" : owner,
-                    "value" : 0
-                }
-
-                pushComment(newComment, getCurrentTime(), newAuthor);
-                setLocalCommentsCount(localCommentsCount+1);
-            }
-        })
-        .catch((error) => {
-            cookieCutter.set('apikey', '', { expires: new Date(0) })
-            cookieCutter.set('host', '', { expires: new Date(0) })
-            cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) }) 
-            router.replace({pathname: '/'});
-        })
+            })
+            
+            //sets variable that rerenders comments component
+            setJustSent('');
+        }
         
-        //sets variable that rerenders comments component
-        setJustSent('');
+        setNewComment("");
 
     }
 
@@ -247,11 +292,11 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     var letterBackground = ''
 
     //owner existance
-    if(owner==null && owner_avatar==null){
+    if(owner==undefined && owner_avatar==undefined){
         letter = 'N';
         letterBackground = '#505050';
     }
-    else if(owner!=null && owner_avatar==null){
+    else if(owner!=undefined && (owner_avatar=="" || owner_avatar==null)){
         letter = owner.charAt(0);
         letterBackground = '#' + color;
     }
@@ -262,11 +307,11 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
     if(co_owner_usernames!=null && co_owner_usernames!=undefined){
 
-        for(var x = 0; x < co_owner_usernames.length -1; x++){
+        for(var x = 0; x < co_owner_usernames.length; x++){
             //coOwner[x] existance
             if(co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[x]==undefined){ // coOwners exist, but don't have avatar
                 letterCo[x]=co_owner_usernames[x].charAt(0);
-                letterCoBg[x]=adjustColor('#' + color, 600*(x+0.7)/10);
+                letterCoBg[x]=adjustColor('#' + color, 500*(x+0.7)/10);
             }
         }
     }
@@ -283,6 +328,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         setCurrCoBg2(letterCoBg[1])
         setCurrCoBg3(letterCoBg[2])
     })
+    
 
     return(
     <>
@@ -304,9 +350,9 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     <div className={openedCard.ownersWrap}>
                         
                         <div className={openedCard.owner}>
-                            {owner_avatar!=null && <img src={owner_avatar} alt="owner_avatar" className={openedCard.ownerPhoto}/> /*user exists and have photo*/} 
-                            {owner==null && owner_avatar==null && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user doesn't exis*/}
-                            {owner!=null && owner_avatar==null && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
+                            {owner_avatar!="" && owner_avatar!=undefined && <img src={owner_avatar} alt="owner_avatar" className={openedCard.ownerPhoto}/> /*user exists and have photo*/} 
+                            {owner==undefined && owner_avatar==undefined && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user doesn't exis*/}
+                            {owner!=null && (owner_avatar=="" || owner_avatar== null) && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
 
                             <div>Owner</div>
                         </div>
@@ -347,9 +393,12 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                     <div className={openedCard.addComment}>
 
-                        <button className={openedCard.cameraIcon}>
-                            <FontAwesomeIcon icon={faCamera} style={{color:'gray'}}/>
-                        </button>
+                        <div className={openedCard.cameraIcon}>
+                            <label htmlFor="file-input">
+                                <FontAwesomeIcon icon={faCamera} style={{color:'gray'}}/>
+                            </label>
+                            <input type="file"  id="file-input" name="file" onChange={handleChange} />
+                        </div>
 
                         <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={'Agregar comentario...'} onChange={handleNewComment} value={newComment}></input>
 
@@ -369,7 +418,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                         </button>
                     </div>
 
-                    <CommentContainer commentsArray={commentsArray} justSent={justSent} arrowDown={arrowDown}/>
+                    <CommentContainer commentsArray={commentsArray} justSent={justSent} arrowDown={arrowDown} color={color}/>
 
                 </div>
 

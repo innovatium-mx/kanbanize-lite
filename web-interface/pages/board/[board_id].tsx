@@ -4,18 +4,30 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetServerSideProps } from 'next'
 import authRoute from '../../components/authRoute';
 import CardsWorkflow from '../../components/CardsWorkflow';
-import { useEffect, useState, useLayoutEffect } from "react";
+import FloatButton from '../../components/FloatButton';
+import {useEffect, useState, useLayoutEffect } from "react";
 import dynamic from 'next/dynamic';
 import { urlCloud } from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies';
-import { useRouter } from 'next/router';
-import { card } from '../../components/CardsWorkflow';
+import {useRouter} from 'next/router';
+import { workflow, card, } from '@/types/types';
 import Image from 'next/image';
 import Sidebar from '../../components/Sidebar';
 
 type Props = {}
 
+  type NextJsI18NConfig = {
+    defaultLocale: string
+    domains?: {
+      defaultLocale: string
+      domain: string
+      http?: true
+      locales?: string[]
+    }[]
+    localeDetection?: false
+    locales: string[]
+  }
 type user = {
   user_id: number | null,
   username: string,
@@ -48,33 +60,17 @@ type column = {
 }
 
 
-type workflow = {
-  "type": number,
-  "position": number,
-  "is_enabled": number,
-  "is_collapsible": number,
-  "name": string,
-  "workflow_id": number,
-  "users": Array<user>,
-  "columns": Array<column>
-}
 
-type NextJsI18NConfig = {
-  defaultLocale: string
-  domains?: {
-    defaultLocale: string
-    domain: string
-    http?: true
-    locales?: string[]
-  }[]
-  localeDetection?: false
-  locales: string[]
-}
+
 
 interface PropsResponse {
   data: Array<workflow>
   _nextI18Next: NextJsI18NConfig
 }
+  interface PropsResponse {
+    data : Array<workflow> 
+    _nextI18Next : NextJsI18NConfig
+  }
 
 const Board = (props: PropsResponse) => {
   const router = useRouter();
@@ -116,11 +112,21 @@ const Board = (props: PropsResponse) => {
     setCurrentCard(curr);
   }
 
-  const moveCards = (current: number, cardIndex: number, destiny: number) => {
+  
+  const moveCards = (current : number, cardIndex : number, destiny: number ) =>{
+    
     const tempWorkflow = workflow;
-    tempWorkflow.columns[destiny].cards.push(tempWorkflow.columns[current].cards[cardIndex]);
-    tempWorkflow.columns[current].cards.splice(cardIndex, 1);
-    setWorkflow(tempWorkflow)
+
+    if(tempWorkflow!=null){
+
+      if(tempWorkflow.columns[current].cards != null){
+        tempWorkflow.columns[destiny].cards?.push(tempWorkflow.columns[current].cards[cardIndex]);
+      }
+      
+      tempWorkflow.columns[current].cards?.splice(cardIndex, 1);
+      setWorkflow(tempWorkflow)
+  
+    }
   }
 
   const showModal = (value: boolean) => {
@@ -130,6 +136,15 @@ const Board = (props: PropsResponse) => {
 
   return (
     <>
+    
+    <div className={dashboard.modalWrap}>
+
+        {displayCard && currentCard!=undefined && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
+    
+    </div>
+    
+    {/* overflow-y hiddens when opened card modal is shown */}
+    <div className={dashboard.boardPageWrapScroll}>
 
       <div className={dashboard.modalWrap}>
         {/*displayCard && currentCard?.owner_avatar!= null && currentCard?.owner_username!=null  && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard}/>*/}
@@ -168,8 +183,13 @@ const Board = (props: PropsResponse) => {
           <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards} />
         }
       </div>
+
+    </div>
+
+        <FloatButton/>
+
     </>
-    
+
   );
 };
 
@@ -189,7 +209,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     const data: any = await response.json();
     if (!data.error) {
       return {
-        props: {
+          props: {
           ...(await serverSideTranslations(context.locale ?? 'en', [
             'common'
           ])),
@@ -203,10 +223,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
       cookies.set('email');
       cookies.set('userid');
 
-      return {
-        redirect: {
+        return {
+          redirect: {
           permanent: false,
-          destination: "/",
+        destination: "/",
         },
         props: {
           ...(await serverSideTranslations(context.locale ?? 'en', [
@@ -223,9 +243,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     cookies.set('email');
     cookies.set('userid');
 
-    return {
-      redirect: {
-        permanent: false,
+        return {
+          redirect: {
+          permanent: false,
         destination: "/",
       },
       props: {

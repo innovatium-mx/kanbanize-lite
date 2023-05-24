@@ -104,7 +104,8 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
                 options.map((element : any) => 
                     <div className={CardFilter.content} key={element.key}>
                         <div className={CardFilter.imagecontainer}>
-                            <img src={element.avatar} className={CardFilter.image}/>
+                            {(element.avatar !=  null &&  element.avatar!="") ? <img src={element.avatar} className={CardFilter.image}/> :
+                            <div className={CardFilter.noPhoto_noUser} style={{background: '#35A97A'}}><div className={CardFilter.letter}>{element.username[0]}</div></div>}
                         </div>
                         <div className={CardFilter.username}>
                             {element.username}

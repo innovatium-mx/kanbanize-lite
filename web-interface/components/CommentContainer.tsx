@@ -6,10 +6,11 @@ import {useRef, useEffect} from 'react';
 export type CommentContainerProps = {
     "commentsArray" : Array<comment | null>,
     "justSent" : string,
-    "arrowDown" : any
+    "arrowDown" : any,
+    "color" : string
 }
 
-const CommentContainer = ({commentsArray, justSent, arrowDown} : CommentContainerProps) =>{
+const CommentContainer = ({commentsArray, justSent, arrowDown, color} : CommentContainerProps) =>{
     const bottomRef = useRef<null | HTMLDivElement>(null);
 
     // scrolls to the bottom of the component
@@ -21,7 +22,7 @@ const CommentContainer = ({commentsArray, justSent, arrowDown} : CommentContaine
         <>
             <div className={openedCard.commentsContainer}>
                 {commentsArray.map((element: any, index)=> 
-                    <Comment key={element.key} text={element.text} last_modified={element.last_modified} avatar={element.author.avatar}/>
+                    <Comment key={element.key} text={element.text} last_modified={element.last_modified} avatar={element.author.avatar} color={color} username={element.author.username}/>
                 )} 
             </div>
         </>

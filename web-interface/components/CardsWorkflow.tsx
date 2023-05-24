@@ -6,6 +6,9 @@ import Dynamicboard from '../styles/Dynamicboard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleArrowLeft, faCircleArrowRight} from '@fortawesome/free-solid-svg-icons';
 import {urlCloud} from '../constants'
+import {column, card} from '../types/types';
+
+
 const cookieCutter= require('cookie-cutter');
 
 type selection = {
@@ -20,47 +23,6 @@ type user = {
     avatar: string
 }
 
-type parent_columns = {
-    parent_id: number,
-    parent_name: string,
-    parent_section: number,
-    parent_position: number,
-} 
-
-export type card = {
-    "card_id": number,
-    "custom_id": number | null,
-    "title": string,
-    "owner_user_id": number | null,
-    "owner_username": string | null,
-    "owner_avatar": string | null,
-    "type_id": number | null,
-    "color": string,
-    "section": number,
-    "lane_id": number,
-    "position": number,
-    "co_owner_usernames" : Array<string> | null,
-    "co_owner_avatars" : Array<string> | null,
-    "description" : string,
-    "comment_count" : number
-};
-
-type column = {
-  "column_id": number,
-  "workflow_id": number,
-  "section": number,
-  "parent_column_id": Array<parent_columns> | null ,
-  "position": number,
-  "name": string,
-  "description": string,
-  "color": string,
-  "limit": number,
-  "cards_per_row": number,
-  "flow_type": number,
-  "card_ordering": string | null,
-  "cards": Array<card>,
-  "order": number
-}
 
 type CardsWorkflowProps = {
     data: Array<column>,
@@ -81,8 +43,8 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
-    const [activities, setActivities] = useState<Array<card>>([]);
-    const [filtered, setFiltered] = useState<Array<card>>([]);
+    const [activities, setActivities] = useState<Array<card> | null>([]);
+    const [filtered, setFiltered] = useState<Array<card> | null>([]);
     const [selected, setSelected] = useState<Array<selection>>([]);
     const columns = data;
 
@@ -112,7 +74,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
 
     const setFilteredActivities = (d: Array<column>, i: number, s:Array<selection>) =>{ 
         const filteredData :  Array<card> = [];
-        d[i].cards.map((element: any) => {
+        d[i]?.cards?.map((element: any) => {
                 const found = s.find(item => item.user_id == element.owner_user_id);
                 if(found !== undefined && found.checked){
                     filteredData.push(element);
@@ -124,7 +86,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const setFilter = (temp : Array<selection>) =>{
         setSelected(temp);
         const filteredData :  Array<card> = [];
-        data[index].cards.map((element: any) => {
+        data[index]?.cards?.map((element: any) => {
             const found = temp.find(item => item.user_id == element.owner_user_id);
             if(found !== undefined && found.checked){
                 filteredData.push(element);
@@ -134,7 +96,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     }
 
     const retrieveIndex = (cardIndex: number) =>{
-        //retrieve cards index
         setCardIndex(cardIndex);
         const curr = activities!=null ? activities.find(item => item.card_id === cardIndex) : [];
 
