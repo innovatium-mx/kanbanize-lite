@@ -194,14 +194,17 @@ module.exports.addCard = async (req,res) =>{
     const title = req.body.title;
     const description = req.body.description;
     const owner_user_id = req.body.owner_user_id;
+    const co_owner_ids = req.body.co_owner_ids;
     
     const formData = JSON.stringify({
         "lane_id": lane_id,
         "column_id": column_id,
         "title": title,
         "description": description,
+        "co_owner_ids_to_add": co_owner_ids,
         "owner_user_id": owner_user_id
     });
+    console.log(formData);
     try{
         const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards`, {
             method: "POST",
