@@ -53,7 +53,10 @@ const Navbar = ({data} : PropsResponse) => {
         <>
             <nav className={navbar.nav}>
                 <div className={navbar.left}>
-                    <p>LOGO</p>
+                    <Image src={"/../public/LogoKanbanize.png"}
+                      width={64}
+                      height={24} 
+                      className={navbar.icon}/>
                     <InterfaceDropdown data={data} name={"WORKSPACE"} getData={getBoards} />
                 </div>
                 <div>

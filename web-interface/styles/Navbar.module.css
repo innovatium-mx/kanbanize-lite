@@ -10,3 +10,7 @@
 .left {
     display: flex;
 }
+
+.icon {
+    margin: 0rem  1rem !important;
+}
