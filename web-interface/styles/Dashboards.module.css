@@ -9,18 +9,18 @@
     place-items: center;
     box-sizing: border-box;
     height: fit-content;
-    position: relative;
     width: 100%;
+    margin-top: 2rem;
+
 }
 
 div.boardPageWrapScroll{
     z-index: 0;
-    position: relative;
+    
 
 }
 
 div.modalWrap{
-    position: relative;
     z-index: 1; 
 }
 
@@ -43,7 +43,7 @@ div.modalWrap{
     justify-content: space-between;
     align-items: center;
     padding-bottom: 2em;
-    
+    z-index: 30;
 
 }
 
@@ -56,7 +56,9 @@ div.modalWrap{
     margin-left: 0.5rem;
 }
 
-
+.menu {
+    z-index: 30;
+}
 @media screen and (min-width: 400px) {
     
     .left {

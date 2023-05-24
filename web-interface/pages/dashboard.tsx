@@ -92,7 +92,7 @@ const MyBoards = (props: PropsResponse) => {
             <InterfaceDropdown data={workspaces} name={"WORKSPACE"} getData={getBoards} />
           </div>
         </div>
-        <div>
+        <div className={dashboard.menu}>
           <Sidebar />
         </div>
       </div>
