@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faXmark, faChevronDown, faCamera} from '@fortawesome/free-solid-svg-icons';
 import adjustColor from '../helpers/lightenColor';
 import dynamic from 'next/dynamic';
-import {getCommentsEndpoint} from '../constants'
 import { useRouter } from 'next/router';
 import CommentContainer from './CommentContainer';
 import axios from 'axios';
@@ -91,7 +90,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 }
                 try {
                     const res = await axios.post(
-                        `${urlCloud}uploadAttachment/${host}/${card_id}`,
+                        `${urlCloud}comments/${host}/${card_id}`,
                         formData, config
                     );
                     if(res.status === 200){
@@ -159,7 +158,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
     const getComments =()=>{
         //get comments request
-        fetch(getCommentsEndpoint + host + '/'+card_id, {
+        fetch(`${urlCloud}comments/${host}/${card_id}`, {
             method: "GET",
             headers: {
                 "apikey": apikey
@@ -232,7 +231,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 "text" : newComment
             });
 
-            fetch(getCommentsEndpoint + host + '/' + card_id, {
+            fetch(`${urlCloud}comments/${host}/${card_id}`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
