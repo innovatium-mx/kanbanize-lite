@@ -48,6 +48,19 @@
     padding: 0.25em;
 }
 
+div.letter {
+    color: white;
+    text-align: center;
+    padding-top: 0.46em;
+    font-size: 1em;
+}
+
+.noPhoto_noUser {
+    width: 2.5em;
+    height: 2.5em;
+    border-radius: 50%;
+}
+
 @media screen and (max-width: 307px) {
     .filter {
         padding-left: 1em;

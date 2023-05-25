@@ -7,6 +7,8 @@ import dynamic from 'next/dynamic';
 import {getCommentsEndpoint} from '../constants'
 import { useRouter } from 'next/router';
 import CommentContainer from './CommentContainer';
+import axios from 'axios';
+import {urlCloud} from '../constants';
 
 const cookieCutter= require('cookie-cutter');
 
@@ -63,10 +65,52 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
     const apikey = cookieCutter.get('apikey');
     const host = cookieCutter.get('host');
+    const sessionUsername = cookieCutter.get('username');
+    const sessionAvatar = cookieCutter.get('avatar');
 
     var today : Date = new Date();
     //const [currentTime, setCurrentTime]= useState<string>('');
     const[localCommentsCount, setLocalCommentsCount] = useState<number>(comment_count);
+
+    const handleChange = async (e : React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const file = e.target.files[0];
+            if(file.size / 1024 > 15000){
+                console.log(file.type);
+                alert("File size must not be greater than to 15MB");
+                return;
+            }
+            else{
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("fileName", file.name);
+                const config = {
+                    headers: {
+                        "apikey": apikey
+                    }
+                }
+                try {
+                    const res = await axios.post(
+                        `${urlCloud}uploadAttachment/${host}/${card_id}`,
+                        formData, config
+                    );
+                    if(res.status === 200){
+                        alert(`File ${file.name} succesfully uploaded`);
+                    }
+                    else{
+                        alert("There was an error uploading the file");
+                    }
+                } 
+                catch (ex) {
+                    console.log(ex);
+                }
+            }
+        }
+        else{
+            alert("There was an error uploading the file");
+            return;
+        }
+    };
 
     const getCurrentTime = () =>{
         let hours : string = (today.getHours().toString().length == 0 ? '0' + today.getHours().toString() : today.getHours().toString());
@@ -210,9 +254,9 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     //getComments();
     
                     const newAuthor: Author = {
-                        "avatar": owner_avatar,
+                        "avatar": sessionAvatar,
                         "type" : "internal",
-                        "username" : owner,
+                        "username" : sessionUsername,
                         "value" : 0
                     }
     
@@ -349,9 +393,12 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                     <div className={openedCard.addComment}>
 
-                        <button className={openedCard.cameraIcon}>
-                            <FontAwesomeIcon icon={faCamera} style={{color:'gray'}}/>
-                        </button>
+                        <div className={openedCard.cameraIcon}>
+                            <label htmlFor="file-input">
+                                <FontAwesomeIcon icon={faCamera} style={{color:'gray'}}/>
+                            </label>
+                            <input type="file"  id="file-input" name="file" onChange={handleChange} />
+                        </div>
 
                         <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={'Agregar comentario...'} onChange={handleNewComment} value={newComment}></input>
 
