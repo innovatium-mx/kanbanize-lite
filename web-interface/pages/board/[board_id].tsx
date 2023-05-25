@@ -12,6 +12,7 @@ import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies';
 import {useRouter} from 'next/router';
 import { workflow, card, } from '@/types/types';
+import NewCardComponent from '../../components/NewCardComponent';
 
 type Props = {}
 
@@ -39,7 +40,13 @@ const Board = ( props: PropsResponse) => {
   const OpenedActivityCard = dynamic(import('../../components/OpenedActivityCard'), {ssr:false});
 
   const [currentCard, setCurrentCard] = useState<card>()
-  const [displayCard, setDisplayCard] = useState(false);
+  const [displayCard, setDisplayCard] = useState<boolean>(false);
+  
+  const [insertCard, setInsertCard] = useState<boolean>(false);
+
+  const activateInsertCard = (param: boolean) =>{
+    setInsertCard(param);
+  }
 
   const [workflow, setWorkflow] = useState<workflow>({
     "type": -1,
@@ -101,7 +108,12 @@ const Board = ( props: PropsResponse) => {
     
     </div>
     
-    {/* overflow-y hiddens when opened card modal is shown */}
+    <div className={dashboard.modalWrap}>
+
+      {insertCard && <NewCardComponent owner_username='Mike' owner_avatar={"https://s3.amazonaws.com/kanbamne/attachments/university6y/avatar_80x80_10.jpg"} users={workflow.users}  activateInsertCard={activateInsertCard}/>}
+
+    </div>
+
     <div className={dashboard.boardPageWrapScroll}>
         <div className={dashboard.topBar}>
             <div className={dashboard.dropdownFragment}>
@@ -114,11 +126,15 @@ const Board = ( props: PropsResponse) => {
         { workflow.type === 0 && 
           <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}/>
         }
+
+        {
+          workflow.type === 0 && 
+          <FloatButton activateInsertCard={activateInsertCard}/>
+        }
       </div>
 
     </div>
 
-        <FloatButton/>
 
     </>
     
