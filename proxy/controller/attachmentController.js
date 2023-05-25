@@ -10,45 +10,6 @@ const firebaseConfig = {
   //Descripcion general>1 app>Engrane>Código al final de la página
   storageBucket: "tc3005bmarco.appspot.com",
 };
-/*
-module.exports.downloadAttachment = async (req,res) =>{
-
-    try{
-        const id = req.params.id;
-
-        const database = await connect();
-        const bucket = new GridFSBucket(database, { bucketName: 'bucket' });
-
-        const file = {
-            name: "",
-            contentType: ""
-        }
-
-        const cursor = bucket.find({ _id: new ObjectId(id) });
-        await cursor.forEach(doc => {
-            file.name = doc.filename;
-            file.contentType = doc.metadata.value;
-        });
-
-        const downloadStream = bucket.openDownloadStream(new ObjectId(id));
-        
-        downloadStream.on('error', (err) => {
-            return res.status(404).send('File not found');
-        });
-
-        res.setHeader('Content-Disposition', `attachment; filename="${file.name}"`);
-        res.setHeader('Content-Type', file.contentType); // 'application/octet-stream'
-        downloadStream.pipe(res);
-
-        downloadStream.on('end', () => {
-            client.close();
-        });
-    }
-    catch(error){
-        console.error(error);
-        res.status(500).send('Error thrown when trying to download the file');
-    }
-}*/
 
 module.exports.uploadAttachment = async (req,res) =>{
     const host = req.params.host;
@@ -77,12 +38,14 @@ module.exports.uploadAttachment = async (req,res) =>{
         console.log('File available at:' + downloadURL);
 
         const formData = JSON.stringify({
-            "file_name": filename,
-            "link": downloadURL,
-            "position": 0
+            "text": null,
+            "attachments_to_add": [{
+                "file_name": filename,
+                "link": downloadURL,
+            }],  
         });
 
-        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}/attachments`, {
+        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}/comments`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
