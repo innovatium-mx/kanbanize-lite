@@ -87,8 +87,12 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             else{
                 setFile(tempFile);
                 setHasFile(true);
-                const objectUrl = URL.createObjectURL(tempFile)
-                setPreview(objectUrl)
+                if( tempFile.type.indexOf( 'image/' ) > -1 ){
+                    setPreview(URL.createObjectURL(tempFile));
+                }
+                else{
+                    setPreview("/file.png");
+                }
             }
         }
         else{
