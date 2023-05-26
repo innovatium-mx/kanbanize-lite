@@ -246,6 +246,8 @@ div.cameraIcon {
     border: none;
     background-color: white;
     margin: 0.2em;
+    margin-right: 0.75em;
+    transform: rotate(-45deg);
 }
 
 div.cameraIcon label {

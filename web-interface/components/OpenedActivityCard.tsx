@@ -1,7 +1,7 @@
 import openedCard from '../styles/OpenedActivityCard.module.css';
 import React, { useState, useLayoutEffect, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faXmark, faChevronDown, faCamera} from '@fortawesome/free-solid-svg-icons';
+import {faXmark, faChevronDown, faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import adjustColor from '../helpers/lightenColor';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -383,7 +383,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                         <div className={openedCard.cameraIcon}>
                             <label htmlFor="file-input">
-                                <FontAwesomeIcon icon={faCamera} style={{color:'gray'}}/>
+                                <FontAwesomeIcon icon={faPaperclip} style={{color:'gray'}}/>
                             </label>
                             <input type="file"  ref={inputRef} id="file-input" name="file" onChange={handleChange} />
                         </div>
