@@ -202,7 +202,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
             //fetch is done only if comment count > 0
             if(localCommentsCount>0){
-                if(arrowOpenedCounter == 0){
+                if(arrowOpenedCounter === 0){
                     getComments();
                 }
                 //renders comments component only if comments array isn't empty
