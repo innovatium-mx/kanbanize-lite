@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import CommentContainer from './CommentContainer';
 import axios from 'axios';
-import {urlCloud} from '../constants';
+import {urlCloud, urlLocal} from '../constants';
 
 const cookieCutter= require('cookie-cutter');
 
@@ -39,6 +39,7 @@ export type comment = {
 
 const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count}: OpenedActivityCardProps) =>{
     const router = useRouter();
+    const inputRef = useRef(null);
 
     const [openComments, setOpenComments] = useState<boolean>(false);
     const [arrowDown, setArrowDown] = useState(openedCard.nonRotated);
@@ -51,6 +52,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const Comment = dynamic(import('../components/Comment'), {ssr: false});
     const [commentsArray, setCommentsArray] = useState<Array<comment | null>>([]);
     const [newComment, setNewComment] = useState<string>("");
+    const [file, setFile] = useState<File>();
+    const [hasFile, setHasFile] = useState<bool>(false);
     const [justDone, setJustDone] = useState<boolean>(false);
 
     const [justSent, setJustSent] = useState<string>('');
@@ -75,34 +78,13 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         if (e.target.files) {
             const file = e.target.files[0];
             if(file.size / 1024 > 15000){
-                console.log(file.type);
+                e.target.value = null;
                 alert("File size must not be greater than to 15MB");
                 return;
             }
             else{
-                const formData = new FormData();
-                formData.append("file", file);
-                formData.append("fileName", file.name);
-                const config = {
-                    headers: {
-                        "apikey": apikey
-                    }
-                }
-                try {
-                    const res = await axios.post(
-                        `${urlCloud}comments/${host}/${card_id}`,
-                        formData, config
-                    );
-                    if(res.status === 200){
-                        alert(`File ${file.name} succesfully uploaded`);
-                    }
-                    else{
-                        alert("There was an error uploading the file");
-                    }
-                } 
-                catch (ex) {
-                    console.log(ex);
-                }
+                setFile(file);
+                setHasFile(true);
             }
         }
         else{
@@ -226,32 +208,27 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
     const handleSend = async () =>{ //when send button is clicked, the comment is post
 
-        if(newComment != ""){
-            let formData : string = JSON.stringify({
-                "text" : newComment
-            });
+        if(newComment != "" || hasFile){
 
-            fetch(`${urlCloud}comments/${host}/${card_id}`, {
-                method: "POST",
+            const formData = new FormData();
+            formData.append("text", newComment);
+            const config = {
                 headers: {
-                  "Content-Type": "application/json",
-                  "apikey" : apikey
-                },
-                body: formData,
-            })
-            .then((response) => response.json())
-            .then((data) =>{
-                if(data.error){
-                    cookieCutter.set('apikey', '', { expires: new Date(0) })
-                    cookieCutter.set('host', '', { expires: new Date(0) })
-                    cookieCutter.set('email', '', { expires: new Date(0) })
-                    cookieCutter.set('userid', '', { expires: new Date(0) }) 
-                    router.replace({pathname: '/'});
+                    "apikey": apikey
                 }
-                else{
-                    // comments array updated locally and displayed
-                    //getComments();
-    
+            }
+            if(hasFile){
+                formData.append("file", file);
+                formData.append("fileName", file.name);
+            }
+            
+            try {
+                const res = await axios.post(
+                    `${urlCloud}comments/${host}/${card_id}`,
+                    formData, config
+                );
+                if(res.status === 200){
+                    alert(`Comment successfully sent`);
                     const newAuthor: Author = {
                         "avatar": sessionAvatar,
                         "type" : "internal",
@@ -262,16 +239,28 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     pushComment(newComment, getCurrentTime(), newAuthor);
                     setLocalCommentsCount(localCommentsCount+1);
                 }
-            })
-            .catch((error) => {
+                else{
+                    alert("Something failed while sending the comment");
+                    cookieCutter.set('apikey', '', { expires: new Date(0) })
+                    cookieCutter.set('host', '', { expires: new Date(0) })
+                    cookieCutter.set('email', '', { expires: new Date(0) })
+                    cookieCutter.set('userid', '', { expires: new Date(0) }) 
+                    router.replace({pathname: '/'});
+                }
+            } 
+            catch (ex) {
+                console.log(ex);
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
                 cookieCutter.set('userid', '', { expires: new Date(0) }) 
                 router.replace({pathname: '/'});
-            })
+                alert("There was an error sending the comment");
+            }
             
             //sets variable that rerenders comments component
+            setHasFile(false);
+            inputRef.current.value = null;
             setJustSent('');
         }
         
@@ -396,7 +385,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             <label htmlFor="file-input">
                                 <FontAwesomeIcon icon={faCamera} style={{color:'gray'}}/>
                             </label>
-                            <input type="file"  id="file-input" name="file" onChange={handleChange} />
+                            <input type="file"  ref={inputRef} id="file-input" name="file" onChange={handleChange} />
                         </div>
 
                         <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={'Agregar comentario...'} onChange={handleNewComment} value={newComment}></input>
