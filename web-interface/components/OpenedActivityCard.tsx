@@ -40,6 +40,7 @@ export type comment = {
 const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count}: OpenedActivityCardProps) =>{
     const router = useRouter();
     const inputRef = useRef(null);
+    const iconRef = useRef(null);
 
     const [openComments, setOpenComments] = useState<boolean>(false);
     const [arrowDown, setArrowDown] = useState(openedCard.nonRotated);
@@ -54,6 +55,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const [newComment, setNewComment] = useState<string>("");
     const [file, setFile] = useState<File>();
     const [hasFile, setHasFile] = useState<bool>(false);
+    const [preview, setPreview] = useState()
     const [justDone, setJustDone] = useState<boolean>(false);
 
     const [justSent, setJustSent] = useState<string>('');
@@ -76,15 +78,17 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
     const handleChange = async (e : React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            const file = e.target.files[0];
-            if(file.size / 1024 > 15000){
+            const tempFile = e.target.files[0];
+            if(tempFile.size / 1024 > 15000){
                 e.target.value = null;
                 alert("File size must not be greater than to 15MB");
                 return;
             }
             else{
-                setFile(file);
+                setFile(tempFile);
                 setHasFile(true);
+                const objectUrl = URL.createObjectURL(tempFile)
+                setPreview(objectUrl)
             }
         }
         else{
@@ -383,7 +387,11 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                         <div className={openedCard.cameraIcon}>
                             <label htmlFor="file-input">
-                                <FontAwesomeIcon icon={faPaperclip} style={{color:'gray'}}/>
+                                {
+                                    !hasFile ? 
+                                    <FontAwesomeIcon icon={faPaperclip} style={{color:'gray', transform: `rotate(-45deg)`}}/> :
+                                    <img ref={iconRef}  className={openedCard.preview} src={preview} alt="Your image" />
+                                }
                             </label>
                             <input type="file"  ref={inputRef} id="file-input" name="file" onChange={handleChange} />
                         </div>
