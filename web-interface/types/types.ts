@@ -60,10 +60,12 @@ export type workflow = {
 }
 
 export type newCard = {
-    "owner_username" : string | undefined,
-    "owner_avatar" : string | null,
     "users" : Array<user>,
-    "activateInsertCard" : any
+    "activateInsertCard" : any,
+    "color" :  string,
+    "selected" : any,
+    "lane_id" : number,
+    "column_id" : number
 }
 
 export type selection = {
@@ -86,5 +88,8 @@ export interface FilterProps {
 
 export interface AddCoOwners{
     users : Array<user>,
-    selected: Array<selection>
+    selected: Array<selection>,
+    userId: any,
+    changeNoneSelected: any,
+    setNewSelection: any
 }

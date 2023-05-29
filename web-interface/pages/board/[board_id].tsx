@@ -11,8 +11,12 @@ import {urlCloud} from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies';
 import {useRouter} from 'next/router';
-import { workflow, card, } from '@/types/types';
+import { workflow, card, user, selection } from '@/types/types';
 import NewCardComponent from '../../components/NewCardComponent';
+import { faL } from '@fortawesome/free-solid-svg-icons';
+import { NULL } from 'sass';
+const cookieCutter= require('cookie-cutter');
+
 
 type Props = {}
 
@@ -41,8 +45,12 @@ const Board = ( props: PropsResponse) => {
 
   const [currentCard, setCurrentCard] = useState<card>()
   const [displayCard, setDisplayCard] = useState<boolean>(false);
+  const [retrievedWorkflow, setRetrievedWorflow] = useState<boolean>(false);
   
   const [insertCard, setInsertCard] = useState<boolean>(false);
+
+
+  const userId = cookieCutter.get('userid');
 
   const activateInsertCard = (param: boolean) =>{
     setInsertCard(param);
@@ -56,7 +64,7 @@ const Board = ( props: PropsResponse) => {
     "name": "",
     "workflow_id": -1,
     "users" : [],
-    "columns": [] 
+    "columns": []
   });
 
 
@@ -72,7 +80,14 @@ const Board = ( props: PropsResponse) => {
     avatar: "/None.jpg"
     })
     setWorkflow(temp);
+    console.log(temp);
+
+    setRetrievedWorflow(true);
+
   }
+
+
+
 
   const updateCurrentCard = (curr: card) =>{
     setCurrentCard(curr);
@@ -98,6 +113,36 @@ const Board = ( props: PropsResponse) => {
     setDisplayCard(value);
   }
 
+  const [newUsers, setNewUsers] = useState<Array<user>>([]);
+  const [selected, setSelected] = useState<Array<selection>>([]);
+
+
+
+  const setAllSelected = (u : Array<user>) => {
+    const cutUsers : Array<user> = [];
+    const usersselection : Array<selection> = [];
+
+    u.map((element: user, index) =>{
+        if(element.user_id!=null && element.user_id!=userId){
+            usersselection.push({user_id: element.user_id, checked: false});
+        }
+
+        if(index<u.length-1 && element.user_id!=userId && element.user_id!=null){
+            cutUsers.push(element);
+        }
+    })
+
+    setNewUsers(cutUsers); //newUsers
+    setSelected(usersselection); //selected
+
+    console.log(cutUsers);
+    console.log(usersselection);
+
+}
+
+  useEffect(()=>{
+      setAllSelected(workflow.users);
+  }, [retrievedWorkflow])
 
   return (
     <>
@@ -110,7 +155,7 @@ const Board = ( props: PropsResponse) => {
     
     <div className={dashboard.modalWrap}>
 
-      {insertCard && <NewCardComponent owner_username='Mike' owner_avatar={"https://s3.amazonaws.com/kanbamne/attachments/university6y/avatar_80x80_10.jpg"} users={workflow.users}  activateInsertCard={activateInsertCard}/>}
+      {insertCard && retrievedWorkflow && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id}/>}
 
     </div>
 

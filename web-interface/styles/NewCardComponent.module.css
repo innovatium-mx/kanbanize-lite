@@ -69,6 +69,7 @@ div.coOwners{
     padding-right: 3em;
     justify-content: center;
     text-align: center;
+    position: relative;
 }
 
 div.ownersWrap{
@@ -107,4 +108,86 @@ button.showCoOwnersButton{
     background-color: white;
     border: none;
     border-radius: 50%;
+}
+
+.ownerPhoto {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+}
+
+div.letter {
+    color: white;
+    text-align: center;
+    padding-top: 0.2em;
+    font-size: 2em;
+}
+
+
+img.image1 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: -1.7em;
+    z-index: 2;
+}
+
+
+img.image2 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: 0.6em;
+    z-index: 1;
+}
+
+img.image3 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: 2.9em;
+    z-index: 0;
+}
+
+
+div.image1 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: -1.7em;
+    z-index: 2;
+}
+
+div.image2 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: 0.6em;
+    z-index: 1;
+}
+
+div.image3 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: 2.9em;
+    z-index: 0;
 }
