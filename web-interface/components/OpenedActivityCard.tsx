@@ -197,6 +197,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         if(openComments){
             setArrowDown(openedCard.rotated);
             setJustDone(false);
+            setFirstOpen(true);
 
             //fetch is done only if comment count > 0
             if(localCommentsCount>0){
@@ -264,9 +265,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                     if(firstOpen){
                         pushComment(newComment, getCurrentTime(), newAuthor, newAttachment);
-                    }
-                    else{
-                        setFirstOpen(true);
                     }
                     setLocalCommentsCount(localCommentsCount+1);
                 }
