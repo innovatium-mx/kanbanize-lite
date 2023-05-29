@@ -1,14 +1,16 @@
 import comment from '../styles/Comment.module.css'
+import Attachment from './OpenedActivityCard';
 
 export type CommentProps = {
     "text" : string,
     "last_modified" : string,
     "avatar" : string | null,
     "color" : string,
-    "username" : string | undefined
+    "username" : string | undefined,
+    "attachments" : Array<Attachment>
 }
 
-const Comment = ({text, last_modified, avatar, color, username}: CommentProps) =>{
+const Comment = ({text, last_modified, avatar, color, username, attachments}: CommentProps) =>{
 
 
     const position = last_modified.search('T');
@@ -35,6 +37,11 @@ const Comment = ({text, last_modified, avatar, color, username}: CommentProps) =
                 <div className={comment.text}>
                     {<div dangerouslySetInnerHTML={{ __html: text }} />}
                 </div>
+                {attachments.map((element: any, index) =>
+                    <div className={comment.attachments}>
+                        <a href={element.link} dangerouslySetInnerHTML={{ __html: element.file_name }} />
+                    </div>
+                )}
 
             </div>
 

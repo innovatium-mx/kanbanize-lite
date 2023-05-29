@@ -31,10 +31,17 @@ export type Author = {
     "username" : string | undefined
 }
 
+export type Attachment = {
+    "id": number,
+    "file_name": string,
+    "link": string
+}
+
 export type comment = {
     "text": string,
     "last_modified": string,
-    "author": Author
+    "author": Author,
+    "attachments" : Array<Attachment>
 }
 
 const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count}: OpenedActivityCardProps) =>{
@@ -131,14 +138,15 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     })
 
     
-    const pushComment = (text: string, last_modified: string, author: Author) =>{
+    const pushComment = (text: string, last_modified: string, author: Author, attachment: Attachment | null) =>{
         var decoyCommentsArray : Array<comment | null> = ([]);
         decoyCommentsArray = commentsArray;
 
         const newComment : comment= {
             "text" : text,
             "last_modified" : last_modified,
-            "author": author
+            "author": author, 
+            "attachments": attachment,
         }
 
         decoyCommentsArray.push(newComment);
@@ -167,7 +175,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 //data exists
 
                     for(var x = 0; x<data.length; x++){
-                        pushComment(data[x].text, data[x].last_modified, data[x].author);
+                        pushComment(data[x].text, data[x].last_modified, data[x].author, data[x].attachments);
                     }
                     setArrowOpenedCounter(arrowOpenedCounter+1);
             }
@@ -242,8 +250,18 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                         "username" : sessionUsername,
                         "value" : 0
                     }
+
+                    const newAttachment: Array<Attachment> = [];
+
+                    if(res.data.attachment !== undefined){
+                        newAttachment.push({
+                            "id": 1,
+                            "file_name": res.data.attachment.file_name,
+                            "link" : res.data.attachment.link
+                        })
+                    }
     
-                    pushComment(newComment, getCurrentTime(), newAuthor);
+                    pushComment(newComment, getCurrentTime(), newAuthor, newAttachment);
                     setLocalCommentsCount(localCommentsCount+1);
                 }
                 else{
