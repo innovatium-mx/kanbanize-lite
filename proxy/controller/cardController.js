@@ -10,6 +10,17 @@ const firebaseConfig = {
   storageBucket: "tc3005bmarco.appspot.com",
 };
 
+function generateString(length) {
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = ' ';
+    const charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+}
+
 module.exports.cardDetails = async (req,res) =>{
     const host = req.params.host;
     const cardid = req.params.cardid;
@@ -157,7 +168,7 @@ module.exports.addComment= async (req,res) =>{
                 body: formData,
             });
             if(response.ok){
-                res.status(response.status).json({"Successful": response.status});
+                res.status(response.status).json({"text": text});
             }
             else{
                 res.status(response.status).json({"error": response.status});
@@ -165,7 +176,7 @@ module.exports.addComment= async (req,res) =>{
         }
         else{
             const filedata = req.files.file.data;
-            const filename = req.files.file.name;
+            const filename = generateString(5) + req.files.file.name;
 
             // Initialize Firebase
             const firebase = initializeApp(firebaseConfig);
@@ -175,7 +186,7 @@ module.exports.addComment= async (req,res) =>{
             //Es necesario crear una carpeta con el id del card,
             //por ejemplo: "cardid/"+req.files.archivo.name
             //De otra forma, el archivo se sobreescribirá
-            const storageRef = ref(storage, filename);
+            const storageRef = ref(storage, `${cardid}/${filename}`);
             const snapshot = await uploadBytes(storageRef, filedata);
             const downloadURL = await getDownloadURL(storageRef);
 
@@ -196,7 +207,7 @@ module.exports.addComment= async (req,res) =>{
                 body: formData,
             });
             if(response.ok){
-                res.json({"Successful": response.status});
+                res.status(response.status).json({"text": text, "attachment": {"file_name": filename, "link": downloadURL} });
             }
             else{
                 res.status(response.status).json({"error": response.status});
