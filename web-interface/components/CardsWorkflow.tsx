@@ -244,11 +244,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
                         <div key={element.key} className={Dynamicboard.cardContainer}>
-                            <div className={Dynamicboard.buttons} onClick={() => handleLeftClick(element.card_id)}>
-                                {  buttons.left &&
-                                    <FontAwesomeIcon icon={faCircleArrowLeft} style={{color: "#000000"}} />
-                                }
-                            </div>
+                            <div className={Dynamicboard.buttons} />
                             <ActivityCard card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} co_owner_usernames={element.co_owner_usernames} co_owner_avatars={element.co_owner_avatars} description={element.description} retrieveIndex={retrieveIndex} displayModal={displayModal}/>
                             <div className={Dynamicboard.buttons} onClick={() => handleRightClick(element.card_id)}>
                                 { !element.is_blocked && buttons.right &&

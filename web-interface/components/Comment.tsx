@@ -1,5 +1,5 @@
 import comment from '../styles/Comment.module.css'
-import Attachment from './OpenedActivityCard';
+import {Attachment} from './OpenedActivityCard';
 
 export type CommentProps = {
     "text" : string,
@@ -38,7 +38,7 @@ const Comment = ({text, last_modified, avatar, color, username, attachments}: Co
                     {<div dangerouslySetInnerHTML={{ __html: text }} />}
                 </div>
                 {attachments.map((element: any, index) =>
-                    <div className={comment.attachments}>
+                    <div key={element.key} className={comment.attachments}>
                         <a href={element.link} dangerouslySetInnerHTML={{ __html: element.file_name }} />
                     </div>
                 )}
