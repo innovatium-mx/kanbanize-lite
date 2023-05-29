@@ -39,8 +39,6 @@ export type comment = {
 
 const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count}: OpenedActivityCardProps) =>{
     const router = useRouter();
-    const inputRef = useRef(null);
-    const iconRef = useRef(null);
 
     const [openComments, setOpenComments] = useState<boolean>(false);
     const [arrowDown, setArrowDown] = useState(openedCard.nonRotated);
@@ -54,8 +52,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const [commentsArray, setCommentsArray] = useState<Array<comment | null>>([]);
     const [newComment, setNewComment] = useState<string>("");
     const [file, setFile] = useState<File>();
-    const [hasFile, setHasFile] = useState<bool>(false);
-    const [preview, setPreview] = useState()
+    const [hasFile, setHasFile] = useState<boolean>(false);
+    const [preview, setPreview] = useState<string>("");
     const [justDone, setJustDone] = useState<boolean>(false);
 
     const [justSent, setJustSent] = useState<string>('');
@@ -80,7 +78,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         if (e.target.files) {
             const tempFile = e.target.files[0];
             if(tempFile.size / 1024 > 15000){
-                e.target.value = null;
+                //e.target.value = null;
+                setHasFile(false);
                 alert("File size must not be greater than to 15MB");
                 return;
             }
@@ -225,7 +224,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     "apikey": apikey
                 }
             }
-            if(hasFile){
+            if(hasFile && file !== undefined){
                 formData.append("file", file);
                 formData.append("fileName", file.name);
             }
@@ -268,7 +267,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             
             //sets variable that rerenders comments component
             setHasFile(false);
-            inputRef.current.value = null;
             setJustSent('');
         }
         
@@ -394,10 +392,17 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                                 {
                                     !hasFile ? 
                                     <FontAwesomeIcon icon={faPaperclip} style={{color:'gray', transform: `rotate(-45deg)`}}/> :
-                                    <img ref={iconRef}  className={openedCard.preview} src={preview} alt="Your image" />
+                                    <div className={openedCard.fileContainer}>
+                                        <div>
+                                            <img className={openedCard.preview} src={preview} alt="Your image" />
+                                        </div>
+                                        <div className={openedCard.fileName}>
+                                            {file !== undefined ? file.name : ""}
+                                        </div>
+                                    </div>
                                 }
                             </label>
-                            <input type="file"  ref={inputRef} id="file-input" name="file" onChange={handleChange} />
+                            <input type="file" id="file-input" name="file" onChange={handleChange} />
                         </div>
 
                         <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={'Agregar comentario...'} onChange={handleNewComment} value={newComment}></input>
