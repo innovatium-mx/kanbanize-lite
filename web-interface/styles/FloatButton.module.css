@@ -3,7 +3,7 @@ div.buttonContainer{
     position: fixed;
     right: 3em;
     bottom: 3em;
-    z-index: 10;
+    z-index: 0;
 }
 
 button.FloatButton{
