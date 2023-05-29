@@ -65,6 +65,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
     const [justSent, setJustSent] = useState<string>('');
     const [arrowOpenedCounter, setArrowOpenedCounter] = useState<number>(0);
+    const [firstOpen, setFirstOpen] = useState<boolean>(false);
 
     const windowHeight = useRef([window.innerHeight]);
     const componentRef = useRef<any>(null);
@@ -260,8 +261,13 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             "link" : res.data.attachment.link
                         })
                     }
-    
-                    pushComment(newComment, getCurrentTime(), newAuthor, newAttachment);
+
+                    if(firstOpen){
+                        pushComment(newComment, getCurrentTime(), newAuthor, newAttachment);
+                    }
+                    else{
+                        setFirstOpen(true);
+                    }
                     setLocalCommentsCount(localCommentsCount+1);
                 }
                 else{
