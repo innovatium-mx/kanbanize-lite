@@ -47,12 +47,6 @@ export type workSpace ={
     "name": string,
 }
 
-export type user = {
-    user_id: number | null,
-    username: string,
-    realname: string,
-    avatar: string
-}
 
 export type workflow = {
     "type": number,
@@ -63,4 +57,39 @@ export type workflow = {
     "workflow_id": number,
     "users": Array<user>,
     "columns": Array<column>
+}
+
+export type newCard = {
+    "users" : Array<user>,
+    "activateInsertCard" : any,
+    "color" :  string,
+    "selected" : any,
+    "lane_id" : number,
+    "column_id" : number
+}
+
+export type selection = {
+    user_id: number | null,
+    checked: boolean
+}
+
+export type user = {
+    user_id: number | null,
+    username: string,
+    realname: string,
+    avatar: string
+}
+
+export interface FilterProps {
+    users : Array<user>,
+    selected: Array<selection>,
+    setFilter: any
+}
+
+export interface AddCoOwners{
+    users : Array<user>,
+    selected: Array<selection>,
+    userId: any,
+    changeNoneSelected: any,
+    setNewSelection: any
 }

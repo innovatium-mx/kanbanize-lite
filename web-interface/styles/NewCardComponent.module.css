@@ -1,0 +1,193 @@
+
+div.NewCard{
+    border: none;
+    box-sizing: border-box;
+    display: grid;
+    width: 25em;
+    height: auto;
+    background-clip: padding-box;
+    background-color: white;
+    border-radius: 0.5em;
+    padding-bottom: 3em;
+}
+
+input.inputTitle{
+    justify-self: center;
+    width: 20em;
+    height: 2.5em;
+    border: none;
+    border-radius: 0px;
+    background-color: #eaeaea;
+    padding: .8em;
+    font-size: 1rem;
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+}
+
+textarea.inputDescription{
+    justify-self: center;
+    vertical-align: top;
+    width: 20em;
+    height: 7em;
+    border: none;
+    border-radius: 0px;
+    background-color: #eaeaea;
+    padding: .8em;
+    font-size: 1rem;
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+}
+
+
+div.close{
+    display: flex;
+    justify-content: flex-end;
+}
+
+button.closeButton{
+    background-color: white;
+    border: none;
+    margin-top: 1em;
+    margin-right: 1em;
+    margin-bottom: 0.5em;
+    border-radius: 50%;
+}
+
+div.owner{
+    padding-left: 3em;
+    justify-content: center;
+    text-align: center;
+}
+
+div.coOwners{
+    padding-right: 3em;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+div.ownersWrap{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1.5em;
+    padding-bottom: 1em;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+div.modalBackground {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color:rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(0.5em);
+}
+
+button.createButton{
+    color: white;
+    font-size: large;
+    justify-self: center;
+    width: 18em;
+    height: 2.5em;
+    background-color: #42AD49;
+    border: none;
+    margin-top: 1em;
+    border-radius: 0.3em;
+}
+
+button.showCoOwnersButton{
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+}
+
+.ownerPhoto {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+}
+
+div.letter {
+    color: white;
+    text-align: center;
+    padding-top: 0.2em;
+    font-size: 2em;
+}
+
+
+img.image1 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: -1.7em;
+    z-index: 2;
+}
+
+
+img.image2 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: 0.6em;
+    z-index: 1;
+}
+
+img.image3 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: 2.9em;
+    z-index: 0;
+}
+
+
+div.image1 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: -1.7em;
+    z-index: 2;
+}
+
+div.image2 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: 0.6em;
+    z-index: 1;
+}
+
+div.image3 {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+
+    position: absolute;
+    top: 0em;
+    left: 2.9em;
+    z-index: 0;
+}

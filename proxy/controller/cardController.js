@@ -1,4 +1,25 @@
+const initializeApp = require('firebase/app').initializeApp;
+const getStorage = require('firebase/storage').getStorage;
+const ref = require('firebase/storage').ref;
+const uploadBytes = require('firebase/storage').uploadBytes;
+const getDownloadURL = require('firebase/storage').getDownloadURL;
 const fetch = require('node-fetch');
+const firebaseConfig = {
+  //Aquí va la configuración de la aplicación del proyecto
+  //Descripcion general>1 app>Engrane>Código al final de la página
+  storageBucket: "tc3005bmarco.appspot.com",
+};
+
+function generateString(length) {
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = ' ';
+    const charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+}
 
 module.exports.cardDetails = async (req,res) =>{
     const host = req.params.host;
@@ -122,7 +143,7 @@ module.exports.comments = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 }
 
@@ -130,29 +151,72 @@ module.exports.addComment= async (req,res) =>{
     const host = req.params.host;
     const cardid = req.params.cardid;
     const apikey = req.headers.apikey;
-    const text = req.body.text;
-    const formData = JSON.stringify({
-        "text": text,
-    });
+    const text = req.body.text === undefined ? null : req.body.text;
+    
     try{
-        const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}/comments`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "apikey": apikey
-            },
-            body: formData,
-        });
-        if(response.ok){
-            res.json({"Successful": response.status});
+        if (!req.files || Object.keys(req.files).length === 0) {
+        
+            const formData = JSON.stringify({
+                "text": text,
+            });
+            const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}/comments`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": apikey
+                },
+                body: formData,
+            });
+            if(response.ok){
+                res.status(response.status).json({"text": text});
+            }
+            else{
+                res.status(response.status).json({"error": response.status});
+            }
         }
         else{
-            res.json({"error": response.status});
+            const filedata = req.files.file.data;
+            const filename = generateString(5) + req.files.file.name;
+
+            // Initialize Firebase
+            const firebase = initializeApp(firebaseConfig);
+            // Initialize Cloud Storage and get a reference to the service
+            const storage = getStorage(firebase);
+            //El segundo parámetro de ref es el nombre del archivo
+            //Es necesario crear una carpeta con el id del card,
+            //por ejemplo: "cardid/"+req.files.archivo.name
+            //De otra forma, el archivo se sobreescribirá
+            const storageRef = ref(storage, `${cardid}/${filename}`);
+            const snapshot = await uploadBytes(storageRef, filedata);
+            const downloadURL = await getDownloadURL(storageRef);
+
+            const formData = JSON.stringify({
+                "text": text,
+                "attachments_to_add": [{
+                    "file_name": filename,
+                    "link": downloadURL,
+                }],  
+            });
+
+            const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards/${cardid}/comments`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": apikey
+                },
+                body: formData,
+            });
+            if(response.ok){
+                res.status(response.status).json({"text": text, "attachment": {"file_name": filename, "link": downloadURL} });
+            }
+            else{
+                res.status(response.status).json({"error": response.status});
+            }
         }
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 }
 
@@ -174,15 +238,15 @@ module.exports.moveCard = async (req,res) =>{
             body: formData,
         });
         if(response.ok){
-            res.json({"Successful": response.status});
+            res.status(response.status).json({"Successful": response.status});
         }
         else{
-            res.json({"error": response.status});
+            res.status(response.status).json({"error": response.status});
         }
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 }
 
@@ -204,7 +268,7 @@ module.exports.addCard = async (req,res) =>{
         "co_owner_ids_to_add": co_owner_ids,
         "owner_user_id": owner_user_id
     });
-    console.log(formData);
+
     try{
         const response = await  fetch(`https://${host}.kanbanize.com/api/v2/cards`, {
             method: "POST",
@@ -215,14 +279,14 @@ module.exports.addCard = async (req,res) =>{
             body: formData,
         });
         if(response.ok){
-            res.json({"Successful": response.status});
+            res.status(response.status).json({"Successful": response.status});
         }
         else{
-            res.json({"error": response.status});
+            res.status(response.status).json({"error": response.status});
         }
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 }

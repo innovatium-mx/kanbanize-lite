@@ -1,24 +1,6 @@
 import { useState , useEffect} from "react";
 import CardFilter from '../styles/Filter.module.css';
-
-type selection = {
-    user_id: number | null,
-    checked: boolean
-}
-
-type user = {
-    user_id: number | null,
-    username: string,
-    realname: string,
-    avatar: string
-}
-
-interface FilterProps {
-    users : Array<user>,
-    selected: Array<selection>,
-    setFilter: any
-}
-
+import {selection, user, FilterProps} from '../types/types';
 
 const OpenFilter = ({users, selected, setFilter} : FilterProps) => {  
 
@@ -30,7 +12,6 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
         setChecked(selected);
         setOptions(users)
     }, [selected, users]);
-    
 
     useEffect(() => {
     let allChecked = true;
@@ -55,6 +36,9 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
             const found = checked.findIndex(item => item.user_id !== null && item.user_id.toString() === e.target.value);
             temp[found].checked = !temp[found].checked;
         }
+
+        console.log(temp);
+
 
         let allChecked = true;
         for (var i=0; i< temp.length; i++) {
