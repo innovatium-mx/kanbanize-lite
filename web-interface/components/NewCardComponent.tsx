@@ -11,7 +11,7 @@ import { urlCloud } from '../constants';
 import { useRouter } from 'next/router';
 
 
-const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id}: newCard) =>{
+const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected}: newCard) =>{
 
     const [showCoOwners, setShowCoOwners] = useState<boolean>(false);
     const [noneSelected, setNoneSelected] = useState<boolean>(true);
@@ -22,7 +22,6 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     const [currCo1, setCurrCo1] = useState<string | undefined>('_');
     const [currCo2, setCurrCo2] = useState<string | undefined>('_');
     const [currCo3, setCurrCo3] = useState<string | undefined>('_');
-
 
     const userId = cookieCutter.get('userid');
     const sessionUsername = cookieCutter.get('username');
@@ -35,6 +34,8 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     const [description, setDescription] = useState<string>("");
 
     const router = useRouter();
+
+    console.log(alteredSelected);
 
     const handleClose = () =>{
         activateInsertCard(false);
@@ -53,7 +54,6 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     }
 
     const handleInsert = () =>{
-        
 
         var co_owner_ids : Array<number | null> = ([]);
 
@@ -62,9 +62,6 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                 co_owner_ids.push(alteredSelected[x].user_id);
             }
         }
-
-        console.log(co_owner_ids);
-
 
         let formData : string = JSON.stringify({
             "lane_id" : lane_id,
@@ -95,6 +92,10 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
             }
             else{
                 alert("Tarjeta agregada satisfactoriamente");
+
+
+
+                activateInsertCard(false);
             }
         })
         .catch((error) =>{
@@ -109,10 +110,10 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
 
     const setNewSelection = (newSelection: Array<selection>) =>{
         setAlteredSelected(newSelection);
+        updateSelected(newSelection);
     }
 
     const renderCoOwners = () =>{
-
         
         var letterCo : Array<string | undefined> = [undefined, undefined, undefined] 
         var letterCoBg : Array<string | undefined> = [undefined, undefined, undefined] 
@@ -120,14 +121,11 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
 
         for(var x = 0; x < alteredSelected.length; x++){
             //coOwner[x] existance
-            console.log(alteredSelected[x].checked)
-            console.log(users[x].avatar==="");
-            console.log(alteredSelected!=null && (users[x].avatar===undefined || users[x].avatar==="") && alteredSelected[x].checked)
 
             if(alteredSelected!=null && (users[x].avatar===undefined || users[x].avatar==="") && alteredSelected[x].checked){ // coOwners exist, but don't have avatar
                 letterCo[x]=users[x].username.charAt(0); 
                 letterCoBg[x]=adjustColor(color, 500*(x+0.7)/10);
-            }
+            }   
         }
 
         for(var y=0; y < 3; y++){
@@ -148,11 +146,8 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
 
     useEffect(()=>{
         renderCoOwners();
-        console.log('justdone');
     })
 
-    console.log(alteredSelected);
-    console.log(users);
 
 
     const changeNoneSelected = (value: boolean) =>{

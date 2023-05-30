@@ -65,7 +65,8 @@ export type newCard = {
     "color" :  string,
     "selected" : any,
     "lane_id" : number,
-    "column_id" : number
+    "column_id" : number,
+    "updateSelected" : any
 }
 
 export type selection = {

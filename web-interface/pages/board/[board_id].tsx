@@ -54,6 +54,27 @@ const Board = ( props: PropsResponse) => {
 
   const activateInsertCard = (param: boolean) =>{
     setInsertCard(param);
+
+    if(!insertCard){
+
+      const cutUsers : Array<user> = [];
+      const usersselection : Array<selection> = [];
+
+
+      workflow.users.map((element: user, index) =>{
+        if(element.user_id!=null && element.user_id!=userId){
+            usersselection.push({user_id: element.user_id, checked: false});
+        }
+
+        if(index<workflow.users.length-1 && element.user_id!=userId && element.user_id!=null){
+            cutUsers.push(element);
+        }
+      })
+
+      setNewUsers(cutUsers); //newUsers
+      setSelected(usersselection); //selected
+
+    }
   }
 
   const [workflow, setWorkflow] = useState<workflow>({
@@ -83,7 +104,6 @@ const Board = ( props: PropsResponse) => {
     console.log(temp);
 
     setRetrievedWorflow(true);
-
   }
 
 
@@ -116,11 +136,9 @@ const Board = ( props: PropsResponse) => {
   const [newUsers, setNewUsers] = useState<Array<user>>([]);
   const [selected, setSelected] = useState<Array<selection>>([]);
 
-
-
   const setAllSelected = (u : Array<user>) => {
-    const cutUsers : Array<user> = [];
-    const usersselection : Array<selection> = [];
+  const cutUsers : Array<user> = [];
+  const usersselection : Array<selection> = [];
 
     u.map((element: user, index) =>{
         if(element.user_id!=null && element.user_id!=userId){
@@ -144,6 +162,10 @@ const Board = ( props: PropsResponse) => {
       setAllSelected(workflow.users);
   }, [retrievedWorkflow])
 
+  const updateSelected = (newSelected: Array<selection>) =>{
+    setSelected(newSelected);
+  }
+
   return (
     <>
     
@@ -155,7 +177,7 @@ const Board = ( props: PropsResponse) => {
     
     <div className={dashboard.modalWrap}>
 
-      {insertCard && retrievedWorkflow && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id}/>}
+      {insertCard && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected}/>}
 
     </div>
 

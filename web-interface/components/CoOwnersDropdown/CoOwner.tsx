@@ -10,7 +10,7 @@ const CoOwner = ({users, selected, userId, changeNoneSelected, setNewSelection} 
     useEffect(()=>{
             setChecked(selected);
             setOptions(users);
-    },[selected, users])
+    })
 
     const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
         const temp = checked;
@@ -20,7 +20,6 @@ const CoOwner = ({users, selected, userId, changeNoneSelected, setNewSelection} 
 
         setChecked(temp);
         setNewSelection(temp);
-
     };
 
     return (
@@ -40,11 +39,10 @@ const CoOwner = ({users, selected, userId, changeNoneSelected, setNewSelection} 
                             {element.username}
                         </div>
                         <div className={CardFilter.checkbox}>
-                            <input type="checkbox" value={element.user_id} checked={checked[checked.findIndex( item => item.user_id == element.user_id)].checked} onChange={handleChange}/>
+                            <input type="checkbox" value={element.user_id} defaultChecked={checked[checked.findIndex( item => item.user_id == element.user_id)].checked} onChange={handleChange}/>
                         </div>
 
                     </div>
-
                 )
             }
         </div>
