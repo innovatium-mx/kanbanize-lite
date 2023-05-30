@@ -101,7 +101,7 @@ const MyBoards = (props: PropsResponse) => {
       <div className={dashboard.grid}>
         {/*<div className={dashboard.title}>{t("myBoards.myBoards")}</div>*/}
 
-        {boards !== null && boards.map((element: any, index) =>
+        {boards !== null && boards !== undefined && boards.map((element: any, index) =>
           <Dashboard key={element.key} board_id={element.board_id} workspace_id={element.workspace_id} is_archived={element.is_archived} name={element.name} description={element.description} index={index} />
         )}
 
@@ -139,6 +139,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       cookies.set('host');
       cookies.set('email');
       cookies.set('userid');
+      cookies.set('avatar');
+      cookies.set('username');
 
       return {
         redirect: {
@@ -159,6 +161,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
     cookies.set('host');
     cookies.set('email');
     cookies.set('userid');
+    cookies.set('avatar');
+    cookies.set('username');
 
     return {
       redirect: {

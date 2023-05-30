@@ -90,7 +90,9 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
-                cookieCutter.set('userid', '', { expires: new Date(0) }) 
+                cookieCutter.set('userid', '', { expires: new Date(0) })
+                cookieCutter.set('avatar', '', { expires: new Date(0) })
+                cookieCutter.set('username', '', { expires: new Date(0) }) 
                 router.replace({pathname: '/'});
             }
             else{
@@ -101,7 +103,9 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
             cookieCutter.set('apikey', '', { expires: new Date(0) })
             cookieCutter.set('host', '', { expires: new Date(0) })
             cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) }) 
+            cookieCutter.set('userid', '', { expires: new Date(0) })
+            cookieCutter.set('avatar', '', { expires: new Date(0) })
+            cookieCutter.set('username', '', { expires: new Date(0) })  
             router.replace({pathname: '/'}); 
         })
 
