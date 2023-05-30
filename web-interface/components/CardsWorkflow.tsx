@@ -176,8 +176,8 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             body: formData
         })
         if(response.ok) {
-            const data : any = await response.json();
-            if(data.error){
+            const moveData : any = await response.json();
+            if(moveData.error){
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
