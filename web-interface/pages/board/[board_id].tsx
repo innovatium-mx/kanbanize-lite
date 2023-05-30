@@ -1,13 +1,13 @@
 // pages/board/[board_id].tsx
-import { useTranslation} from 'next-i18next';
+import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import type { GetServerSideProps} from 'next'
+import type { GetServerSideProps } from 'next'
 import authRoute from '../../components/authRoute';
 import CardsWorkflow from '../../components/CardsWorkflow';
 import FloatButton from '../../components/FloatButton';
 import {useEffect, useState, useLayoutEffect } from "react";
 import dynamic from 'next/dynamic';
-import {urlCloud} from '../../constants'
+import { urlCloud } from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies';
 import {useRouter} from 'next/router';
@@ -17,6 +17,8 @@ import { faL } from '@fortawesome/free-solid-svg-icons';
 import { NULL } from 'sass';
 const cookieCutter= require('cookie-cutter');
 
+import Image from 'next/image';
+import Sidebar from '../../components/Sidebar';
 
 type Props = {}
 
@@ -32,16 +34,48 @@ type Props = {}
     locales: string[]
   }
 
+type parent_columns = {
+  parent_id: number,
+  parent_name: string,
+  parent_section: number,
+  parent_position: number,
+}
+
+type column = {
+  "column_id": number,
+  "workflow_id": number,
+  "section": number,
+  "parent_column_id": Array<parent_columns> | null,
+  "position": number,
+  "name": string,
+  "description": string,
+  "color": string,
+  "limit": number,
+  "cards_per_row": number,
+  "flow_type": number,
+  "card_ordering": string | null,
+  "cards": Array<card>,
+  "order": number
+}
+
+
+
+
+
+interface PropsResponse {
+  data: Array<workflow>
+  _nextI18Next: NextJsI18NConfig
+}
   interface PropsResponse {
     data : Array<workflow> 
     _nextI18Next : NextJsI18NConfig
   }
 
-const Board = ( props: PropsResponse) => {
+const Board = (props: PropsResponse) => {
   const router = useRouter();
-  const {t} = useTranslation('common');
-  const InterfaceDropdown = dynamic(import('../../components/InterfaceDropdown'), {ssr:false});
-  const OpenedActivityCard = dynamic(import('../../components/OpenedActivityCard'), {ssr:false});
+  const { t } = useTranslation('common');
+  const InterfaceDropdown = dynamic(import('../../components/InterfaceDropdown'), { ssr: false });
+  const OpenedActivityCard = dynamic(import('../../components/OpenedActivityCard'), { ssr: false });
 
   const [currentCard, setCurrentCard] = useState<card>()
   const [displayCard, setDisplayCard] = useState<boolean>(false);
@@ -72,12 +106,13 @@ const Board = ( props: PropsResponse) => {
   const board_id = query.board_id;
   const board = props.data;
 
-  const getWorkflow = (workflowid : number) => {
-    const temp = board.filter(function(item) { return item.workflow_id === workflowid; })[0];
-    temp.users.push({user_id: null,
-    username: "Not Assigned",
-    realname: "None",
-    avatar: "/None.jpg"
+  const getWorkflow = (workflowid: number) => {
+    const temp = board.filter(function (item) { return item.workflow_id === workflowid; })[0];
+    temp.users.push({
+      user_id: null,
+      username: "Not Assigned",
+      realname: "None",
+      avatar: "/None.jpg"
     })
     setWorkflow(temp);
     console.log(temp);
@@ -92,7 +127,7 @@ const Board = ( props: PropsResponse) => {
   const updateCurrentCard = (curr: card) =>{
     setCurrentCard(curr);
   }
-
+  
   const moveCards = (current : number, cardIndex : number, destiny: number ) =>{
     
     const tempWorkflow = workflow;
@@ -109,7 +144,7 @@ const Board = ( props: PropsResponse) => {
     }
   }
 
-  const showModal = (value: boolean) =>{
+  const showModal = (value: boolean) => {
     setDisplayCard(value);
   }
 
@@ -160,16 +195,38 @@ const Board = ( props: PropsResponse) => {
     </div>
 
     <div className={dashboard.boardPageWrapScroll}>
-        <div className={dashboard.topBar}>
-            <div className={dashboard.dropdownFragment}>
-              <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow}/>
-            </div>
-            <div className={dashboard.languageDropdown}>
-            </div>
+
+      <div className={dashboard.modalWrap}>
+        {/*displayCard && currentCard?.owner_avatar!= null && currentCard?.owner_username!=null  && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard}/>*/}
+        {/*<OpenedActivityCard title={"T2.HU10.- Crear componente de sidebar con Perfil, organización, idioma, link a workspaces y cerrar sesión."} owner={""} owner_avatar={"https://s3.amazonaws.com/kanbamne/attachments/university6y/avatar_80x80_10.jpg"} co_owner_usernames={[]} co_owner_avatars={[]}  description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in "}/>*/}
+
+        {displayCard && currentCard != undefined && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count} />}
+
+      </div>
+
+
+
+      {/* overflow-y hiddens when opened card modal is shown */}
+      <div className={dashboard.topBar}>
+        <div className={dashboard.left}>
+          <div>
+            <Image src={"/../public/LogoKanbanize.png"} width={64} height={36} />
+          </div>
+          <div className={dashboard.dropdownFragment}>
+            <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow} />
+          </div>
         </div>
+        <div className={dashboard.menu}>
+          <Sidebar />
+        </div>
+      </div>
       <div>
-        { workflow.type === 0 && 
-          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}/>
+        {workflow.type === 0 &&
+          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards} />
+        }
+
+        {workflow.type === 1 &&
+          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards} />
         }
 
         {
@@ -182,70 +239,73 @@ const Board = ( props: PropsResponse) => {
 
 
     </>
-    
+
   );
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   const cookies = new Cookies(context.req, context.res)
-  const apikey : any = cookies.get('apikey');
+  const apikey: any = cookies.get('apikey');
   const host = cookies.get('host');
   const { board_id } = context.query;
-  const response = await  fetch(urlCloud+`boardDetails/${host}/${board_id}`, {
-          method: "GET",
-          headers: {
-              "apikey": apikey
-          },
+  const response = await fetch(urlCloud + `boardDetails/${host}/${board_id}`, {
+    method: "GET",
+    headers: {
+      "apikey": apikey
+    },
   })
-  
-  if(response.ok){
+
+  if (response.ok) {
     const data: any = await response.json();
-    if(!data.error){
+    if (!data.error) {
       return {
-        props: {
+          props: {
           ...(await serverSideTranslations(context.locale ?? 'en', [
             'common'
           ])),
-          data}
+          data
+        }
       }
     }
-    else{
+    else {
       cookies.set('apikey');
       cookies.set('host');
       cookies.set('email');
       cookies.set('userid');
 
-      return {
-        redirect: {
+        return {
+          redirect: {
           permanent: false,
-          destination: "/",
+        destination: "/",
         },
         props: {
           ...(await serverSideTranslations(context.locale ?? 'en', [
             'common'
-          ]))}
+          ]))
+        }
       }
     }
-    
+
   }
-  else{
+  else {
     cookies.set('apikey');
     cookies.set('host');
     cookies.set('email');
     cookies.set('userid');
 
-    return {
-      redirect: {
-        permanent: false,
+        return {
+          redirect: {
+          permanent: false,
         destination: "/",
       },
       props: {
         ...(await serverSideTranslations(context.locale ?? 'en', [
           'common'
-        ]))}
+        ]))
+      }
     }
   }
-  
+
 }
 
 export default authRoute(Board);

@@ -86,6 +86,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                 },
                 showCancelButton: false,
                 confirmButtonText: companyLookUp,
+                confirmButtonColor: '#42AD49',
                 showLoaderOnConfirm: true,
                 preConfirm: (loginCompany) => {
                   return loginCompany;

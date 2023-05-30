@@ -9,14 +9,7 @@
     place-items: center;
     box-sizing: border-box;
     height: fit-content;
-    position: relative;
     width: 100%;
-}
-
-div.boardPageWrapScroll{
-    z-index: 0;
-    position: relative;
-
 }
 
 div.modalWrap{
@@ -43,6 +36,7 @@ div.modalWrap{
     justify-content: space-between;
     align-items: center;
     padding-bottom: 2em;
+    position: relative;
 }
 
 .dropdownFragment {
@@ -51,4 +45,20 @@ div.modalWrap{
 
 .languageDropdown {
     padding-right: 1.5em;
+}
+
+.left {
+    display: flex;
+    margin-left: 0.5rem;
+}
+
+.menu {
+    z-index: 8;
+}
+@media screen and (min-width: 400px) {
+    
+    .left {
+        margin-left: 2rem;
+    }
+    
 }
