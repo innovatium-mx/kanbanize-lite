@@ -86,7 +86,7 @@ const MyBoards = (props: PropsResponse) => {
       <div className={dashboard.topBar}>
         <div className={dashboard.left}>
           <div>
-            <Image src={"/../public/LogoKanbanize.png"} width={64} height={36} />
+            <Image src={"/LogoKanbanize.png"} width={64} height={36} />
           </div>
           <div className={dashboard.dropdownFragment}>
             <InterfaceDropdown data={workspaces} name={"WORKSPACE"} getData={getBoards} />
