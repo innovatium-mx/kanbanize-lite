@@ -70,12 +70,12 @@ const Sidebar = () => {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
                         toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
-                    })
-                    
-                    Toast.fire({
+                })
+
+                Toast.fire({
                     icon: 'success',
                     title: "Logged Out"
-                    })
+                })
             }
         })
     }
@@ -98,34 +98,35 @@ const Sidebar = () => {
                     </button>
                 </li>
             </ul>
+            <div>
+                <button onClick={() => setIsMenuOpen(!isMenuOpen)} ref={tooltipRef} className={sidebar.buttonMenu}>
+                    {isMenuOpen ? (<FontAwesomeIcon icon={faXmark} size="xl" />) : (<FontAwesomeIcon icon={faBars} size="xl" />)}
+                </button>
 
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} ref={tooltipRef} className={sidebar.buttonMenu}>
-                {isMenuOpen ? (<FontAwesomeIcon icon={faXmark} size="xl" />) : (<FontAwesomeIcon icon={faBars} size="xl" />)}
-            </button>
-
-            {isMenuOpen && (
-                <div
-                    className={sidebar.menuPanel}
-                    ref={ref}
-                >
-                    <ul className={sidebar.listPanel}>
-                        <li>
-                            <Link href={"/dashboard"} >
-                                <span className={sidebar.workspaces}>Workspaces</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <LanguageButton />
-                        </li>
-                        <li>
-                            <button className={sidebar.buttonPanel} onClick={handleLogout}>
-                                <FontAwesomeIcon icon={faArrowRightFromBracket} className={sidebar.icon} />
-                                Logout
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            )}
+                {isMenuOpen && (
+                    <div
+                        className={sidebar.menuPanel}
+                        ref={ref}
+                    >
+                        <ul className={sidebar.listPanel}>
+                            <li>
+                                <Link href={"/dashboard"} >
+                                    <span className={sidebar.workspaces}>Workspaces</span>
+                                </Link>
+                            </li>
+                            <li>
+                                {<LanguageButton />}
+                            </li>
+                            <li>
+                                <button className={sidebar.buttonPanel} onClick={handleLogout}>
+                                    <FontAwesomeIcon icon={faArrowRightFromBracket} className={sidebar.icon} />
+                                    Logout
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                )}
+            </div>
 
 
         </div>

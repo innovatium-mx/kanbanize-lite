@@ -36,7 +36,6 @@
     border: none;
     background: none;
     color: white;
-    display: initial;
     margin-right: 1rem;
     position: relative;
 }
@@ -53,9 +52,9 @@
     width: 14rem;
     height: auto;
     border-radius: 0.4rem;
-    position: fixed;
+    position: absolute;
     top: 4rem;
-    right: 3rem;
+    right: 2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -63,7 +62,7 @@
     padding: 1rem;
     background-color: #F8F8F8;
     box-shadow: -0.1rem 0.2rem .5rem #9998985f;
-    z-index: inherit;
+    z-index: 5;
 
  
 }

@@ -157,21 +157,17 @@ const Board = (props: PropsResponse) => {
 
 
       {/* overflow-y hiddens when opened card modal is shown */}
-      <div className={dashboard.boardPageWrapScroll}>
-        <div className={dashboard.topBar}>
-          <div className={dashboard.left}>
-            <div>
-              <Image src={"/../public/LogoKanbanize.png"} width={64} height={36} />
-            </div>
-            <div className={dashboard.dropdownFragment}>
-              <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow} />
-            </div>
+      <div className={dashboard.topBar}>
+        <div className={dashboard.left}>
+          <div>
+            <Image src={"/../public/LogoKanbanize.png"} width={64} height={36} />
           </div>
-          <div className={dashboard.menu}>
-            <Sidebar />
+          <div className={dashboard.dropdownFragment}>
+            <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow} />
           </div>
-
-
+        </div>
+        <div className={dashboard.menu}>
+          <Sidebar />
         </div>
       </div>
       <div>
