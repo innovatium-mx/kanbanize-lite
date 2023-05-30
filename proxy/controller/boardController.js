@@ -101,6 +101,7 @@ module.exports.boardDetails = async (req,res) =>{
     const apikey = req.headers.apikey;
     var users = [];
     var boardUsers = [];
+    var dataLanes = [];
     try{
         const response1 = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/workflows`, {
             method: "GET",
@@ -123,9 +124,23 @@ module.exports.boardDetails = async (req,res) =>{
             if (response2.ok){
                 const data2 = await response2.json();
                 const boardColumns = data2.data;
+                const responseLanes = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/lanes`, {
+                    method: "GET",
+                    headers: {
+                        "apikey": apikey
+                    },
+                })
+                if(responseLanes.ok){
+                    const rawDataLanes = await responseLanes.json();
+                    dataLanes = rawDataLanes.data;
+                }
+                else{
+                    res.json({"error": responseLanes.status});
+                }
                 for(var i=0; i<boardWorkflow.length;i++){
                     const workflowid = boardWorkflow[i].workflow_id;
                     var columns = [];
+                    const lanes = [];
                     boardColumns.map( function(element){
                         if(element.workflow_id === workflowid){
                             columns.push(element)
@@ -159,6 +174,12 @@ module.exports.boardDetails = async (req,res) =>{
                     columns.sort(function(a , b){
                         return a.order - b.order;
                     });
+                    dataLanes.map( function(element){
+                        if(element.workflow_id === workflowid){
+                            lanes.push(element);
+                        }
+                    });
+                    boardWorkflow[i].lanes = lanes;
                     boardWorkflow[i].columns = columns;
                 }
                 const response3 = await  fetch(`https://${host}.kanbanize.com/api/v2/cards?board_ids=${boardid}&per_page=1000&page=${1}&fields=card_id,title,description,custom_id,owner_user_id,type_id,size,priority,color,deadline,reporter,created_at,revision,last_modified,in_current_position_since,board_id,workflow_id,column_id,lane_id,section,position,last_column_id,last_lane_id,version_id,archived_at,reason_id,discard_comment,discarded_at,is_blocked,block_reason,current_block_time,current_logged_time,current_cycle_time,child_card_stats,finished_subtask_count,unfinished_subtask_count,comment_count&expand=co_owner_ids,subtasks,linked_cards`, {
