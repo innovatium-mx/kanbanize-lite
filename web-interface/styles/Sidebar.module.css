@@ -1,5 +1,3 @@
-
-
 .list {
     list-style: none;
     display: flex;
@@ -8,19 +6,18 @@
     justify-content: space-evenly;
     padding: 0rem;
     margin-right: 1rem;
-    
 }
 
 .list li {
-    margin:0 1rem;
+    margin: 0 1rem;
     color: white;
     transition: 300ms;
     background: none;
     display: none;
-    
+
 }
 
-.list li:active{
+.list li:active {
     background: #FFFFFF80;
     border-radius: 10%;
 }
@@ -44,7 +41,7 @@
     margin-right: 0.5rem;
 }
 
-.navItems{
+.navItems {
     display: flex;
 }
 
@@ -64,7 +61,7 @@
     box-shadow: -0.1rem 0.2rem .5rem #9998985f;
     z-index: 5;
 
- 
+
 }
 
 .listPanel {
@@ -83,7 +80,7 @@
     margin: 1rem 1rem;
     color: black;
     transition: 300ms;
-    background: none;    
+    background: none;
 }
 
 .buttonPanel {
@@ -100,9 +97,7 @@
         display: none;
     }
 
-    .list li{
+    .list li {
         display: initial;
-     }
+    }
 }
-
-

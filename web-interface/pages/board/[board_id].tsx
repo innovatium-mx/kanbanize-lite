@@ -98,7 +98,8 @@ const Board = (props: PropsResponse) => {
     "name": "",
     "workflow_id": -1,
     "users" : [],
-    "columns": []
+    "columns": [],
+    "lanes": [],
   });
 
 
@@ -115,7 +116,7 @@ const Board = (props: PropsResponse) => {
       avatar: "/None.jpg"
     })
     setWorkflow(temp);
-    console.log(temp);
+    console.log(temp.lanes[0].lane_id);
 
     setRetrievedWorflow(true);
 
@@ -190,7 +191,7 @@ const Board = (props: PropsResponse) => {
     
     <div className={dashboard.modalWrap}>
 
-      {insertCard && retrievedWorkflow && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id}/>}
+      {insertCard && retrievedWorkflow && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.lanes[0].lane_id} column_id={workflow.columns[0].column_id}/>}
 
     </div>
 
@@ -272,6 +273,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
       cookies.set('host');
       cookies.set('email');
       cookies.set('userid');
+      cookies.set('avatar');
+      cookies.set('username');
 
         return {
           redirect: {
@@ -292,6 +295,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     cookies.set('host');
     cookies.set('email');
     cookies.set('userid');
+    cookies.set('avatar');
+    cookies.set('username');
 
         return {
           redirect: {
