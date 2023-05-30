@@ -118,7 +118,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     cookieCutter.set('host', loginCompany, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
                     cookieCutter.set('email', data.email, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
                     cookieCutter.set('userid', data.userid, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
-                    cookieCutter.set('avatar', data.avatar, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
+                    cookieCutter.set('avatar',  data.avatar === null ? "" : data.avatar, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
                     cookieCutter.set('username', data.username, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
 
                     const signedInSuccess = t('login.success')

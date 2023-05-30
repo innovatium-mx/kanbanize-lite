@@ -1,5 +1,4 @@
-
-div.NewCard{
+div.NewCard {
     border: none;
     box-sizing: border-box;
     display: grid;
@@ -11,7 +10,7 @@ div.NewCard{
     padding-bottom: 3em;
 }
 
-input.inputTitle{
+input.inputTitle {
     justify-self: center;
     width: 20em;
     height: 2.5em;
@@ -27,7 +26,7 @@ input.inputTitle{
     -o-transition: all .3s ease;
 }
 
-textarea.inputDescription{
+textarea.inputDescription {
     justify-self: center;
     vertical-align: top;
     width: 20em;
@@ -45,12 +44,12 @@ textarea.inputDescription{
 }
 
 
-div.close{
+div.close {
     display: flex;
     justify-content: flex-end;
 }
 
-button.closeButton{
+button.closeButton {
     background-color: white;
     border: none;
     margin-top: 1em;
@@ -59,20 +58,20 @@ button.closeButton{
     border-radius: 50%;
 }
 
-div.owner{
+div.owner {
     padding-left: 3em;
     justify-content: center;
     text-align: center;
 }
 
-div.coOwners{
+div.coOwners {
     padding-right: 3em;
     justify-content: center;
     text-align: center;
     position: relative;
 }
 
-div.ownersWrap{
+div.ownersWrap {
     display: flex;
     justify-content: space-between;
     padding-top: 1.5em;
@@ -88,11 +87,12 @@ div.modalBackground {
     justify-content: center;
     align-items: center;
 
-    background-color:rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(0.5em);
+    z-index: 7;
 }
 
-button.createButton{
+button.createButton {
     color: white;
     font-size: large;
     justify-self: center;
@@ -104,7 +104,7 @@ button.createButton{
     border-radius: 0.3em;
 }
 
-button.showCoOwnersButton{
+button.showCoOwnersButton {
     background-color: white;
     border: none;
     border-radius: 50%;
