@@ -1,7 +1,7 @@
 import newcard from '../styles/NewCardComponent.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faXmark, faPlus} from '@fortawesome/free-solid-svg-icons';
-import { newCard,user, selection } from '../types/types';
+import { newCard,user, selection , croppedUser} from '../types/types';
 import { useEffect, useState, useLayoutEffect } from 'react';
 import CoOwner from '../components/CoOwnersDropdown/CoOwner';
 const cookieCutter= require('cookie-cutter');
@@ -29,13 +29,21 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     const apikey = cookieCutter.get('apikey');
     const host = cookieCutter.get('host');
     const [alteredSelected, setAlteredSelected] = useState<Array<selection>>(selected);
+    const [avatars, setAvatars] = useState<Array<croppedUser>>([]);
 
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
+    const [userIdsArray, setUserIdsArray] = useState<Array<number>>([]);
     const router = useRouter();
 
-    console.log(alteredSelected);
+    const updateUserIdsArray = (newId: number) =>{
+        const temp = userIdsArray;
+        temp.push(newId);
+
+        setUserIdsArray(temp);
+    }
+
 
     const handleClose = () =>{
         activateInsertCard(false);
@@ -52,6 +60,12 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     const handleUpdateDescription = (e: React.FormEvent<HTMLTextAreaElement>) =>{
         setDescription(e.currentTarget.value);
     }
+
+    const updateAvatars = (tempArray : Array<croppedUser>) => {
+
+        setAvatars(tempArray);
+    }
+
 
     const handleInsert = () =>{
 
@@ -122,8 +136,8 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
         for(var x = 0; x < alteredSelected.length; x++){
             //coOwner[x] existance
 
-            if(alteredSelected!=null && (users[x].avatar===undefined || users[x].avatar==="") && alteredSelected[x].checked){ // coOwners exist, but don't have avatar
-                letterCo[x]=users[x].username.charAt(0); 
+            if(alteredSelected!=null && avatars[x]!=undefined && (avatars[x].avatar===undefined || avatars[x].avatar==="")){ // coOwners exist, but don't have avatar
+                letterCo[x]=users.find(item => item.user_id === avatars[x].user_id)?.username.charAt(0); 
                 letterCoBg[x]=adjustColor(color, 500*(x+0.7)/10);
             }   
         }
@@ -147,8 +161,6 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     useEffect(()=>{
         renderCoOwners();
     })
-
-
 
     const changeNoneSelected = (value: boolean) =>{
         setNoneSelected(value);
@@ -193,44 +205,44 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                         <div className={newcard.coOwners}>
 
 
-                                { /* User 1 */ users.length >= 0 && users[0]!=undefined &&
-                                    (alteredSelected!=null && alteredSelected != undefined && alteredSelected[0].checked==true && (users[0].avatar!="" || users[0].avatar!=null)) && <img src={users[0].avatar} alt="owner_avatar1" className={newcard.image1}/>
+                                { /* User 1 */ avatars.length >= 0 && avatars[0]!=undefined &&
+                                    (alteredSelected!=null && alteredSelected != undefined && alteredSelected[0].checked==true && (avatars[0].avatar!="" || avatars[0].avatar!=null)) && <img src={avatars[0].avatar} alt="owner_avatar1" className={newcard.image1}/>
                                 }
                                 
                                 {   users.length >= 0 && users[0]!=undefined &&
-                                    (alteredSelected!=null) && (!alteredSelected[0].checked || (users[0].avatar=="" || users[0].avatar==null)) && 
+                                    (alteredSelected!=null) && (!alteredSelected[0].checked || (avatars[0].avatar=="" || avatars[0].avatar==null)) && 
                                     <div className={newcard.image1} style={ {backgroundColor:currCoBg1}}><div className={newcard.letter}>{currCo1}</div></div>
                                 }
 
                                 {
-                                    users[0]==undefined && <div className={newcard.image1} style={ {backgroundColor:currCoBg1}}><div className={newcard.letter}>{currCo1}</div></div>
+                                    avatars[0]==undefined && <div className={newcard.image1} style={ {backgroundColor:currCoBg1}}><div className={newcard.letter}>{currCo1}</div></div>
                                 }
 
 
-                                { /* User 2 */ users.length >= 1 && users[1]!=undefined &&
-                                    (alteredSelected!=null && alteredSelected != undefined && alteredSelected[1].checked==true && (users[1].avatar!="" || users[1].avatar!=null)) && <img src={users[1].avatar} alt="owner_avatar2" className={newcard.image2}/>
+                                { /* User 2 */ avatars.length >= 1 && avatars[1]!=undefined &&
+                                    (alteredSelected!=null && alteredSelected != undefined && alteredSelected[1].checked==true && (avatars[1].avatar!="" || avatars[1].avatar!=null)) && <img src={avatars[1].avatar} alt="owner_avatar2" className={newcard.image2}/>
                                 }
                                 
-                                {   users.length >= 1 && users[1]!=undefined &&
-                                    (alteredSelected!=null) && (!alteredSelected[1].checked || (users[1].avatar=="" || users[1].avatar==null)) && 
+                                {   avatars.length >= 1 && avatars[1]!=undefined &&
+                                    (alteredSelected!=null) && (!alteredSelected[1].checked || (avatars[1].avatar=="" || avatars[1].avatar==null)) && 
                                     <div className={newcard.image2} style={ {backgroundColor:currCoBg2}}><div className={newcard.letter}>{currCo2}</div></div>
                                 }
 
                                 {
-                                    users[1]==undefined && <div className={newcard.image2} style={ {backgroundColor:currCoBg2}}><div className={newcard.letter}>{currCo2}</div></div>
+                                    avatars[1]==undefined && <div className={newcard.image2} style={ {backgroundColor:currCoBg2}}><div className={newcard.letter}>{currCo2}</div></div>
                                 }
 
-                                { /* User 3 */ users.length >= 2 && users[2]!=undefined &&
-                                    (alteredSelected!=null && alteredSelected != undefined && alteredSelected[2].checked==true && (users[2].avatar!="" || users[2].avatar!=null)) && <img src={users[2].avatar} alt="owner_avatar3" className={newcard.image3}/>
+                                { /* User 3 */ avatars.length >= 2 && avatars[2]!=undefined &&
+                                    (alteredSelected!=null && alteredSelected != undefined && alteredSelected[2].checked==true && (avatars[2].avatar!="" || avatars[2].avatar!=null)) && <img src={avatars[2].avatar} alt="owner_avatar3" className={newcard.image3}/>
                                 }
                                 
-                                {   users.length >= 2 && users[2]!=undefined &&
-                                    (alteredSelected!=null) && (!alteredSelected[2].checked || (users[2].avatar=="" || users[2].avatar==null)) && 
+                                {   avatars.length >= 2 && avatars[2]!=undefined &&
+                                    (alteredSelected!=null) && (!alteredSelected[2].checked || (avatars[2].avatar=="" || avatars[2].avatar==null)) && 
                                     <div className={newcard.image3} style={ {backgroundColor:currCoBg3}}><div className={newcard.letter}>{currCo3}</div></div>
                                 }
 
                                 {
-                                    users[2]==undefined && <div className={newcard.image3} style={ {backgroundColor:currCoBg3}}><div className={newcard.letter}>{currCo3}</div></div>
+                                    avatars[2]==undefined && <div className={newcard.image3} style={ {backgroundColor:currCoBg3}}><div className={newcard.letter}>{currCo3}</div></div>
                                 }
 
 
@@ -240,7 +252,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                                     <FontAwesomeIcon icon={faPlus} style={{color: "#000000", height: "1em", paddingLeft:'0.4em', paddingTop:'0.2em'}} />
                                 </button>
                             </div>
-                            {showCoOwners && <div><CoOwner users={users} selected={alteredSelected} userId={userId} changeNoneSelected={changeNoneSelected} setNewSelection={setNewSelection}/></div>}
+                            {showCoOwners && <div><CoOwner users={users} selected={alteredSelected} userId={userId} changeNoneSelected={changeNoneSelected} setNewSelection={setNewSelection} updateAvatars={updateAvatars} updateUserIdsArray={updateUserIdsArray} avatarsList={avatars}/></div>}
 
                             
                         </div>

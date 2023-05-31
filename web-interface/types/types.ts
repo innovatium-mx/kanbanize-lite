@@ -66,7 +66,12 @@ export type newCard = {
     "selected" : any,
     "lane_id" : number,
     "column_id" : number,
-    "updateSelected" : any
+    "updateSelected" : any,
+}
+
+export type croppedUser = {
+    "user_id" : number,
+    "avatar" : string | undefined
 }
 
 export type selection = {
@@ -92,5 +97,8 @@ export interface AddCoOwners{
     selected: Array<selection>,
     userId: any,
     changeNoneSelected: any,
-    setNewSelection: any
+    setNewSelection: any,
+    updateAvatars : any,
+    updateUserIdsArray : any,
+    avatarsList: Array<croppedUser>
 }
