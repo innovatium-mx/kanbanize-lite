@@ -55,14 +55,14 @@ const Sidebar = () => {
         }).then((result) => {
 
             if (result.isConfirmed) {
-
+                router.replace({ pathname: '/' })
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
                 cookieCutter.set('userid', '', { expires: new Date(0) })
                 cookieCutter.set('avatar', '', { expires: new Date(0) })
                 cookieCutter.set('username', '', { expires: new Date(0) })
-                router.replace({ pathname: '/' })
+                
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
