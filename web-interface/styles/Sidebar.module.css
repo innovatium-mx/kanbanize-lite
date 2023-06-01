@@ -14,7 +14,7 @@
     transition: 300ms;
     background: none;
     display: none;
-
+    cursor: pointer;
 }
 
 .list li:active {
