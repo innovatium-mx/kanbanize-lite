@@ -58,7 +58,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const Comment = dynamic(import('../components/Comment'), {ssr: false});
     const [commentsArray, setCommentsArray] = useState<Array<comment | null>>([]);
     const [newComment, setNewComment] = useState<string>("");
-    const [file, setFile] = useState<File>();
+    const [file, setFile] = useState<File | undefined>();
     const [hasFile, setHasFile] = useState<boolean>(false);
     const [preview, setPreview] = useState<string>("");
     const [justDone, setJustDone] = useState<boolean>(false);
@@ -82,7 +82,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     //const [currentTime, setCurrentTime]= useState<string>('');
     const[localCommentsCount, setLocalCommentsCount] = useState<number>(comment_count);
 
-    const handleChange = async (e : React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const tempFile = e.target.files[0];
             if(tempFile.size / 1024 > 15000){
@@ -104,6 +104,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         }
         else{
             alert("There was an error uploading the file");
+            setHasFile(false);
             return;
         }
     };
