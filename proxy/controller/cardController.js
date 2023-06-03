@@ -279,7 +279,9 @@ module.exports.addCard = async (req,res) =>{
             body: formData,
         });
         if(response.ok){
-            res.status(response.status).json({"Successful": response.status});
+            const data = await response.json();
+            const card_id = data.data[0].card_id;
+            res.status(response.status).json({"card_id": card_id});
         }
         else{
             res.status(response.status).json({"error": response.status});
