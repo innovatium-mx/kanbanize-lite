@@ -32,11 +32,6 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
 
-    if (typeof window !== 'undefined') {
-        document.documentElement.style.setProperty('--dropdowncolor-', 'black');
-        document.documentElement.style.setProperty('--dropdown-bg-', 'white');
-    }
-
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [loginCompany, setLoginCompany] = useState('');
@@ -195,7 +190,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
             </Head>*/
         }
             <div className={login.dropdownFragment}>
-                <LanguageButton/>
+                <LanguageButton color={false}/>
             </div>
 
 

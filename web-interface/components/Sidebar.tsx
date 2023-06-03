@@ -7,9 +7,12 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const cookieCutter = require('cookie-cutter');
+import Cookies from 'universal-cookie';
+var globalCookie = new Cookies();
+
 
 const Sidebar = () => {
+    
 
     const router = useRouter();
 
@@ -55,13 +58,14 @@ const Sidebar = () => {
         }).then((result) => {
 
             if (result.isConfirmed) {
+                
+                globalCookie.remove('apikey')
+                globalCookie.remove('host')
+                globalCookie.remove('email')
+                globalCookie.remove('userid')
+                globalCookie.remove('avatar')
+                globalCookie.remove('username')
                 router.replace({ pathname: '/' })
-                cookieCutter.set('apikey', '', { expires: new Date(0) })
-                cookieCutter.set('host', '', { expires: new Date(0) })
-                cookieCutter.set('email', '', { expires: new Date(0) })
-                cookieCutter.set('userid', '', { expires: new Date(0) })
-                cookieCutter.set('avatar', '', { expires: new Date(0) })
-                cookieCutter.set('username', '', { expires: new Date(0) })
                 
                 const Toast = Swal.mixin({
                     toast: true,
@@ -91,7 +95,7 @@ const Sidebar = () => {
                     </Link>
                 </li>
                 <li>
-                    <LanguageButton />
+                    <LanguageButton color={true}/>
                 </li>
                 <li>
                     <button className={sidebar.button} onClick={handleLogout}>
@@ -117,7 +121,7 @@ const Sidebar = () => {
                                 </Link>
                             </li>
                             <li>
-                                {<LanguageButton />}
+                                {<LanguageButton color={false}/>}
                             </li>
                             <li>
                                 <button className={sidebar.buttonPanel} onClick={handleLogout}>
