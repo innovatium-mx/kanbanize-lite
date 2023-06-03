@@ -263,7 +263,17 @@ module.exports.boardDetails = async (req,res) =>{
                             })
                             if(columnCards.length != 0){
                                 columnCards.sort(function(a , b){
-                                    return a.position - b.position;
+                                    if(a.lane_id === b.lane_id) {
+                                        return a.position - b.position;
+                                    }
+                                    else {
+                                        if(a.lane_id > b.lane_id) {
+                                            return 1
+                                        }
+                                        else {
+                                            return -1
+                                        }
+                                    }
                                 });
                                 boardWorkflow[x].columns[y].cards = columnCards;
                             }
