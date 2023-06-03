@@ -9,11 +9,24 @@ import { useRouter } from 'next/router'
 //
 import {useTranslation} from 'next-i18next';
 
-const LanguageButton = () => {
+export interface LanguageDropdownProps {
+    color : boolean,
+}
+
+const LanguageButton = ({color} : LanguageDropdownProps) => {
 
     //
     const router = useRouter();
     const {t} = useTranslation('common');
+
+    if(color) {
+        document.documentElement.style.setProperty('--dropdowncolor-', 'white');
+        document.documentElement.style.setProperty('--dropdown-bg-', '#2666BE');
+    }
+    else {
+        document.documentElement.style.setProperty('--dropdowncolor-', 'black');
+        document.documentElement.style.setProperty('--dropdown-bg-', '');
+    }
 
     const onToggleLanguageClick = (newLocale: string) => {
         const { pathname, asPath, query } = router

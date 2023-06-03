@@ -10,11 +10,12 @@
     box-sizing: border-box;
     height: fit-content;
     width: 100%;
+    z-index: 0;
 }
 
-div.modalWrap{
+div.modalWrap {
     position: relative;
-    z-index: 1; 
+    z-index: 2;
 }
 
 .title {
@@ -53,12 +54,13 @@ div.modalWrap{
 }
 
 .menu {
-    z-index: 8;
+    z-index: 1;
 }
+
 @media screen and (min-width: 400px) {
-    
+
     .left {
         margin-left: 2rem;
     }
-    
+
 }
