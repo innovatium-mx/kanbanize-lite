@@ -225,10 +225,12 @@ module.exports.boardDetails = async (req,res) =>{
                     for(var x=0; x<boardWorkflow.length;x++){
                         for(var y=0; y<boardWorkflow[x].columns.length;y++){
                             const columnid = boardWorkflow[x].columns[y].column_id;
+                            const columnlanes = boardWorkflow[x].lanes;
                             const columnCards = [];
                             boardCards.map( async function(element){
                                 if(element.column_id === columnid){
                                     const tempCard = element;
+                                    let lane_name = "";
                                     if(tempCard.owner_user_id){
                                         const userObject = users.find(item => item.user_id === element.owner_user_id);
                                         tempCard.owner_username = userObject.username;
@@ -248,12 +250,30 @@ module.exports.boardDetails = async (req,res) =>{
                                         tempCard.co_owner_usernames = co_owner_usernames;
                                         tempCard.co_owner_avatars = co_owner_avatars;
                                     }
+                                    if(tempCard.lane_id){
+                                        columnlanes.map( function (lane) {
+                                            if(lane.lane_id === tempCard.lane_id){
+                                                lane_name = lane.name;
+                                            }
+                                        })
+                                    }
+                                    tempCard.lane_name = lane_name;
                                     columnCards.push(tempCard);
                                 }
                             })
                             if(columnCards.length != 0){
                                 columnCards.sort(function(a , b){
-                                    return a.position - b.position;
+                                    if(a.lane_id === b.lane_id) {
+                                        return a.position - b.position;
+                                    }
+                                    else {
+                                        if(a.lane_id > b.lane_id) {
+                                            return 1
+                                        }
+                                        else {
+                                            return -1
+                                        }
+                                    }
                                 });
                                 boardWorkflow[x].columns[y].cards = columnCards;
                             }
