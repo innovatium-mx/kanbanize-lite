@@ -6,23 +6,10 @@ import Dynamicboard from '../styles/Dynamicboard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleArrowLeft, faCircleArrowRight} from '@fortawesome/free-solid-svg-icons';
 import {urlCloud} from '../constants'
-import {column, card} from '../types/types';
+import {column, card, user, selection} from '../types/types';
 
 
 const cookieCutter= require('cookie-cutter');
-
-type selection = {
-    user_id: number | null,
-    checked: boolean
-}
-
-type user = {
-    user_id: number | null,
-    username: string,
-    realname: string,
-    avatar: string
-}
-
 
 type CardsWorkflowProps = {
     data: Array<column>,

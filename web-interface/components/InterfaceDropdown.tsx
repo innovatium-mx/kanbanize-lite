@@ -3,14 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import { useRouter } from 'next/router'
 import dashboard from '../styles/Dashboards.module.css';
-import { type } from 'os';
-import { workSpace, workflow } from '@/types/types';
+import { DropdownProps } from '../types/types';
 
-interface DropdownProps {
-    data : Array<workSpace | workflow>
-    getData : any
-    name : string
-}
 
 const InterfaceDropdown = ({data, getData, name} : DropdownProps) => {
 
