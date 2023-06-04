@@ -41,7 +41,7 @@ div.modalWrap {
 }
 
 .dropdownFragment {
-    padding-left: 1.5em;
+    padding-left: 0em;
 }
 
 .languageDropdown {
@@ -50,11 +50,24 @@ div.modalWrap {
 
 .left {
     display: flex;
+    justify-content: center;
+    align-items: center;
     margin-left: 0.5rem;
 }
 
 .menu {
     z-index: 1;
+}
+
+.menuOptions {
+    width: 12em;
+}
+
+.item {
+    width: inherit;
+    text-overflow: clip;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 @media screen and (min-width: 400px) {
