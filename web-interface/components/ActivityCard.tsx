@@ -1,8 +1,6 @@
 import actCard from '../styles/Activitycard.module.css';
 import adjustColor from '../helpers/lightenColor';
-import { Console } from 'console';
-import dynamic from 'next/dynamic';
-import { useState } from 'react';
+
 
 export type ActivityCardProps = {
     "card_id": number,
@@ -10,9 +8,6 @@ export type ActivityCardProps = {
     "owner_avatar": string | null,
     "title": string, 
     "owner_username": string | null,
-    "co_owner_usernames" : Array<string> | null,
-    "co_owner_avatars" : Array<string> | null,
-    "description" : string,
     "retrieveIndex" : any,
     "displayModal": any,
     "lane_name": string,
@@ -20,7 +15,7 @@ export type ActivityCardProps = {
 }
 
 
-const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_owner_usernames, co_owner_avatars, description, retrieveIndex, displayModal, lane_name, lane_color} : ActivityCardProps) =>{
+const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, retrieveIndex, displayModal, lane_name, lane_color} : ActivityCardProps) =>{
 
     const newColor = '#' + color;
     const boardCardColor = adjustColor(newColor, 175);
@@ -49,8 +44,8 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_o
         <div>
             
             <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}} onClick={()=> handleClick()}>
-                <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
                 <div className={actCard.innerContainer}>
+                <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
                     <div className={actCard.text}>{title}</div>
                     <div className={actCard.imageSection}>
                         {(owner_avatar !=  null &&  owner_avatar!="") ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}

@@ -4,6 +4,10 @@
 
 }
 
+.pageWrap {
+    padding-bottom: 1em;
+}
+
 .grid {
     display: grid;
     place-items: center;
@@ -15,7 +19,7 @@
 
 div.modalWrap {
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .title {
@@ -27,13 +31,12 @@ div.modalWrap {
 .topBar {
     background-color: #2666BE !important;
     width: 100%;
-    padding-top: 2em;
+    padding-top: 1.5em;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 2em;
-    position: relative;
+    padding-bottom: 1.5em;
 }
 
 .dropdownFragment {
@@ -74,3 +77,10 @@ div.modalWrap {
     }
 
 }
+
+@media screen and (max-width: 810px) {
+    .pageWrap{
+        padding-bottom: 7em;
+    }
+}
+
