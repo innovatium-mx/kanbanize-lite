@@ -59,6 +59,18 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         setGetToBacklog(goBack);
     }, [goBack])
 
+    useEffect(() => {
+        setIndex(0);
+        setButtons({left: false, right: true});
+        if(data[0].color === ''){
+            setColor('#9e9e9e');
+        }
+        else{
+            setColor('#'+data[0].color);
+        }
+    }, [data])
+    
+
     useEffect(()=>{
         setAllSelected(users);
     }, [users]);
@@ -145,7 +157,10 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
-                cookieCutter.set('userid', '', { expires: new Date(0) }) 
+                cookieCutter.set('userid', '', { expires: new Date(0) })
+                cookieCutter.set('avatar', '', { expires: new Date(0) })
+                cookieCutter.set('username', '', { expires: new Date(0) }) 
+                cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
             }
             else {
@@ -175,6 +190,9 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             cookieCutter.set('host', '', { expires: new Date(0) })
             cookieCutter.set('email', '', { expires: new Date(0) })
             cookieCutter.set('userid', '', { expires: new Date(0) })
+            cookieCutter.set('avatar', '', { expires: new Date(0) })
+            cookieCutter.set('username', '', { expires: new Date(0) }) 
+            cookieCutter.set('workspace', '', { expires: new Date(0) })
             router.replace({pathname: '/'});
         }
     };
@@ -194,12 +212,15 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             body: formData
         })
         if(response.ok) {
-            const data : any = await response.json();
-            if(data.error){
+            const moveData : any = await response.json();
+            if(moveData.error){
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
                 cookieCutter.set('userid', '', { expires: new Date(0) })
+                cookieCutter.set('avatar', '', { expires: new Date(0) })
+                cookieCutter.set('username', '', { expires: new Date(0) }) 
+                cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
             }
             else{
@@ -229,6 +250,9 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             cookieCutter.set('host', '', { expires: new Date(0) })
             cookieCutter.set('email', '', { expires: new Date(0) })
             cookieCutter.set('userid', '', { expires: new Date(0) })
+            cookieCutter.set('avatar', '', { expires: new Date(0) })
+            cookieCutter.set('username', '', { expires: new Date(0) }) 
+            cookieCutter.set('workspace', '', { expires: new Date(0) })
             router.replace({pathname: '/'});
         }
     };
@@ -267,7 +291,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                     { activities != null && activities.map((element: any) =>
                         <div key={element.key} className={Dynamicboard.cardContainer}>
                             <div className={Dynamicboard.buttons} />
-                            <ActivityCard card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} co_owner_usernames={element.co_owner_usernames} co_owner_avatars={element.co_owner_avatars} description={element.description} retrieveIndex={retrieveIndex} displayModal={displayModal}/>
+                            <ActivityCard card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} co_owner_usernames={element.co_owner_usernames} co_owner_avatars={element.co_owner_avatars} description={element.description} retrieveIndex={retrieveIndex} displayModal={displayModal} lane_name={element.lane_name} lane_color={element.lane_color}/>
                             <div className={Dynamicboard.buttons} onClick={() => handleRightClick(element.card_id)}>
                                 { !element.is_blocked && buttons.right &&
                                     <FontAwesomeIcon icon={faCircleArrowRight} style={{color: "#000000"}} />

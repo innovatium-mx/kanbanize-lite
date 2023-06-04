@@ -30,8 +30,8 @@ const InterfaceDropdown = ({data, getData, name} : DropdownProps) => {
         <div>
             <Dropdown isOpen={dropdown} toggle={openCloseDropdown}  >
                         <DropdownToggle caret className={dashboard.workspaceStyle}>{name}</DropdownToggle>
-                        <DropdownMenu >
-                            {data.map((element: any)=><DropdownItem key={element.key} value={ element.workspace_id || element.workflow_id } onClick={() => onToggleClick(element.workspace_id || element.workflow_id )}>{element.name}</DropdownItem>)}
+                        <DropdownMenu className={dashboard.menuOptions}>
+                            {data.map((element: any)=><DropdownItem className={dashboard.item} key={element.key} value={ element.workspace_id || element.workflow_id } onClick={() => onToggleClick(element.workspace_id || element.workflow_id )}>{element.name}</DropdownItem>)}
                         </DropdownMenu>
             </Dropdown>
         </div>

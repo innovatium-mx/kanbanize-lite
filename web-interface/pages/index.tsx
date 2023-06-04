@@ -32,11 +32,6 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
 
-    if (typeof window !== 'undefined') {
-        document.documentElement.style.setProperty('--dropdowncolor-', 'black');
-        document.documentElement.style.setProperty('--dropdown-bg-', 'white');
-    }
-
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [loginCompany, setLoginCompany] = useState('');
@@ -86,6 +81,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                 },
                 showCancelButton: false,
                 confirmButtonText: companyLookUp,
+                confirmButtonColor: '#42AD49',
                 showLoaderOnConfirm: true,
                 preConfirm: (loginCompany) => {
                   return loginCompany;
@@ -117,7 +113,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     cookieCutter.set('host', loginCompany, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
                     cookieCutter.set('email', data.email, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
                     cookieCutter.set('userid', data.userid, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
-                    cookieCutter.set('avatar', data.avatar, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
+                    cookieCutter.set('avatar',  data.avatar === null ? "" : data.avatar, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
                     cookieCutter.set('username', data.username, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)});
 
                     const signedInSuccess = t('login.success')
@@ -194,7 +190,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
             </Head>*/
         }
             <div className={login.dropdownFragment}>
-                <LanguageButton/>
+                <LanguageButton color={false}/>
             </div>
 
 

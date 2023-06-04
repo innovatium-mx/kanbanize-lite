@@ -14,11 +14,13 @@ export type ActivityCardProps = {
     "co_owner_avatars" : Array<string> | null,
     "description" : string,
     "retrieveIndex" : any,
-    "displayModal": any
+    "displayModal": any,
+    "lane_name": string,
+    "lane_color": string
 }
 
 
-const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_owner_usernames, co_owner_avatars, description, retrieveIndex, displayModal} : ActivityCardProps) =>{
+const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_owner_usernames, co_owner_avatars, description, retrieveIndex, displayModal, lane_name, lane_color} : ActivityCardProps) =>{
 
     const newColor = '#' + color;
     const boardCardColor = adjustColor(newColor, 175);
@@ -45,12 +47,15 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_o
 
     return(
         <div>
-
+            
             <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}} onClick={()=> handleClick()}>
-                <div className={actCard.text}>{title}</div>
+                <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
+                <div className={actCard.innerContainer}>
+                    <div className={actCard.text}>{title}</div>
                     <div className={actCard.imageSection}>
                         {(owner_avatar !=  null &&  owner_avatar!="") ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
                     </div>
+                </div> 
             </div>
             <footer className={actCard.bottom} style={{backgroundColor:newColor}}></footer>
         

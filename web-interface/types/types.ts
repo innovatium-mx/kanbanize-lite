@@ -16,6 +16,16 @@ export type card = {
     "comment_count" : number
 };
 
+export type lane = {
+    "lane_id": number,
+    "workflow_id": number,
+    "parent_lane_id": number | null,
+    "position": number,
+    "name": string,
+    "description": string,
+    "color": string
+}
+
 export type column = {
     "column_id": number,
     "workflow_id": number,
@@ -56,7 +66,8 @@ export type workflow = {
     "name": string,
     "workflow_id": number,
     "users": Array<user>,
-    "columns": Array<column>
+    "columns": Array<column>,
+    "lanes": Array<lane>
 }
 
 export type newCard = {
