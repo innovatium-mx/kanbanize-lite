@@ -1,28 +1,17 @@
 import boardStyle from '../styles/Board.module.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
+import { boardCard } from '../types/types';
 
-export type boardCard = {
-    board_id: number,
-    workspace_id: number,
-    is_archived: number,
-    name: string, 
-    description: string,
-    index: number
-}
 
-const DashBoard = ({board_id, workspace_id, is_archived, name, description, index}: boardCard) => {
+const DashBoard = ({board_id, name, description, index}: boardCard) => {
 
-    //const forceUpdate = useForceUpdate();
     const router = useRouter();
     const colorsArray = Array(('E6186A'), ('43AF4A'), ('2666BE'),('F48A32'));
     const [cardColor, setCardColor] = useState('');
 
 
-
-    
     const HandleColorUpdate = (index : any) =>{
-        //cardColor = "#" + colorsArray[Math.floor(Math.random()*colorsArray.length)];
         var newIndex=0;
   
         if(index === 0){newIndex = 0;}
@@ -37,7 +26,6 @@ const DashBoard = ({board_id, workspace_id, is_archived, name, description, inde
             setCardColor(colorsArray[newIndex]);
         })
 
-        //return {backgroundColor: `cardColor`};
         return cardColor;
     }
 

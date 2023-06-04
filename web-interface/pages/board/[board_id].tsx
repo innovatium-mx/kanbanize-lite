@@ -31,35 +31,7 @@ type Props = {}
     localeDetection?: false
     locales: string[]
   }
-
-type parent_columns = {
-  parent_id: number,
-  parent_name: string,
-  parent_section: number,
-  parent_position: number,
-}
-
-type column = {
-  "column_id": number,
-  "workflow_id": number,
-  "section": number,
-  "parent_column_id": Array<parent_columns> | null,
-  "position": number,
-  "name": string,
-  "description": string,
-  "color": string,
-  "limit": number,
-  "cards_per_row": number,
-  "flow_type": number,
-  "card_ordering": string | null,
-  "cards": Array<card>,
-  "order": number
-}
-
-
-
-
-
+  
 interface PropsResponse {
   data: Array<workflow>
   _nextI18Next: NextJsI18NConfig

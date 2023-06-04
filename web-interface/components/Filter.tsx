@@ -1,25 +1,8 @@
 import { useState, useEffect, useRef} from "react";
 import OpenFilter from './OpenFilter';
 import CardFilter from '../styles/Filter.module.css';
+import { FilterProps } from "../types/types";
 
-type selection = {
-    user_id: number | null,
-    checked: boolean
-}
-
-type user = {
-    user_id: number | null,
-    username: string,
-    realname: string,
-    avatar: string
-}
-
-
-interface FilterProps {
-    users : Array<user>,
-    selected: Array<selection>,
-    setFilter: any
-}
 
 const Filter = ({users, selected, setFilter} : FilterProps) => {
 

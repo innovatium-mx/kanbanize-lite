@@ -12,14 +12,10 @@ var globalCookie = new Cookies();
 
 
 const Sidebar = () => {
-    
 
     const router = useRouter();
-
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
     const LanguageButton = dynamic(import('./LanguageDropdown'), { ssr: false });
-
 
     const ref: React.MutableRefObject<any> = useRef();
     const tooltipRef: React.MutableRefObject<any> = useRef();

@@ -8,41 +8,10 @@ import { useRouter } from 'next/router';
 import CommentContainer from './CommentContainer';
 import axios from 'axios';
 import {urlCloud, urlLocal} from '../constants';
+import { comment, OpenedActivityCardProps, Author, Attachment } from '../types/types';
 
 const cookieCutter= require('cookie-cutter');
 
-export type OpenedActivityCardProps = {
-    "title" : string,
-    "owner" : string | undefined,
-    "owner_avatar" : string | null,
-    "co_owner_usernames"  : Array<string | undefined> | null,
-    "co_owner_avatars" : Array<string | undefined> | null,
-    "description": string,
-    "setDisplayCard": any,
-    "color": string,
-    "card_id" : number,
-    "comment_count" : number
-}
-
-export type Author = {
-    "type" : string,
-    "value" : number,
-    "avatar" : string | null,
-    "username" : string | undefined
-}
-
-export type Attachment = {
-    "id": number,
-    "file_name": string,
-    "link": string
-}
-
-export type comment = {
-    "text": string,
-    "last_modified": string,
-    "author": Author,
-    "attachments" : Array<Attachment>
-}
 
 const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count}: OpenedActivityCardProps) =>{
     const router = useRouter();
