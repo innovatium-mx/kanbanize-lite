@@ -1,8 +1,5 @@
 import initCard from '../styles/Initiativecard.module.css';
 import actCard from '../styles/Activitycard.module.css'
-import { Console } from 'console';
-import dynamic from 'next/dynamic';
-import { useState } from 'react';
 import { InitiativeCardProps } from '@/types/types';
 
 
