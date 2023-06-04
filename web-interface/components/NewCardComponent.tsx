@@ -110,7 +110,6 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                     co_avatars.push(avatars[r].avatar);
                 }
 
-                console.log(avatars);
 
                 const tempNewCard : card = {
                     card_id : data.card_id,
@@ -139,7 +138,6 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
             }
         })
         .catch((error) =>{
-            console.log(error);
             cookieCutter.set('apikey', '', { expires: new Date(0) })
             cookieCutter.set('host', '', { expires: new Date(0) })
             cookieCutter.set('email', '', { expires: new Date(0) })

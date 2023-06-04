@@ -46,7 +46,6 @@ const CoOwner = ({users, selected, setNewSelection, updateAvatars, avatarsList} 
             let x = listCopy.filter((e) => e.user_id !== newUserId);
             
             updateAvatars(x);
-            console.log(x); 
         }
 
     };
