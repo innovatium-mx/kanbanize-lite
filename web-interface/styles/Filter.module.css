@@ -9,7 +9,7 @@
     border-radius: 0.2em;
     right: 0.5em;
     padding: 1.5rem;
-    width: auto;
+    width: 15em;
     height: auto;
     display: grid;
     justify-content: center;
@@ -41,7 +41,11 @@
 }
 
 .username {
+    width: 8em;
     padding: 0.25em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .checkbox {
