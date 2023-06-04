@@ -61,10 +61,11 @@ div.modalWrap {
 
 .menuOptions {
     width: 12em;
+    left: 1em;
 }
 
 .item {
-    width: inherit;
+    width: 10.75em;
     text-overflow: clip;
     overflow: hidden;
     white-space: nowrap;
