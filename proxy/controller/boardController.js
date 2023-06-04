@@ -231,6 +231,7 @@ module.exports.boardDetails = async (req,res) =>{
                                 if(element.column_id === columnid){
                                     const tempCard = element;
                                     let lane_name = "";
+                                    let lane_color = "";
                                     if(tempCard.owner_user_id){
                                         const userObject = users.find(item => item.user_id === element.owner_user_id);
                                         tempCard.owner_username = userObject.username;
@@ -254,10 +255,12 @@ module.exports.boardDetails = async (req,res) =>{
                                         columnlanes.map( function (lane) {
                                             if(lane.lane_id === tempCard.lane_id){
                                                 lane_name = lane.name;
+                                                lane_color = lane.color
                                             }
                                         })
                                     }
                                     tempCard.lane_name = lane_name;
+                                    tempCard.lane_color = lane_color;
                                     columnCards.push(tempCard);
                                 }
                             })
