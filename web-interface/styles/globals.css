@@ -2,5 +2,5 @@
 
 html,
 body {
-    font-family:  'Times New Roman', Times, serif, 'Roboto', 'Segoe UI', helvetica, sans-serif;
+    font-family: 'Roboto', 'Segoe UI', helvetica, sans-serif !important;
 }

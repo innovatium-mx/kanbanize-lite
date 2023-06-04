@@ -246,7 +246,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
 
 
                             <div style={{display:'flex', paddingTop:'4em'}}>
-                                CoOwner
+                                Co-Owner
                                 <button className={newcard.showCoOwnersButton} onClick={()=> handleAddCoOwners()}>
                                     <FontAwesomeIcon icon={faPlus} style={{color: "#000000", height: "1em", paddingLeft:'0.4em', paddingTop:'0.2em'}} />
                                 </button>
