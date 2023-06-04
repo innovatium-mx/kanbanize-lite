@@ -4,8 +4,7 @@ div.boardCard {
     position: relative;
 
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     width: 30em;
     height: auto;
@@ -37,11 +36,12 @@ footer.bottom {
 
 div.lane {
     z-index: 0;
-    width: 12.5em;
+    width: auto;
     font-size: 0.6em;
-    margin-top: 0.5em;
-    margin-left: 0.5em;
-    padding: 0.25em 0.25em;
+    color: white;
+    margin-top: 0.7em;
+    margin-left: 0.7em;
+    padding: 0.25em 1em;
     border-radius: 1.2em;
     align-self: baseline;
     font-weight: bold;
@@ -53,6 +53,7 @@ div.lane {
 }
 
 div.text {
+
     text-align: center;
     padding-left: 1em;
     padding-top: 1em;
@@ -104,7 +105,7 @@ div.name {
     width: 4em;
     border-radius: 50%;
     z-index: 0;
-    filter: drop-shadow(.01em 0.5em .3em rgba(160, 160, 160, 0.425));
+    filter: drop-shadow(.01em 0.3em .3em rgba(130, 130, 130, 0.3));
     /* border: 1px solid white; */
 }
 
@@ -126,7 +127,13 @@ div.imageSection {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 0.5rem;
 
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
 }
 
 @media screen and (max-width: 550px) {
@@ -172,11 +179,11 @@ div.imageSection {
 
 @media screen and (max-width: 392px) {
     div.boardCard {
-        width: 16em;
+        width: 18em;
     }
 
     footer.bottom {
-        width: 16em;
+        width: 18em;
     }
 
     .photo {
@@ -214,11 +221,11 @@ div.imageSection {
 
 @media screen and (max-width: 325px) {
     div.boardCard {
-        width: 12em;
+        width: 14em;
     }
 
     footer.bottom {
-        width: 12em;
+        width: 14em;
     }
 
     .photo {
@@ -233,6 +240,9 @@ div.imageSection {
         width: 2.5em;
         margin-left: 0.05em;
         margin-right: 0.25em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
     }
 
@@ -241,15 +251,62 @@ div.imageSection {
         width: 2.5em;
         margin-left: 0.05em;
         margin-right: 0.05em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
     }
 
     div.letter {
         font-size: 1.2em;
+        padding-top: 0em;
     }
 
     div.text {
-        font-size: 90%;
+        font-size: 0.8rem;
+        width: 10em;
+    }
+}
+
+
+@media screen and (max-width: 280px) {
+    div.boardCard {
+        width: 12em;
+    }
+
+    footer.bottom {
+        width: 12em;
+    }
+
+    .noPhoto_noUser {
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.05em;
+        margin-right: 0.25em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .noPhoto_user {
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.05em;
+        margin-right: 0.05em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    div.letter {
+        font-size: 1em;
+        padding-top: 0em;
+    }
+
+    div.text {
+        font-size: 0.8em;
         width: 10em;
     }
 }
