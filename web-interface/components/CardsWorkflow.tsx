@@ -126,6 +126,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 cookieCutter.set('userid', '', { expires: new Date(0) })
                 cookieCutter.set('avatar', '', { expires: new Date(0) })
                 cookieCutter.set('username', '', { expires: new Date(0) }) 
+                cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
             }
             else {
@@ -157,6 +158,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             cookieCutter.set('userid', '', { expires: new Date(0) })
             cookieCutter.set('avatar', '', { expires: new Date(0) })
             cookieCutter.set('username', '', { expires: new Date(0) }) 
+            cookieCutter.set('workspace', '', { expires: new Date(0) })
             router.replace({pathname: '/'});
         }
     };
@@ -184,6 +186,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 cookieCutter.set('userid', '', { expires: new Date(0) })
                 cookieCutter.set('avatar', '', { expires: new Date(0) })
                 cookieCutter.set('username', '', { expires: new Date(0) }) 
+                cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
             }
             else{
@@ -215,6 +218,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             cookieCutter.set('userid', '', { expires: new Date(0) })
             cookieCutter.set('avatar', '', { expires: new Date(0) })
             cookieCutter.set('username', '', { expires: new Date(0) }) 
+            cookieCutter.set('workspace', '', { expires: new Date(0) })
             router.replace({pathname: '/'});
         }
     };

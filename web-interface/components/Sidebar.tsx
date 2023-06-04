@@ -65,6 +65,7 @@ const Sidebar = () => {
                 globalCookie.remove('userid')
                 globalCookie.remove('avatar')
                 globalCookie.remove('username')
+                globalCookie.remove('workspace')
                 router.replace({ pathname: '/' })
                 
                 const Toast = Swal.mixin({

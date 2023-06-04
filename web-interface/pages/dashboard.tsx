@@ -1,7 +1,7 @@
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetServerSideProps } from 'next'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 import authRoute from '../components/authRoute';
 import dynamic from 'next/dynamic';
@@ -49,11 +49,10 @@ const MyBoards = (props: PropsResponse) => {
 
   const [dropdown, setDropdown] = useState(false);
   const [workspaceName, setWorkspaceName] = useState("");
+  const workspaceNumber = cookieCutter.get('workspace');
   const openCloseDropdown = () => {
     setDropdown(!dropdown);
   }
-
-  const Navbar = dynamic(import('../components/Navbar'), { ssr: false });
 
   const router = useRouter();
   const [value, setValue] = useState(0);
@@ -71,9 +70,25 @@ const MyBoards = (props: PropsResponse) => {
 
   };
 
+  useEffect(() => {
+    if(workspaceNumber !== undefined){
+      setBoards(workspaces[workspaceNumber].boards)
+      setWorkspaceName(workspaces[workspaceNumber].name)
+    }
+    else{
+      const now = new Date();
+      cookieCutter.set('workspace', 0, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)})
+      setBoards(workspaces[0].boards)
+      setWorkspaceName(workspaces[0].name)
+    }
+  })
+
 
   const getBoards = async (workspace_id: number) => {
-    const workspaceSelected = workspaces.find(item => item.workspace_id === workspace_id);
+    const workspaceIndex = workspaces.findIndex(item => item.workspace_id === workspace_id);
+    const workspaceSelected = workspaces[workspaceIndex];
+    const now = new Date();
+    cookieCutter.set('workspace', workspaceIndex, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)})
     workspaceSelected !== undefined && setBoards(workspaceSelected.boards);
     workspaceSelected !== undefined && setWorkspaceName(workspaceSelected.name);
   }
@@ -138,6 +153,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       cookies.set('userid');
       cookies.set('avatar');
       cookies.set('username');
+      cookies.set('workspace')
 
       return {
         redirect: {
@@ -160,6 +176,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
     cookies.set('userid');
     cookies.set('avatar');
     cookies.set('username');
+    cookies.set('workspace')
 
     return {
       redirect: {

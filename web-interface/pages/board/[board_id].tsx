@@ -265,6 +265,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
       cookies.set('userid');
       cookies.set('avatar');
       cookies.set('username');
+      cookies.set('workspace')
+
 
         return {
           redirect: {
@@ -287,6 +289,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     cookies.set('userid');
     cookies.set('avatar');
     cookies.set('username');
+    cookies.set('workspace')
 
         return {
           redirect: {
