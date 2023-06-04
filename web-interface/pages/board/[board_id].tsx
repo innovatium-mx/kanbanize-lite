@@ -5,16 +5,14 @@ import type { GetServerSideProps } from 'next'
 import authRoute from '../../components/authRoute';
 import CardsWorkflow from '../../components/CardsWorkflow';
 import FloatButton from '../../components/FloatButton';
-import {useEffect, useState, useLayoutEffect } from "react";
+import {useEffect, useState, useRef, useLayoutEffect} from "react";
 import dynamic from 'next/dynamic';
 import { urlCloud } from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies';
 import {useRouter} from 'next/router';
-import { workflow, card, user, selection } from '@/types/types';
+import { workflow, card, user, selection, } from '@/types/types';
 import NewCardComponent from '../../components/NewCardComponent';
-import { faL } from '@fortawesome/free-solid-svg-icons';
-import { NULL } from 'sass';
 const cookieCutter= require('cookie-cutter');
 
 import Image from 'next/image';
@@ -83,12 +81,52 @@ const Board = (props: PropsResponse) => {
   const [resetIndex, setResetIndex] = useState<number>(0);
   
   const [insertCard, setInsertCard] = useState<boolean>(false);
+  const [ newCardPosition, setNewCardPosition] = useState<number>(0);
 
+  const [returnToBacklog, setReturnToBacklog] = useState<boolean>(false);
+
+  const pageRef = useRef<any>(null);
+  const [pageWidth, setPageWidth] = useState<{width: number;}>({width:0})
 
   const userId = cookieCutter.get('userid');
 
+  useLayoutEffect(()=>{
+    if(pageRef.current){
+      setPageWidth({width : pageRef.current.clientWidth})
+      console.log(pageWidth.width)
+    }
+  },[])
+
+  useLayoutEffect(()=>{
+    if(pageWidth.width < 810){
+      pageRef.current?.scrollIntoView({behavior: 'smooth'});
+    }
+  })
+
+
   const activateInsertCard = (param: boolean) =>{
     setInsertCard(param);
+
+    if(!insertCard){
+
+      const cutUsers : Array<user> = [];
+      const usersselection : Array<selection> = [];
+
+
+      workflow.users.map((element: user, index) =>{
+        if(element.user_id!=null && element.user_id!=userId){
+            usersselection.push({user_id: element.user_id, checked: false});
+        }
+
+        if(index<workflow.users.length-1 && element.user_id!=userId && element.user_id!=null){
+            cutUsers.push(element);
+        }
+      })
+
+      setNewUsers(cutUsers); //newUsers
+      setSelected(usersselection); //selected
+
+    }
   }
 
   const [workflow, setWorkflow] = useState<workflow>({
@@ -154,18 +192,34 @@ const Board = (props: PropsResponse) => {
     }
   }
 
-  const showModal = (value: boolean) => {
+  const insertCardUpdate = (newCard : card) =>{
+    const tempWorkflow : workflow = workflow;
+
+
+    if(tempWorkflow!=null){
+      tempWorkflow.columns[0].cards.push(newCard);
+      setNewCardPosition(workflow.columns[0].cards.length + 1);
+    }
+
+    setWorkflow(tempWorkflow);
+  }
+
+  const applyInsertEffect = (val : boolean) =>{
+    setReturnToBacklog(val);
+  }
+
+
+
+  const showModal = (value: boolean) =>{
     setDisplayCard(value);
   }
 
   const [newUsers, setNewUsers] = useState<Array<user>>([]);
   const [selected, setSelected] = useState<Array<selection>>([]);
 
-
-
   const setAllSelected = (u : Array<user>) => {
-    const cutUsers : Array<user> = [];
-    const usersselection : Array<selection> = [];
+  const cutUsers : Array<user> = [];
+  const usersselection : Array<selection> = [];
 
     u.map((element: user, index) =>{
         if(element.user_id!=null && element.user_id!=userId){
@@ -179,64 +233,68 @@ const Board = (props: PropsResponse) => {
 
     setNewUsers(cutUsers); //newUsers
     setSelected(usersselection); //selected
-
-    console.log(cutUsers);
-    console.log(usersselection);
-
 }
 
   useEffect(()=>{
       setAllSelected(workflow.users);
   }, [retrievedWorkflow])
 
+  const updateSelected = (newSelected: Array<selection>) =>{
+    setSelected(newSelected);
+  }
+
   return (
     <>
     
-    <div className={dashboard.modalWrap}>
+    <div className={dashboard.pageWrap} ref={pageRef}>
+      <div className={dashboard.modalWrap}>
 
-        {displayCard && currentCard!=undefined && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
-    
-    </div>
-    
-    <div className={dashboard.modalWrap}>
+          {displayCard && currentCard!=undefined && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
+      
+      </div>
+      
+      <div className={dashboard.modalWrap}>
 
-      {insertCard && retrievedWorkflow && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.lanes[0].lane_id} column_id={workflow.columns[0].column_id}/>}
+        {insertCard && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected} position={newCardPosition} insertCardUpdate={insertCardUpdate} applyInsertEffect={applyInsertEffect} updateCurrentCard={updateCurrentCard} lane_name={workflow.lanes[0].name} lane_color={workflow.lanes[0].color}/>}
 
-    </div>
+      </div>
 
-    <div className={dashboard.boardPageWrapScroll}>
+      <div className={dashboard.boardPageWrapScroll}>
 
-      {/* overflow-y hiddens when opened card modal is shown */}
-      <div className={dashboard.topBar}>
-        <div className={dashboard.left}>
-          <div>
-            <Image src={"/LogoKanbanize.png"} width={64} height={36} />
+        <div className={dashboard.topBar} style={{position: 'fixed', zIndex:'2'}}>
+          <div className={dashboard.left}>
+            <div>
+              <Image src={"/LogoKanbanize.png"} width={64} height={36} />
+            </div>
+            <div className={dashboard.dropdownFragment}>
+              <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow} />
+            </div>
           </div>
-          <div className={dashboard.dropdownFragment}>
-            <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow} />
-          </div>
+          {<div className={dashboard.menu}>
+            <Sidebar />
+          </div>}
         </div>
-        {<div className={dashboard.menu}>
-          <Sidebar />
-        </div>}
-      </div>
-      <div>
-        {workflow.type === 0 &&
-          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards} />
-        }
 
-        {/*workflow.type === 1 &&
-          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards} />
-      */}
 
-        {
-          workflow.type === 0 && 
-          <FloatButton activateInsertCard={activateInsertCard}/>
-        }
+        <div>
+          { workflow.type === 0 && 
+            <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
+          }
+
+          {/*workflow.type === 1 &&
+            <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards} />
+        */}
+
+          {
+            workflow.type === 0 && 
+            <FloatButton activateInsertCard={activateInsertCard}/>
+          }
+        </div>
+
       </div>
+
 
     </div>
-
 
     </>
 

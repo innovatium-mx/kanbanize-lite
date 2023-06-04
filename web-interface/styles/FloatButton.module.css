@@ -11,7 +11,7 @@ button.FloatButton{
     border: none;
     width: 4.5em;
     height: 4.5em;
-    background-color: #42AD49;
+    background-color: #F48A32;
 }
 
 .plus{
@@ -23,5 +23,35 @@ button.FloatButton{
 @media (hover: hover) {
     .FloatButton:hover {
         transform: scale(1.1);
+    }
+}
+
+@media screen and (max-width: 550px){
+    button.FloatButton{
+        width: 3.2em;
+        height: 3.2em;
+    }
+    .plus{
+        height: 2em;
+    }
+}
+
+@media screen and (max-width: 420px){
+    button.FloatButton{
+        width: 3em;
+        height: 3em;
+    }
+    .plus{
+        height: 2em;
+    }
+}
+
+@media screen and (max-width: 360px){
+    button.FloatButton{
+        width: 2.5em;
+        height: 2.5em;
+    }
+    .plus{
+        height: 1.5em;
     }
 }

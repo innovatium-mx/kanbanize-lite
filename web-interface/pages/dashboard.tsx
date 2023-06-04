@@ -95,7 +95,7 @@ const MyBoards = (props: PropsResponse) => {
 
   return (
     <>
-      <div className={dashboard.topBar}>
+      <div className={dashboard.topBar} style={{position:'fixed', zIndex:'2'}}>
         <div className={dashboard.left}>
           <div>
             <Image src={"/LogoKanbanize.png"} width={64} height={36} />
@@ -110,8 +110,8 @@ const MyBoards = (props: PropsResponse) => {
       </div>
 
 
-      <div className={dashboard.grid}>
-        {<div className={dashboard.title}>{workspaceName}</div>}
+      <div className={dashboard.grid} style={{paddingTop:'2.7em'}}>
+        {<div className={dashboard.title} style={{paddingTop:'2em'}}>{workspaceName}</div>}
 
         {boards !== null && boards !== undefined && boards.map((element: any, index) =>
           <Dashboard key={element.key} board_id={element.board_id} workspace_id={element.workspace_id} is_archived={element.is_archived} name={element.name} description={element.description} index={index} />
