@@ -51,6 +51,18 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
     const [cardIndex, setCardIndex] = useState(0);
 
+    useEffect(() => {
+        setIndex(0);
+        setButtons({left: false, right: true});
+        if(data[0].color === ''){
+            setColor('#9e9e9e');
+        }
+        else{
+            setColor('#'+data[0].color);
+        }
+    }, [data])
+    
+
     useEffect(()=>{
         setAllSelected(users);
     }, [users]);

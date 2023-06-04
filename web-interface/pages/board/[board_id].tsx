@@ -80,6 +80,7 @@ const Board = (props: PropsResponse) => {
   const [currentCard, setCurrentCard] = useState<card>()
   const [displayCard, setDisplayCard] = useState<boolean>(false);
   const [retrievedWorkflow, setRetrievedWorflow] = useState<boolean>(false);
+  const [resetIndex, setResetIndex] = useState<number>(0);
   
   const [insertCard, setInsertCard] = useState<boolean>(false);
 
@@ -112,10 +113,12 @@ const Board = (props: PropsResponse) => {
     if(temp.length > 0){
       setWorkflow(temp[0]);
       setRetrievedWorflow(true);
+      setResetIndex(0);
     }
     else{
       setWorkflow(board[board.length-1]);
       setRetrievedWorflow(true);
+      setResetIndex(0);
     }
     
   }, [board])
@@ -125,6 +128,7 @@ const Board = (props: PropsResponse) => {
     const temp = board.filter(function (item) { return item.workflow_id === workflowid; })[0];
     setWorkflow(temp);
     setRetrievedWorflow(true);
+    setResetIndex(0);
   }
 
 
