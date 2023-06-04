@@ -5,7 +5,7 @@ import type { GetServerSideProps } from 'next'
 import authRoute from '../../components/authRoute';
 import CardsWorkflow from '../../components/CardsWorkflow';
 import FloatButton from '../../components/FloatButton';
-import {useEffect, useState, useLayoutEffect } from "react";
+import {useEffect, useState, useRef, useLayoutEffect} from "react";
 import dynamic from 'next/dynamic';
 import { urlCloud } from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
@@ -85,7 +85,24 @@ const Board = (props: PropsResponse) => {
 
   const [returnToBacklog, setReturnToBacklog] = useState<boolean>(false);
 
+  const pageRef = useRef<any>(null);
+  const [pageWidth, setPageWidth] = useState<{width: number;}>({width:0})
+
   const userId = cookieCutter.get('userid');
+
+  useLayoutEffect(()=>{
+    if(pageRef.current){
+      setPageWidth({width : pageRef.current.clientWidth})
+      console.log(pageWidth.width)
+    }
+  },[])
+
+  useLayoutEffect(()=>{
+    if(pageWidth.width < 810){
+      pageRef.current?.scrollIntoView({behavior: 'smooth'});
+    }
+  })
+
 
   const activateInsertCard = (param: boolean) =>{
     setInsertCard(param);
@@ -229,51 +246,55 @@ const Board = (props: PropsResponse) => {
   return (
     <>
     
-    <div className={dashboard.modalWrap}>
+    <div className={dashboard.pageWrap} ref={pageRef}>
+      <div className={dashboard.modalWrap}>
 
-        {displayCard && currentCard!=undefined && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
-    
-    </div>
-    
-    <div className={dashboard.modalWrap}>
+          {displayCard && currentCard!=undefined && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
+      
+      </div>
+      
+      <div className={dashboard.modalWrap}>
 
-      {insertCard && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected} position={newCardPosition} insertCardUpdate={insertCardUpdate} applyInsertEffect={applyInsertEffect} updateCurrentCard={updateCurrentCard}/>}
+        {insertCard && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected} position={newCardPosition} insertCardUpdate={insertCardUpdate} applyInsertEffect={applyInsertEffect} updateCurrentCard={updateCurrentCard} lane_name={workflow.lanes[0].name} lane_color={workflow.lanes[0].color}/>}
 
-    </div>
+      </div>
 
-    <div className={dashboard.boardPageWrapScroll}>
+      <div className={dashboard.boardPageWrapScroll}>
 
-      {/* overflow-y hiddens when opened card modal is shown */}
-      <div className={dashboard.topBar}>
-        <div className={dashboard.left}>
-          <div>
-            <Image src={"/LogoKanbanize.png"} width={64} height={36} />
+        <div className={dashboard.topBar} style={{position: 'fixed', zIndex:'2'}}>
+          <div className={dashboard.left}>
+            <div>
+              <Image src={"/LogoKanbanize.png"} width={64} height={36} />
+            </div>
+            <div className={dashboard.dropdownFragment}>
+              <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow} />
+            </div>
           </div>
-          <div className={dashboard.dropdownFragment}>
-            <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow} />
-          </div>
+          {<div className={dashboard.menu}>
+            <Sidebar />
+          </div>}
         </div>
-        {<div className={dashboard.menu}>
-          <Sidebar />
-        </div>}
-      </div>
-      <div>
-        { workflow.type === 0 && 
-          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
-        }
 
-        {/*workflow.type === 1 &&
-          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards} />
-      */}
 
-        {
-          workflow.type === 0 && 
-          <FloatButton activateInsertCard={activateInsertCard}/>
-        }
+        <div>
+          { workflow.type === 0 && 
+            <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
+          }
+
+          {/*workflow.type === 1 &&
+            <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards} />
+        */}
+
+          {
+            workflow.type === 0 && 
+            <FloatButton activateInsertCard={activateInsertCard}/>
+          }
+        </div>
+
       </div>
+
 
     </div>
-
 
     </>
 

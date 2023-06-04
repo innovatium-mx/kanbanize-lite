@@ -11,9 +11,11 @@ export type card = {
     "lane_id": number,
     "position": number,
     "co_owner_usernames" : Array<string | undefined> | null,
-    "co_owner_avatars" : Array<string | undefined> | null,
+    "co_owner_avatars" : Array<string | undefined > | null,
     "description" : string,
-    "comment_count" : number
+    "comment_count" : number,
+    "lane_name" : string,
+    "lane_color" : string
 };
 
 export type lane = {
@@ -81,7 +83,9 @@ export type newCard = {
     "position" : number,
     "insertCardUpdate" : (newCard: card) => void,
     "applyInsertEffect" : (val: boolean) => void,
-    "updateCurrentCard" : (curr:card) => void
+    "updateCurrentCard" : (curr:card) => void,
+    "lane_name" : string,
+    "lane_color" : string
 }
 
 export type croppedUser = {
