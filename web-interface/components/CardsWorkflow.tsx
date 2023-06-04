@@ -51,6 +51,18 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
     const [cardIndex, setCardIndex] = useState(0);
 
+    useEffect(() => {
+        setIndex(0);
+        setButtons({left: false, right: true});
+        if(data[0].color === ''){
+            setColor('#9e9e9e');
+        }
+        else{
+            setColor('#'+data[0].color);
+        }
+    }, [data])
+    
+
     useEffect(()=>{
         setAllSelected(users);
     }, [users]);
@@ -126,6 +138,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 cookieCutter.set('userid', '', { expires: new Date(0) })
                 cookieCutter.set('avatar', '', { expires: new Date(0) })
                 cookieCutter.set('username', '', { expires: new Date(0) }) 
+                cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
             }
             else {
@@ -157,6 +170,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             cookieCutter.set('userid', '', { expires: new Date(0) })
             cookieCutter.set('avatar', '', { expires: new Date(0) })
             cookieCutter.set('username', '', { expires: new Date(0) }) 
+            cookieCutter.set('workspace', '', { expires: new Date(0) })
             router.replace({pathname: '/'});
         }
     };
@@ -184,6 +198,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 cookieCutter.set('userid', '', { expires: new Date(0) })
                 cookieCutter.set('avatar', '', { expires: new Date(0) })
                 cookieCutter.set('username', '', { expires: new Date(0) }) 
+                cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
             }
             else{
@@ -215,6 +230,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             cookieCutter.set('userid', '', { expires: new Date(0) })
             cookieCutter.set('avatar', '', { expires: new Date(0) })
             cookieCutter.set('username', '', { expires: new Date(0) }) 
+            cookieCutter.set('workspace', '', { expires: new Date(0) })
             router.replace({pathname: '/'});
         }
     };
