@@ -19,13 +19,9 @@ div.modalWrap {
 }
 
 .title {
-    border: white;
-    padding-right: 11em;
-    padding-bottom: 1em;
-    padding-top: 1em;
-    font-weight: 600;
-    font-size: 1em;
-    line-height: 1em;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 1em;
 }
 
 .topBar {

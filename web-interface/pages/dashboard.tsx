@@ -47,12 +47,8 @@ interface PropsResponse {
 
 const MyBoards = (props: PropsResponse) => {
 
-  if (typeof window !== 'undefined') {
-    document.documentElement.style.setProperty('--dropdowncolor-', 'white');
-    document.documentElement.style.setProperty('--dropdown-bg-', '#2666BE');
-  }
-
   const [dropdown, setDropdown] = useState(false);
+  const [workspaceName, setWorkspaceName] = useState("");
   const openCloseDropdown = () => {
     setDropdown(!dropdown);
   }
@@ -79,6 +75,7 @@ const MyBoards = (props: PropsResponse) => {
   const getBoards = async (workspace_id: number) => {
     const workspaceSelected = workspaces.find(item => item.workspace_id === workspace_id);
     workspaceSelected !== undefined && setBoards(workspaceSelected.boards);
+    workspaceSelected !== undefined && setWorkspaceName(workspaceSelected.name);
   }
 
   return (
@@ -99,7 +96,7 @@ const MyBoards = (props: PropsResponse) => {
 
 
       <div className={dashboard.grid}>
-        {/*<div className={dashboard.title}>{t("myBoards.myBoards")}</div>*/}
+        {<div className={dashboard.title}>{workspaceName}</div>}
 
         {boards !== null && boards !== undefined && boards.map((element: any, index) =>
           <Dashboard key={element.key} board_id={element.board_id} workspace_id={element.workspace_id} is_archived={element.is_archived} name={element.name} description={element.description} index={index} />
