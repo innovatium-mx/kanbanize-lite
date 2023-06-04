@@ -107,19 +107,24 @@ const Board = (props: PropsResponse) => {
   const board_id = query.board_id;
   const board = props.data;
 
+  useEffect(() => {
+    const temp = board.filter(function (item) { return item.type === 0});
+    if(temp.length > 0){
+      setWorkflow(temp[0]);
+      setRetrievedWorflow(true);
+    }
+    else{
+      setWorkflow(board[board.length-1]);
+      setRetrievedWorflow(true);
+    }
+    
+  }, [board])
+  
+
   const getWorkflow = (workflowid: number) => {
     const temp = board.filter(function (item) { return item.workflow_id === workflowid; })[0];
-    temp.users.push({
-      user_id: null,
-      username: "Not Assigned",
-      realname: "None",
-      avatar: "/None.jpg"
-    })
     setWorkflow(temp);
-    console.log(temp.lanes[0].lane_id);
-
     setRetrievedWorflow(true);
-
   }
 
 
