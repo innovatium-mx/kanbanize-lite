@@ -102,6 +102,7 @@ module.exports.boardDetails = async (req,res) =>{
     var users = [];
     var boardUsers = [];
     var dataLanes = [];
+    var notAssigned = false;
     try{
         const response1 = await  fetch(`https://${host}.kanbanize.com/api/v2/boards/${boardid}/workflows`, {
             method: "GET",
@@ -240,6 +241,9 @@ module.exports.boardDetails = async (req,res) =>{
                                             boardUsers.push(userObject);
                                         }
                                     }
+                                    else {
+                                        notAssigned = true; 
+                                    }
                                     if(tempCard.co_owner_ids.length > 0){
                                         const co_owner_usernames = []
                                         const co_owner_avatars = [];
@@ -284,8 +288,17 @@ module.exports.boardDetails = async (req,res) =>{
                                 boardWorkflow[x].columns[y].cards = [];
                             }
                         }
+                        if(notAssigned){
+                            boardUsers.push({
+                                user_id: null,
+                                username: "Not Assigned",
+                                realname: "None",
+                                avatar: "/None.jpg"
+                            })
+                        } 
                         boardWorkflow[x].users = boardUsers;
                         boardUsers = [];
+                        notAssigned = false;
                     }
                     res.json(boardWorkflow);
                 }
