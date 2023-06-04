@@ -14,23 +14,16 @@ export type ActivityCardProps = {
     "co_owner_avatars" : Array<string> | null,
     "description" : string,
     "retrieveIndex" : any,
-    "displayModal": any
+    "displayModal": any,
+    "lane_name": string,
+    "lane_color": string
 }
 
 
-const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_owner_usernames, co_owner_avatars, description, retrieveIndex, displayModal} : ActivityCardProps) =>{
+const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_owner_usernames, co_owner_avatars, description, retrieveIndex, displayModal, lane_name, lane_color} : ActivityCardProps) =>{
 
     const newColor = '#' + color;
     const boardCardColor = adjustColor(newColor, 175);
-
-
-
-    /*
-    if (typeof window !== 'undefined') {
-        document.documentElement.style.setProperty('--boardCard-color-', boardCardColor);
-        document.documentElement.style.setProperty('--card-color-', newColor);
-        document.documentElement.style.setProperty('--bottom-card-color-', newColor);
-    }*/
 
     const handleClick = () =>{
         retrieveIndex(card_id);
@@ -41,7 +34,7 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_o
     var letter = '';
     var letterBackground = '';
 
-    if(owner_username === null || owner_username === undefined){
+    if(owner_username === null || owner_username === undefined || owner_username === ""){
         nonPhoto = actCard.noPhoto_noUser;
         letter = 'N';
         letterBackground = 'gray';
@@ -54,14 +47,15 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_o
 
     return(
         <div>
-           {/*displayCard && owner_avatar!= null && owner_username!=null  && <OpenedActivityCard title={title} owner={owner_username} owner_avatar={owner_avatar} co_owner_usernames={co_owner_usernames} co_owner_avatars={co_owner_avatars} description={description}/>*/}
-
+            
             <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}} onClick={()=> handleClick()}>
-                <div className={actCard.text}>{title}</div>
-                <div className={actCard.imageSection}>
-                    {owner_avatar !=  null ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
-                    {/*owner_username != undefined && <div className={actCard.name}>{owner_username}</div>*/}
-                </div>
+                <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
+                <div className={actCard.innerContainer}>
+                    <div className={actCard.text}>{title}</div>
+                    <div className={actCard.imageSection}>
+                        {(owner_avatar !=  null &&  owner_avatar!="") ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
+                    </div>
+                </div> 
             </div>
             <footer className={actCard.bottom} style={{backgroundColor:newColor}}></footer>
         

@@ -4,6 +4,7 @@ div.boardCard {
     position: relative;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 30em;
@@ -13,6 +14,13 @@ div.boardCard {
     border-top-right-radius: 0.4rem;
     border-top-left-radius: 0.4rem;
     cursor: pointer;
+}
+
+div.innerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 footer.bottom {
@@ -27,21 +35,22 @@ footer.bottom {
     margin-bottom: 2em;
 }
 
-/*
-div.boardCard::before{
-
-    content: "";
-    position: absolute;
-    border-radius: 0.5rem;
-    background-image: linear-gradient(100deg, var(--primary-gradient-), var(--secondary-gradient-));
-    top: -0.2em;
-    bottom: -0.2em;
-    right: -0.2em;
-    left: -0.2em;
-    filter: drop-shadow(.2em 1em .3em rgba(0,0,0,0.06));
-
-    z-index: -1;
-}*/
+div.lane {
+    z-index: 0;
+    width: 12.5em;
+    font-size: 0.6em;
+    margin-top: 0.5em;
+    margin-left: 0.5em;
+    padding: 0.25em 0.25em;
+    border-radius: 1.2em;
+    align-self: baseline;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 
 div.text {
     text-align: center;
@@ -49,7 +58,7 @@ div.text {
     padding-top: 1em;
     padding-bottom: 1em;
     padding-right: 0em;
-    width: 23em;
+    width: 22em;
     overflow-wrap: break-word;
     z-index: 1;
     font-family:  'Roboto', helvetica, sans-serif;
@@ -69,7 +78,7 @@ div.name {
     /* border: 1px solid white; */
     border-radius: 50%;
     filter: drop-shadow(.01em 0.5em .3em rgba(160, 160, 160, 0.425));
-    z-index: 1;
+    z-index: 0;
 }
 
 .noPhoto_noUser {
@@ -90,11 +99,11 @@ div.name {
     margin-top: 1em;
     margin-bottom: 1em;
     margin-right: auto;
-    margin-left: auto;
+    margin-left: 1em;
     height: 4em;
     width: 4em;
     border-radius: 50%;
-    z-index: 1;
+    z-index: 0;
     filter: drop-shadow(.01em 0.5em .3em rgba(160, 160, 160, 0.425));
     /* border: 1px solid white; */
 }
@@ -111,7 +120,6 @@ div.imageSection {
     display: grid;
     text-align: center;
     place-items: center;
-    margin-bottom: 1em;
     font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     */
 
@@ -153,12 +161,12 @@ div.imageSection {
     }
 
     div.letter {
-        font-size: 1.5em;
+        font-size: 1.4em;
     }
 
     div.text {
         font-size: 95%;
-        width: 20em;
+        width: 17em;
     }
 }
 
@@ -195,12 +203,12 @@ div.imageSection {
     }
 
     div.letter {
-        font-size: 1.5em;
+        font-size: 1.3em;
     }
 
     div.text {
         font-size: 90%;
-        width: 20em;
+        width: 14em;
     }
 }
 
@@ -237,11 +245,11 @@ div.imageSection {
     }
 
     div.letter {
-        font-size: 1.5em;
+        font-size: 1.2em;
     }
 
     div.text {
         font-size: 90%;
-        width: 20em;
+        width: 10em;
     }
 }

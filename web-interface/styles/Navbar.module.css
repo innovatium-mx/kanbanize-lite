@@ -1,0 +1,16 @@
+.nav {
+    width: 100%;
+    background: #2666BE;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 5rem;
+}
+
+.left {
+    display: flex;
+}
+
+.icon {
+    margin: 0rem  1rem !important;
+}

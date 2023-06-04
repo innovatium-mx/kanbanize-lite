@@ -1,0 +1,27 @@
+div.buttonContainer{
+    display: flex;
+    position: fixed;
+    right: 3em;
+    bottom: 3em;
+    z-index: 0;
+}
+
+button.FloatButton{
+    border-radius: 50%;
+    border: none;
+    width: 4.5em;
+    height: 4.5em;
+    background-color: #42AD49;
+}
+
+.plus{
+    color:white;
+    height: 3em;
+    width: auto;
+}
+
+@media (hover: hover) {
+    .FloatButton:hover {
+        transform: scale(1.1);
+    }
+}
