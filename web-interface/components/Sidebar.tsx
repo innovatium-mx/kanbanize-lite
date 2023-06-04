@@ -59,12 +59,12 @@ const Sidebar = () => {
 
             if (result.isConfirmed) {
                 
-                globalCookie.remove('apikey')
-                globalCookie.remove('host')
-                globalCookie.remove('email')
-                globalCookie.remove('userid')
-                globalCookie.remove('avatar')
-                globalCookie.remove('username')
+                globalCookie.remove('apikey', {path: '/', expires: (new Date(Date.now()))})
+                globalCookie.remove('host', {path: '/', expires: (new Date(Date.now()))})
+                globalCookie.remove('email', {path: '/', expires: (new Date(Date.now()))})
+                globalCookie.remove('userid', {path: '/', expires: (new Date(Date.now()))})
+                globalCookie.remove('avatar', {path: '/', expires: (new Date(Date.now()))})
+                globalCookie.remove('username', {path: '/', expires: (new Date(Date.now()))})
                 router.replace({ pathname: '/' })
                 
                 const Toast = Swal.mixin({
