@@ -253,7 +253,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                     { activities != null && activities.map((element: any) =>
                         <div key={element.key} className={Dynamicboard.cardContainer}>
                             <div className={Dynamicboard.buttons} />
-                            <ActivityCard card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} co_owner_usernames={element.co_owner_usernames} co_owner_avatars={element.co_owner_avatars} description={element.description} retrieveIndex={retrieveIndex} displayModal={displayModal} lane_name={element.lane_name}/>
+                            <ActivityCard card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} co_owner_usernames={element.co_owner_usernames} co_owner_avatars={element.co_owner_avatars} description={element.description} retrieveIndex={retrieveIndex} displayModal={displayModal} lane_name={element.lane_name} lane_color={element.lane_color}/>
                             <div className={Dynamicboard.buttons} onClick={() => handleRightClick(element.card_id)}>
                                 { !element.is_blocked && buttons.right &&
                                     <FontAwesomeIcon icon={faCircleArrowRight} style={{color: "#000000"}} />
