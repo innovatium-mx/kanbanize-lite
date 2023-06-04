@@ -37,8 +37,6 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
             temp[found].checked = !temp[found].checked;
         }
 
-        console.log(temp);
-
 
         let allChecked = true;
         for (var i=0; i< temp.length; i++) {

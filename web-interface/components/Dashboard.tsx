@@ -50,7 +50,9 @@ const DashBoard = ({board_id, workspace_id, is_archived, name, description, inde
             <header className={boardStyle.topCard} style={{backgroundColor: "#" + HandleColorUpdate(index)}}>{board_id}</header>
             <div>{name.toUpperCase()}</div>
             <div></div>
-            <div>{description}</div>
+
+            {<div dangerouslySetInnerHTML={{ __html: description }} />}
+
         </div>
     )
 }

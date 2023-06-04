@@ -10,10 +10,12 @@ export type card = {
     "section": number,
     "lane_id": number,
     "position": number,
-    "co_owner_usernames" : Array<string> | null,
-    "co_owner_avatars" : Array<string> | null,
+    "co_owner_usernames" : Array<string | undefined> | null,
+    "co_owner_avatars" : Array<string | undefined > | null,
     "description" : string,
-    "comment_count" : number
+    "comment_count" : number,
+    "lane_name" : string,
+    "lane_color" : string
 };
 
 export type lane = {
@@ -76,7 +78,20 @@ export type newCard = {
     "color" :  string,
     "selected" : any,
     "lane_id" : number,
-    "column_id" : number
+    "column_id" : number,
+    "updateSelected" : any,
+    "position" : number,
+    "insertCardUpdate" : (newCard: card) => void,
+    "applyInsertEffect" : (val: boolean) => void,
+    "updateCurrentCard" : (curr:card) => void,
+    "lane_name" : string,
+    "lane_color" : string
+}
+
+export type croppedUser = {
+    "user_id" : number,
+    "avatar" : string | undefined,
+    "username" : string | undefined
 }
 
 export type selection = {
@@ -100,7 +115,7 @@ export interface FilterProps {
 export interface AddCoOwners{
     users : Array<user>,
     selected: Array<selection>,
-    userId: any,
-    changeNoneSelected: any,
-    setNewSelection: any
+    setNewSelection: any,
+    updateAvatars : any,
+    avatarsList: Array<croppedUser>
 }

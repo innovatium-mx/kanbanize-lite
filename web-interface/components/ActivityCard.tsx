@@ -1,15 +1,13 @@
 import actCard from '../styles/Activitycard.module.css';
 import adjustColor from '../helpers/lightenColor';
 
+
 export type ActivityCardProps = {
     "card_id": number,
     "color": string,
     "owner_avatar": string | null,
     "title": string, 
     "owner_username": string | null,
-    "co_owner_usernames" : Array<string> | null,
-    "co_owner_avatars" : Array<string> | null,
-    "description" : string,
     "retrieveIndex" : any,
     "displayModal": any,
     "lane_name": string,
@@ -17,7 +15,7 @@ export type ActivityCardProps = {
 }
 
 
-const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, co_owner_usernames, co_owner_avatars, description, retrieveIndex, displayModal, lane_name, lane_color} : ActivityCardProps) =>{
+const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, retrieveIndex, displayModal, lane_name, lane_color} : ActivityCardProps) =>{
 
     const newColor = '#' + color;
     const boardCardColor = adjustColor(newColor, 175);

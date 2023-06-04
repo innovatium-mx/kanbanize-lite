@@ -6,20 +6,23 @@ div.boardCard {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 30em;
+    width: 32em;
     height: auto;
 
     background-clip: padding-box;
     border-top-right-radius: 0.4rem;
     border-top-left-radius: 0.4rem;
     cursor: pointer;
+
+    padding-bottom: 0.5em;
 }
 
 div.innerContainer {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+    
 }
 
 footer.bottom {
@@ -28,7 +31,7 @@ footer.bottom {
     padding-bottom: 0.3em;
     text-align: right;
     color: white;
-    width: 30em;
+    width: 32em;
 
     height: 0em;
     margin-bottom: 2em;
@@ -47,19 +50,16 @@ div.lane {
     font-weight: bold;
     text-align: center;
     /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    overflow-wrap: break-word;
 }
 
 div.text {
 
     text-align: center;
-    padding-left: 1em;
     padding-top: 1em;
     padding-bottom: 1em;
     padding-right: 0em;
-    width: 22em;
+    width: 17.5em;
     overflow-wrap: break-word;
     z-index: 1;
     /* font-family:  'Roboto', helvetica, sans-serif; */
@@ -72,8 +72,8 @@ div.name {
 .photo {
     margin-top: 1em;
     margin-bottom: 1em;
-    margin-right: auto;
-    margin-left: 1em;
+    margin-right: 2em;
+    margin-left: 1.5em;
     height: 4em;
     width: 4em;
     /* border: 1px solid white; */
@@ -85,8 +85,8 @@ div.name {
 .noPhoto_noUser {
     margin-top: 1em;
     margin-bottom: 1em;
-    margin-right: auto;
-    margin-left: 1em;
+    margin-right: 2em;
+    margin-left: 1.5em;
     height: 4em;
     width: 4em;
     border-radius: 50%;
@@ -99,8 +99,8 @@ div.name {
 .noPhoto_user {
     margin-top: 1em;
     margin-bottom: 1em;
-    margin-right: auto;
-    margin-left: 1em;
+    margin-right: 2em;
+    margin-left: 1.5em;
     height: 4em;
     width: 4em;
     border-radius: 50%;
@@ -138,24 +138,24 @@ div.imageSection {
 
 @media screen and (max-width: 550px) {
     div.boardCard {
-        width: 20em;
+        width: 23em;
     }
 
     footer.bottom {
-        width: 20em;
+        width: 23em;
     }
 
     .photo {
         height: 2.7em;
         width: 2.7em;
-        margin-left: 0.3em;
+        margin-left: 1em;
         margin-right: 0.3em;
     }
 
     .noPhoto_noUser {
         height: 2.7em;
         width: 2.7em;
-        margin-left: 0.3em;
+        margin-left: 1em;
         margin-right: 0.3em;
 
     }
@@ -163,7 +163,7 @@ div.imageSection {
     .noPhoto_user {
         height: 2.7em;
         width: 2.7em;
-        margin-left: 0.3em;
+        margin-left: 1em;
         margin-right: 0.3em;
     }
 
@@ -172,12 +172,18 @@ div.imageSection {
     }
 
     div.text {
-        font-size: 95%;
-        width: 17em;
+        font-size: 90%;
+        width: 15em;
+    }
+
+    div.lane{
+        width: 10em;
+        font-size: 0.5em;
+        margin-left: 0;
     }
 }
 
-@media screen and (max-width: 392px) {
+@media screen and (max-width: 420px) {
     div.boardCard {
         width: 18em;
     }
@@ -189,50 +195,59 @@ div.imageSection {
     .photo {
         height: 2.5em;
         width: 2.5em;
-        margin-left: 0.25em;
-        margin-right: 0.25em;
+        margin-left: 0.8em;
+        margin-right: 0.2em;
     }
 
     .noPhoto_noUser {
         height: 2.5em;
         width: 2.5em;
-        margin-left: 0.25em;
-        margin-right: 0.25em;
+        margin-left: 0.8em;
+        margin-right: 0.2em;
 
     }
 
     .noPhoto_user {
         height: 2.5em;
         width: 2.5em;
-        margin-left: 0.25em;
-        margin-right: 0.25em;
+        margin-left: 0.8em;
+        margin-right: 0.2em;
 
     }
 
     div.letter {
-        font-size: 1.3em;
+        font-size: 1.2em;
     }
 
     div.text {
-        font-size: 90%;
-        width: 14em;
+        font-size: 80%;
+        width: 13em;
     }
+
+    div.lane{
+        width: 9em;
+        font-size: 0.5em;
+        margin-left: 0;
+    }
+
 }
 
-@media screen and (max-width: 325px) {
+@media screen and (max-width: 360px) {
     div.boardCard {
+        width: 14em;
         width: 14em;
     }
 
     footer.bottom {
         width: 14em;
+        width: 14em;
     }
 
     .photo {
-        height: 2.3em;
-        width: 2.3em;
-        margin-left: 0.25em;
-        margin-right: 0.25em;
+        height: 2em;
+        width: 2em;
+        margin-left: 0.7em;
+        margin-right: 0.4em;
     }
 
     .noPhoto_noUser {
@@ -308,5 +323,11 @@ div.imageSection {
     div.text {
         font-size: 0.8em;
         width: 10em;
+    }
+
+    div.lane{
+        width: 7em;
+        font-size: 0.5em;
+        margin-left: 0;
     }
 }
