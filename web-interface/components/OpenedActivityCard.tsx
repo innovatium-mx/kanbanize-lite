@@ -173,6 +173,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 cookieCutter.set('userid', '', { expires: new Date(0) })
                 cookieCutter.set('avatar', '', { expires: new Date(0) })
                 cookieCutter.set('username', '', { expires: new Date(0) }) 
+                cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
             }
             else{
@@ -191,7 +192,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             cookieCutter.set('email', '', { expires: new Date(0) })
             cookieCutter.set('userid', '', { expires: new Date(0) }) 
             cookieCutter.set('avatar', '', { expires: new Date(0) })
-            cookieCutter.set('username', '', { expires: new Date(0) }) 
+            cookieCutter.set('username', '', { expires: new Date(0) })
+            cookieCutter.set('workspace', '', { expires: new Date(0) }) 
             router.replace({pathname: '/'});
         });
     }
@@ -281,6 +283,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     cookieCutter.set('userid', '', { expires: new Date(0) })
                     cookieCutter.set('avatar', '', { expires: new Date(0) })
                     cookieCutter.set('username', '', { expires: new Date(0) }) 
+                    cookieCutter.set('workspace', '', { expires: new Date(0) })
                     router.replace({pathname: '/'});
                 }
             } 
@@ -290,6 +293,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
                 cookieCutter.set('userid', '', { expires: new Date(0) }) 
+                cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
                 alert("There was an error sending the comment");
             }

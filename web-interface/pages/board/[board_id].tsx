@@ -80,6 +80,7 @@ const Board = (props: PropsResponse) => {
   const [currentCard, setCurrentCard] = useState<card>()
   const [displayCard, setDisplayCard] = useState<boolean>(false);
   const [retrievedWorkflow, setRetrievedWorflow] = useState<boolean>(false);
+  const [resetIndex, setResetIndex] = useState<number>(0);
   
   const [insertCard, setInsertCard] = useState<boolean>(false);
 
@@ -107,19 +108,27 @@ const Board = (props: PropsResponse) => {
   const board_id = query.board_id;
   const board = props.data;
 
+  useEffect(() => {
+    const temp = board.filter(function (item) { return item.type === 0});
+    if(temp.length > 0){
+      setWorkflow(temp[0]);
+      setRetrievedWorflow(true);
+      setResetIndex(0);
+    }
+    else{
+      setWorkflow(board[board.length-1]);
+      setRetrievedWorflow(true);
+      setResetIndex(0);
+    }
+    
+  }, [board])
+  
+
   const getWorkflow = (workflowid: number) => {
     const temp = board.filter(function (item) { return item.workflow_id === workflowid; })[0];
-    temp.users.push({
-      user_id: null,
-      username: "Not Assigned",
-      realname: "None",
-      avatar: "/None.jpg"
-    })
     setWorkflow(temp);
-    console.log(temp.lanes[0].lane_id);
-
     setRetrievedWorflow(true);
-
+    setResetIndex(0);
   }
 
 
@@ -265,6 +274,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
       cookies.set('userid');
       cookies.set('avatar');
       cookies.set('username');
+      cookies.set('workspace')
+
 
         return {
           redirect: {
@@ -287,6 +298,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     cookies.set('userid');
     cookies.set('avatar');
     cookies.set('username');
+    cookies.set('workspace')
 
         return {
           redirect: {
