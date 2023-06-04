@@ -30,7 +30,9 @@ type CardsWorkflowProps = {
     workflow_name: string,
     updateCurrentCard: any,
     displayModal: any,
-    moveCards: any
+    moveCards: any,
+    goBack : boolean,
+    applyInsertEffect : (val:boolean) => void
 }
 
 type showButtons = {
@@ -38,7 +40,7 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards} : CardsWorkflowProps) => {
+const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect} : CardsWorkflowProps) => {
     const router = useRouter();
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
@@ -50,6 +52,12 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
 
     const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
     const [cardIndex, setCardIndex] = useState(0);
+    const [ getToBacklog, setGetToBacklog] = useState<boolean>(false);
+
+    
+    useEffect(()=>{
+        setGetToBacklog(goBack);
+    }, [goBack])
 
     useEffect(()=>{
         setAllSelected(users);
@@ -62,6 +70,20 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     useEffect(()=>{
         setActivities(filtered);
     }, [filtered]);
+
+    useEffect(()=>{
+        if(getToBacklog){
+            setIndex(0);
+            applyInsertEffect(false);
+            setButtons({left: false, right: true})
+            if(columns[0].color===""){
+                setColor('#9e9e9e');
+            }
+            else{
+                setColor('#'+columns[0].color);
+            }
+        }
+    })
 
     const setAllSelected = (u : Array<user>) => {
         const usersselection : Array<selection> = [];

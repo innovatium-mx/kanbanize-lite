@@ -11,10 +11,8 @@ import {urlCloud} from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies';
 import {useRouter} from 'next/router';
-import { workflow, card, user, selection } from '@/types/types';
+import { workflow, card, user, selection, } from '@/types/types';
 import NewCardComponent from '../../components/NewCardComponent';
-import { faL } from '@fortawesome/free-solid-svg-icons';
-import { NULL } from 'sass';
 const cookieCutter= require('cookie-cutter');
 
 
@@ -48,7 +46,9 @@ const Board = ( props: PropsResponse) => {
   const [retrievedWorkflow, setRetrievedWorflow] = useState<boolean>(false);
   
   const [insertCard, setInsertCard] = useState<boolean>(false);
+  const [ newCardPosition, setNewCardPosition] = useState<number>(0);
 
+  const [returnToBacklog, setReturnToBacklog] = useState<boolean>(false);
 
   const userId = cookieCutter.get('userid');
 
@@ -101,8 +101,6 @@ const Board = ( props: PropsResponse) => {
     avatar: "/None.jpg"
     })
     setWorkflow(temp);
-    console.log(temp);
-
     setRetrievedWorflow(true);
   }
 
@@ -129,6 +127,24 @@ const Board = ( props: PropsResponse) => {
     }
   }
 
+  const insertCardUpdate = (newCard : card) =>{
+    const tempWorkflow : workflow = workflow;
+
+
+    if(tempWorkflow!=null){
+      tempWorkflow.columns[0].cards.push(newCard);
+      setNewCardPosition(workflow.columns[0].cards.length + 1);
+    }
+
+    setWorkflow(tempWorkflow);
+  }
+
+  const applyInsertEffect = (val : boolean) =>{
+    setReturnToBacklog(val);
+  }
+
+
+
   const showModal = (value: boolean) =>{
     setDisplayCard(value);
   }
@@ -152,10 +168,6 @@ const Board = ( props: PropsResponse) => {
 
     setNewUsers(cutUsers); //newUsers
     setSelected(usersselection); //selected
-
-    console.log(cutUsers);
-    console.log(usersselection);
-
 }
 
   useEffect(()=>{
@@ -177,7 +189,7 @@ const Board = ( props: PropsResponse) => {
     
     <div className={dashboard.modalWrap}>
 
-      {insertCard && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected}/>}
+      {insertCard && <NewCardComponent users={newUsers}  activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected} position={newCardPosition} insertCardUpdate={insertCardUpdate} applyInsertEffect={applyInsertEffect} updateCurrentCard={updateCurrentCard}/>}
 
     </div>
 
@@ -191,7 +203,7 @@ const Board = ( props: PropsResponse) => {
         </div>
       <div>
         { workflow.type === 0 && 
-          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}/>
+          <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
         }
 
         {

@@ -1,8 +1,8 @@
 import newcard from '../styles/NewCardComponent.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faXmark, faPlus} from '@fortawesome/free-solid-svg-icons';
-import { newCard,user, selection , croppedUser} from '../types/types';
-import { useEffect, useState, useLayoutEffect } from 'react';
+import { newCard, selection , croppedUser, card} from '../types/types';
+import { useEffect, useState } from 'react';
 import CoOwner from '../components/CoOwnersDropdown/CoOwner';
 const cookieCutter= require('cookie-cutter');
 import adjustColor from '../helpers/lightenColor';
@@ -11,38 +11,33 @@ import { urlCloud } from '../constants';
 import { useRouter } from 'next/router';
 
 
-const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected}: newCard) =>{
+const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard}: newCard) =>{
 
     const [showCoOwners, setShowCoOwners] = useState<boolean>(false);
-    const [noneSelected, setNoneSelected] = useState<boolean>(true);
-    
-    const [currCoBg1, setCurrCoBg1] = useState<string | undefined>('#ff0000');
-    const [currCoBg2, setCurrCoBg2] = useState<string | undefined>('#ff0000');
-    const [currCoBg3, setCurrCoBg3] = useState<string | undefined>('#ff0000');
-    const [currCo1, setCurrCo1] = useState<string | undefined>('_');
-    const [currCo2, setCurrCo2] = useState<string | undefined>('_');
-    const [currCo3, setCurrCo3] = useState<string | undefined>('_');
+
+    const [currCoBg1, setCurrCoBg1] = useState<string | undefined>('#808080');
+    const [currCoBg2, setCurrCoBg2] = useState<string | undefined>('#808080');
+    const [currCoBg3, setCurrCoBg3] = useState<string | undefined>('#808080');
+    const [currCo1, setCurrCo1] = useState<string | undefined>('');
+    const [currCo2, setCurrCo2] = useState<string | undefined>('');
+    const [currCo3, setCurrCo3] = useState<string | undefined>('');
 
     const userId = cookieCutter.get('userid');
     const sessionUsername = cookieCutter.get('username');
     const sessionAvatar = cookieCutter.get('avatar');
     const apikey = cookieCutter.get('apikey');
     const host = cookieCutter.get('host');
-    const [alteredSelected, setAlteredSelected] = useState<Array<selection>>(selected);
+    const [alteredSelected, setAlteredSelected] = useState<Array<selection>>([]);
     const [avatars, setAvatars] = useState<Array<croppedUser>>([]);
 
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
-    const [userIdsArray, setUserIdsArray] = useState<Array<number>>([]);
     const router = useRouter();
 
-    const updateUserIdsArray = (newId: number) =>{
-        const temp = userIdsArray;
-        temp.push(newId);
-
-        setUserIdsArray(temp);
-    }
+    useEffect(()=>{
+        setAlteredSelected(selected);
+    },[alteredSelected])
 
 
     const handleClose = () =>{
@@ -62,7 +57,6 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     }
 
     const updateAvatars = (tempArray : Array<croppedUser>) => {
-
         setAvatars(tempArray);
     }
 
@@ -107,24 +101,55 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
             else{
                 alert("Tarjeta agregada satisfactoriamente");
 
+                //return to backlog
+                var co_usernames : Array<string | undefined> = [];
+                var co_avatars : Array<string | undefined> = []
 
+                for(var r = 0; r<avatars.length; r++){
+                    co_usernames.push(avatars[r].username);
+                    co_avatars.push(avatars[r].avatar);
+                }
+
+                console.log(avatars);
+
+                const tempNewCard : card = {
+                    card_id : data.card_id,
+                    custom_id : 0,
+                    title : title,
+                    owner_user_id : userId,
+                    owner_username : sessionUsername,
+                    owner_avatar : sessionAvatar,
+                    type_id : null,
+                    color : "34a97b",
+                    section : 0,
+                    lane_id : lane_id,
+                    position : position,
+                    co_owner_usernames : co_usernames,
+                    co_owner_avatars : co_avatars,
+                    description : description,
+                    comment_count : 0
+
+                  }
+
+                  insertCardUpdate(tempNewCard);
+                  applyInsertEffect(true);
+                  updateCurrentCard(tempNewCard);
 
                 activateInsertCard(false);
             }
         })
         .catch((error) =>{
+            console.log(error);
             cookieCutter.set('apikey', '', { expires: new Date(0) })
             cookieCutter.set('host', '', { expires: new Date(0) })
             cookieCutter.set('email', '', { expires: new Date(0) })
             cookieCutter.set('userid', '', { expires: new Date(0) }) 
             router.replace({pathname: '/'}); 
         })
-
     }
 
     const setNewSelection = (newSelection: Array<selection>) =>{
         setAlteredSelected(newSelection);
-        updateSelected(newSelection);
     }
 
     const renderCoOwners = () =>{
@@ -161,10 +186,6 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     useEffect(()=>{
         renderCoOwners();
     })
-
-    const changeNoneSelected = (value: boolean) =>{
-        setNoneSelected(value);
-    }
 
     var letter = ''
     var letterBackground = ''
@@ -206,11 +227,11 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
 
 
                                 { /* User 1 */ avatars.length >= 0 && avatars[0]!=undefined &&
-                                    (alteredSelected!=null && alteredSelected != undefined && alteredSelected[0].checked==true && (avatars[0].avatar!="" || avatars[0].avatar!=null)) && <img src={avatars[0].avatar} alt="owner_avatar1" className={newcard.image1}/>
+                                    (alteredSelected!=null && alteredSelected != undefined && (avatars[0].avatar!="" || avatars[0].avatar!=null)) && <img src={avatars[0].avatar} alt="owner_avatar1" className={newcard.image1}/>
                                 }
                                 
-                                {   users.length >= 0 && users[0]!=undefined &&
-                                    (alteredSelected!=null) && (!alteredSelected[0].checked || (avatars[0].avatar=="" || avatars[0].avatar==null)) && 
+                                {   avatars.length >= 0 && avatars[0]!=undefined &&
+                                    (alteredSelected!=null) && ((avatars[0].avatar=="" || avatars[0].avatar==null)) && 
                                     <div className={newcard.image1} style={ {backgroundColor:currCoBg1}}><div className={newcard.letter}>{currCo1}</div></div>
                                 }
 
@@ -220,11 +241,11 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
 
 
                                 { /* User 2 */ avatars.length >= 1 && avatars[1]!=undefined &&
-                                    (alteredSelected!=null && alteredSelected != undefined && alteredSelected[1].checked==true && (avatars[1].avatar!="" || avatars[1].avatar!=null)) && <img src={avatars[1].avatar} alt="owner_avatar2" className={newcard.image2}/>
+                                    (alteredSelected!=null && alteredSelected != undefined && (avatars[1].avatar!="" || avatars[1].avatar!=null)) && <img src={avatars[1].avatar} alt="owner_avatar2" className={newcard.image2}/>
                                 }
                                 
                                 {   avatars.length >= 1 && avatars[1]!=undefined &&
-                                    (alteredSelected!=null) && (!alteredSelected[1].checked || (avatars[1].avatar=="" || avatars[1].avatar==null)) && 
+                                    (alteredSelected!=null) && ((avatars[1].avatar=="" || avatars[1].avatar==null)) && 
                                     <div className={newcard.image2} style={ {backgroundColor:currCoBg2}}><div className={newcard.letter}>{currCo2}</div></div>
                                 }
 
@@ -233,11 +254,11 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                                 }
 
                                 { /* User 3 */ avatars.length >= 2 && avatars[2]!=undefined &&
-                                    (alteredSelected!=null && alteredSelected != undefined && alteredSelected[2].checked==true && (avatars[2].avatar!="" || avatars[2].avatar!=null)) && <img src={avatars[2].avatar} alt="owner_avatar3" className={newcard.image3}/>
+                                    (alteredSelected!=null && alteredSelected != undefined && (avatars[2].avatar!="" || avatars[2].avatar!=null)) && <img src={avatars[2].avatar} alt="owner_avatar3" className={newcard.image3}/>
                                 }
                                 
                                 {   avatars.length >= 2 && avatars[2]!=undefined &&
-                                    (alteredSelected!=null) && (!alteredSelected[2].checked || (avatars[2].avatar=="" || avatars[2].avatar==null)) && 
+                                    (alteredSelected!=null) && ((avatars[2].avatar=="" || avatars[2].avatar==null)) && 
                                     <div className={newcard.image3} style={ {backgroundColor:currCoBg3}}><div className={newcard.letter}>{currCo3}</div></div>
                                 }
 
@@ -252,13 +273,13 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                                     <FontAwesomeIcon icon={faPlus} style={{color: "#000000", height: "1em", paddingLeft:'0.4em', paddingTop:'0.2em'}} />
                                 </button>
                             </div>
-                            {showCoOwners && <div><CoOwner users={users} selected={alteredSelected} userId={userId} changeNoneSelected={changeNoneSelected} setNewSelection={setNewSelection} updateAvatars={updateAvatars} updateUserIdsArray={updateUserIdsArray} avatarsList={avatars}/></div>}
+                            {showCoOwners && <div><CoOwner users={users} selected={alteredSelected} setNewSelection={setNewSelection} updateAvatars={updateAvatars} avatarsList={avatars}/></div>}
 
                             
                         </div>
                     </div>
 
-                    <textarea className={newcard.inputDescription} placeholder='Título de tarjeta' onChange={handleUpdateDescription}/>
+                    <textarea className={newcard.inputDescription} placeholder='Descripción' onChange={handleUpdateDescription}/>
 
                     <button className={newcard.createButton} onClick={()=>handleInsert()}>
                         Crear

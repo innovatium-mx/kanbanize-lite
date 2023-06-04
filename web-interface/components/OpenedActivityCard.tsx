@@ -15,8 +15,8 @@ export type OpenedActivityCardProps = {
     "title" : string,
     "owner" : string | undefined,
     "owner_avatar" : string | null,
-    "co_owner_usernames"  : Array<string> | null,
-    "co_owner_avatars" : Array<string> | null,
+    "co_owner_usernames"  : Array<string | undefined> | null,
+    "co_owner_avatars" : Array<string | undefined> | null,
     "description": string,
     "setDisplayCard": any,
     "color": string,
@@ -325,8 +325,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
         for(var x = 0; x < co_owner_usernames.length; x++){
             //coOwner[x] existance
-            if(co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[x]==undefined){ // coOwners exist, but don't have avatar
-                letterCo[x]=co_owner_usernames[x].charAt(0);
+            if(co_owner_usernames!=null && co_owner_avatars!=null && (co_owner_avatars[x]===undefined || co_owner_avatars[x]===null || co_owner_avatars[x]==="")){ // coOwners exist, but don't have avatar
+                letterCo[x]=co_owner_usernames[x]?.charAt(0);
                 letterCoBg[x]=adjustColor('#' + color, 500*(x+0.7)/10);
             }
         }
@@ -376,23 +376,23 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                         <div className={openedCard.coOwners}>
 
-                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[0]!=null && <img src={co_owner_avatars[0]} alt="owner_avatar1" className={openedCard.image1}/>}
+                            {co_owner_usernames!=null && co_owner_avatars!=null && (co_owner_avatars[0]!=null && co_owner_avatars[0]!=undefined && co_owner_avatars[0]!="") && <img src={co_owner_avatars[0]} alt="owner_avatar1" className={openedCard.image1}/>}
                             {/*coOwners exists, coOwner1 have photo*/}
-                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[0]==null && <div className={openedCard.image1} style={{backgroundColor:currCoBg1}}><div className={openedCard.letter}>{letterCo[0]}</div></div>}
+                            {co_owner_usernames!=null && co_owner_avatars!=null && (co_owner_avatars[0]===null || co_owner_avatars[0]===undefined || co_owner_avatars[0]==="") && <div className={openedCard.image1} style={{backgroundColor:currCoBg1}}><div className={openedCard.letter}>{letterCo[0]}</div></div>}
                             {/*coOwners exists, coOwner1 doesn't have photo*/}
                             {co_owner_usernames==null && <div className={openedCard.image1} style={ {backgroundColor:currCoBg1}}><div className={openedCard.letter}>{letterCo[0]}</div></div>}
                             {/*coOwners doesn't exist*/}
                             
-                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[1]!=null && <img src={co_owner_avatars[1]} alt="owner_avatar1" className={openedCard.image2}/>}
+                            {co_owner_usernames!=null && co_owner_avatars!=null && (co_owner_avatars[1]!=null && co_owner_avatars[1]!=undefined && co_owner_avatars[1]!="") && <img src={co_owner_avatars[1]} alt="owner_avatar1" className={openedCard.image2}/>}
                             {/*coOwners exists, coOwner2 have photo*/}
-                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[1]==null && <div className={openedCard.image2} style={{backgroundColor:currCoBg2}}><div className={openedCard.letter}>{letterCo[1]}</div></div>}
+                            {co_owner_usernames!=null && co_owner_avatars!=null && (co_owner_avatars[1]===null || co_owner_avatars[1]===undefined || co_owner_avatars[1]==="") && <div className={openedCard.image2} style={{backgroundColor:currCoBg2}}><div className={openedCard.letter}>{letterCo[1]}</div></div>}
                             {/*coOwners exists, coOwner2 doesn't have photo*/}
                             {co_owner_usernames==null && <div className={openedCard.image2} style={{backgroundColor:currCoBg2}}><div className={openedCard.letter}>{letterCo[1]}</div></div>}
                             {/*coOwners doesn't exist*/}
 
-                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[2]!=null && <img src={co_owner_avatars[2]} alt="owner_avatar1" className={openedCard.image3}/>}
+                            {co_owner_usernames!=null && co_owner_avatars!=null && (co_owner_avatars[2]!=null && co_owner_avatars[2]!=undefined && co_owner_avatars[2]!="") && <img src={co_owner_avatars[2]} alt="owner_avatar1" className={openedCard.image3}/>}
                             {/*coOwners exists, coOwner3 have photo*/}
-                            {co_owner_usernames!=null && co_owner_avatars!=null && co_owner_avatars[2]==null && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
+                            {co_owner_usernames!=null && co_owner_avatars!=null && (co_owner_avatars[2]===null || co_owner_avatars[2]===undefined || co_owner_avatars[2]==="") && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
                             {/*coOwners exists, coOwner3 doesn't have photo*/}
                             {co_owner_usernames==null && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
                             {/*coOwners doesn't exist*/}
