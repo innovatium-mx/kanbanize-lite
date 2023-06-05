@@ -3,9 +3,6 @@ import actCard from '../styles/Activitycard.module.css'
 import { InitiativeCardProps } from '@/types/types';
 
 
-
-
-
 const InitiativeCard = ({card_id, color, owner_avatar, title, owner_username, retrieveIndex, displayModal, lane_name, lane_color, child_complete=0, child_total=1} : InitiativeCardProps) =>{
 
     const newColor = '#' + color;
