@@ -192,9 +192,7 @@ export type InitiativeCardProps = {
     "color": string,
     "owner_avatar": string | null,
     "title": string, 
-    "owner_username": string | null,
-    "retrieveIndex" : any,
-    "displayModal": any,
+    "owner_username": string | undefined,
     "lane_name": string,
     "lane_color": string
     "child_complete": number,

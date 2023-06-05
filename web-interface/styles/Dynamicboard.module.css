@@ -24,3 +24,21 @@ div.cardContainer {
         transform: scale(1.65);
     }
 }
+
+@media screen and (max-width: 550px) {
+    div.grid{
+        padding-top: 14em;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    div.grid{
+        padding-top: 15em;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    div.grid{
+        padding-top: 15.5em;
+    }
+}

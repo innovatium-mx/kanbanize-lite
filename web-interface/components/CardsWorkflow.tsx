@@ -264,8 +264,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         else{
             setColor('#'+data[index+response].color);
         }
-
-
     };
 
     return(
