@@ -13,7 +13,7 @@ const InitiativeCard = ({card_id, color, owner_avatar, title, owner_username, la
         completeness = 0
     }
     else{
-        completeness = Number(((child_complete/child_total)*100).toFixed(0));
+        completeness = Number(((child_complete/child_total)*100).toFixed(0))
     }
 
     /* const handleClick = () =>{

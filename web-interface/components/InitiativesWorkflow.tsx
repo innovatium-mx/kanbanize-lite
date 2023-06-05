@@ -115,7 +115,7 @@ const InitiativesWorkflow = ({data, users, workflow_name} : InitiativesWorkflowP
             <div className={DynamicBoard.grid}>
                 {   
                     initiatives!=null && initiatives.map((element:any)=>
-                    <div className={DynamicBoard.cardContainer}>
+                    <div className={DynamicBoard.cardContainer} key={element.key}>
                         <div className={DynamicBoard.buttons} />
                         <ClosedInitiativeCard card_id={element.card_id} color={element.color} owner_avatar={element.owner_avatar} owner_username={element.owner_username} title={element.title} lane_name={element.lane_name} lane_color={element.lane_color} child_complete={element.child_card_stats.finished_bottom_child_card_size_sum} child_total={element.child_card_stats.child_card_size_sum}/>
                     </div>
