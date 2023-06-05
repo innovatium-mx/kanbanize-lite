@@ -159,8 +159,6 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     }
 
     const renderCoOwners = () =>{
-
-        console.log(avatars);
         
         var letterCo : Array<string | undefined> = [undefined, undefined, undefined] 
         var letterCoBg : Array<string | undefined> = [undefined, undefined, undefined] 
