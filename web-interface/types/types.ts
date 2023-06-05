@@ -187,6 +187,20 @@ export type user = {
     avatar: string
 }
 
+export type InitiativeCardProps = {
+    "card_id": number,
+    "color": string,
+    "owner_avatar": string | null,
+    "title": string, 
+    "owner_username": string | null,
+    "retrieveIndex" : any,
+    "displayModal": any,
+    "lane_name": string,
+    "lane_color": string
+    "child_complete": number,
+    "child_total": number
+}
+
 export interface FilterProps {
     users : Array<user>,
     selected: Array<selection>,
