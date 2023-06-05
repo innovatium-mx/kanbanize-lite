@@ -10,7 +10,9 @@
     right: 0.25em;
     padding: 1.5rem;
     width: 15em;
-    height: auto;
+    height: 13em;
+    overflow: scroll;
+    overflow-x: hidden;
     display: grid;
     justify-content: center;
     align-items: center;
