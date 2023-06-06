@@ -11,7 +11,7 @@ import { urlCloud } from '../constants';
 import { useRouter } from 'next/router';
 
 
-const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color}: newCard) =>{
+const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color, newCardTitle, newCardDescription, newCardOwner, newCardCoowner, newCardCreate}: newCard) =>{
 
     const [showCoOwners, setShowCoOwners] = useState<boolean>(false);
 
@@ -218,7 +218,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                         </button>
                     </div>
 
-                    <input type="text" className={newcard.inputTitle} placeholder='Título de tarjeta' onChange={handleUpdateTitle} />
+                    <input type="text" className={newcard.inputTitle} placeholder={newCardTitle} onChange={handleUpdateTitle} />
 
                     <div className={newcard.ownersWrap}>
                         <div className={newcard.owner}>
@@ -226,7 +226,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                             {sessionAvatar!="" && sessionAvatar!=undefined && <img src={sessionAvatar} alt="owner_avatar" className={newcard.ownerPhoto}/> /*user exists and have photo*/} 
                             {sessionUsername!=null && (sessionAvatar=="" || sessionAvatar== null) && <div className={newcard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={newcard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
 
-                            <div>Owner</div>
+                            <div>{newCardOwner}</div>
                         </div>
 
                         <div className={newcard.coOwners}>
@@ -274,7 +274,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
 
 
                             <div style={{display:'flex', paddingTop:'4em'}}>
-                                CoOwner
+                                {newCardCoowner}
                                 <button className={newcard.showCoOwnersButton} onClick={()=> handleAddCoOwners()}>
                                     <FontAwesomeIcon icon={faPlus} style={{color: "#000000", height: "1em", paddingLeft:'0.4em', paddingTop:'0.2em'}} />
                                 </button>
@@ -285,10 +285,10 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                         </div>
                     </div>
 
-                    <textarea className={newcard.inputDescription} placeholder='Descripción' onChange={handleUpdateDescription}/>
+                    <textarea className={newcard.inputDescription} placeholder={newCardDescription} onChange={handleUpdateDescription}/>
 
                     <button className={newcard.createButton} onClick={()=>handleInsert()}>
-                        Crear
+                        {newCardCreate}
                     </button>
  
                </div>

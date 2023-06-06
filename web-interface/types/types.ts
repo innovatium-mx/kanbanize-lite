@@ -97,7 +97,12 @@ export type newCard = {
     "applyInsertEffect" : (val: boolean) => void,
     "updateCurrentCard" : (curr:card) => void,
     "lane_name" : string,
-    "lane_color" : string
+    "lane_color" : string,
+    "newCardTitle": string,
+    "newCardDescription": string,
+    "newCardOwner": string,
+    "newCardCoowner": string,
+    "newCardCreate": string
 }
 
 export type OpenedActivityCardProps = {
