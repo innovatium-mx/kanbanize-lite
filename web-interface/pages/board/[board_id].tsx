@@ -231,7 +231,7 @@ const Board = (props: PropsResponse) => {
       
       <div className={dashboard.modalWrap}>
 
-        {insertCard && <NewCardComponent newCardTitle={t('newCard.title')} newCardDescription={t('newCard.description')} newCardOwner={t('newCard.owner')} newCardCoowner={t('newCard.co-owner')} newCardCreate={t('newCard.create')} users={newUsers} activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected} position={newCardPosition} insertCardUpdate={insertCardUpdate} applyInsertEffect={applyInsertEffect} updateCurrentCard={updateCurrentCard} lane_name={workflow.lanes[0].name} lane_color={workflow.lanes[0].color}/>}
+        {insertCard && <NewCardComponent newCardTitle={t('newCard.title')} newCardDescription={t('newCard.description')} newCardOwner={t('newCard.owner')} newCardCoowner={t('newCard.co-owner')} newCardCreate={t('newCard.create')} users={newUsers} activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.lanes[0].lane_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected} position={newCardPosition} insertCardUpdate={insertCardUpdate} applyInsertEffect={applyInsertEffect} updateCurrentCard={updateCurrentCard} lane_name={workflow.lanes[0].name} lane_color={workflow.lanes[0].color}/>}
 
       </div>
 
