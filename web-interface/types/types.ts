@@ -110,7 +110,11 @@ export type OpenedActivityCardProps = {
     "setDisplayCard": any,
     "color": string,
     "card_id" : number,
-    "comment_count" : number
+    "comment_count" : number,
+    "openedCardOwner": string,
+    "openedCardCoowner": string,
+    "openedCardAddComment": string,
+    "openedCardComments": string,
 }
 
 export type Author = {

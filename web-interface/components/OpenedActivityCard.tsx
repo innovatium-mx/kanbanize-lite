@@ -13,7 +13,7 @@ import { comment, OpenedActivityCardProps, Author, Attachment } from '../types/t
 const cookieCutter= require('cookie-cutter');
 
 
-const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count}: OpenedActivityCardProps) =>{
+const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, openedCardOwner, openedCardCoowner, openedCardAddComment, openedCardComments}: OpenedActivityCardProps) =>{
     const router = useRouter();
 
     const [openComments, setOpenComments] = useState<boolean>(false);
@@ -350,7 +350,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             {owner==undefined && owner_avatar==undefined && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user doesn't exis*/}
                             {owner!=null && (owner_avatar=="" || owner_avatar== null) && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
 
-                            <div>Owner</div>
+                            <div>{openedCardOwner}</div>
                         </div>
 
 
@@ -377,7 +377,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             {co_owner_usernames==null && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
                             {/*coOwners doesn't exist*/}
 
-                            {<div>Co-Owner</div>}
+                            {<div>{openedCardCoowner}</div>}
 
                         </div>
 
@@ -407,7 +407,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             <input type="file" id="file-input" name="file" onChange={handleChange} />
                         </div>
 
-                        <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={'Agregar comentario...'} onChange={handleNewComment} value={newComment}></input>
+                        <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={openedCardAddComment} onChange={handleNewComment} value={newComment}></input>
 
                         <button className={openedCard.sendButton} onClick={()=>{handleSend()}}>
                             <img src="/send/blue_send_button.png" className={openedCard.send}></img>
@@ -417,7 +417,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                     <div className={openedCard.commentsWrap}>
                         <div className={openedCard.commentsText}>
-                            Comentarios
+                            {openedCardComments}
                         </div>
 
                         <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton}>

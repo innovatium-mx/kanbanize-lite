@@ -224,7 +224,7 @@ const Board = (props: PropsResponse) => {
     <div className={dashboard.pageWrap} ref={pageRef}>
       <div className={dashboard.modalWrap}>
 
-          {displayCard && currentCard!=undefined && <OpenedActivityCard title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
+          {displayCard && currentCard!=undefined && <OpenedActivityCard openedCardOwner={t('openedCard.owner')} openedCardCoowner={t('openedCard.co-owner')} openedCardAddComment={t('openedCard.addComment')} openedCardComments={t('openedCard.comments')} title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
       
       </div>
       
