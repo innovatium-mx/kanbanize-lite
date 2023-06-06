@@ -9,6 +9,7 @@ import CommentContainer from './CommentContainer';
 import axios from 'axios';
 import {urlCloud, urlLocal} from '../constants';
 import { comment, OpenedActivityCardProps, Author, Attachment } from '../types/types';
+import Swal from 'sweetalert2';
 
 const cookieCutter= require('cookie-cutter');
 
@@ -57,7 +58,14 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             if(tempFile.size / 1024 > 15000){
                 //e.target.value = null;
                 setHasFile(false);
-                alert("File size must not be greater than to 15MB");
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'File size must not be greater than to 15MB',
+                    showCloseButton: true
+                })
+
+
                 return;
             }
             else{
@@ -72,7 +80,14 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             }
         }
         else{
-            alert("There was an error uploading the file");
+
+            Swal.fire({
+                icon: 'error',
+                title: 'There was an error uploading the file',
+                showCloseButton: true
+            })
+
+            
             setHasFile(false);
             return;
         }
@@ -221,7 +236,23 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     formData, config
                 );
                 if(res.status === 200){
-                    alert(`Comment successfully sent`);
+
+                    const Toast = Swal.mixin({
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: false,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                      })
+                      
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Comment successfully sent'
+                    })
+
+
                     const newAuthor: Author = {
                         "avatar": sessionAvatar,
                         "type" : "internal",
@@ -245,7 +276,14 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     setLocalCommentsCount(localCommentsCount+1);
                 }
                 else{
-                    alert("Something failed while sending the comment");
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Something failed while sending the comment',
+                        showCloseButton: true
+                    })
+
+
                     cookieCutter.set('apikey', '', { expires: new Date(0) })
                     cookieCutter.set('host', '', { expires: new Date(0) })
                     cookieCutter.set('email', '', { expires: new Date(0) })
@@ -264,7 +302,13 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 cookieCutter.set('userid', '', { expires: new Date(0) }) 
                 cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
-                alert("There was an error sending the comment");
+
+                  
+                Swal.fire({
+                    icon: 'error',
+                    title: 'There was an error sending the comment',
+                    showCloseButton: true
+                })
             }
             
             //sets variable that rerenders comments component

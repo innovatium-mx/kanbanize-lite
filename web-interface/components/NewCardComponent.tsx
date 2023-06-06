@@ -9,6 +9,7 @@ import adjustColor from '../helpers/lightenColor';
 import { t } from 'i18next';
 import { urlCloud } from '../constants';
 import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
 
 
 const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color, newCardTitle, newCardDescription, newCardOwner, newCardCoowner, newCardCreate}: newCard) =>{
@@ -101,10 +102,40 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                     cookieCutter.set('username', '', { expires: new Date(0) }) 
                     cookieCutter.set('workspace', '', { expires: new Date(0) })
                     router.replace({pathname: '/'});
+                    
+                    const Toast = Swal.mixin({
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: false,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                      })
+                      
+                      Toast.fire({
+                        icon: 'error',
+                        title: 'Hubo un error'
+                      })
                 }
                 else{
-                    alert("Tarjeta agregada satisfactoriamente");
-    
+                    //alert("Tarjeta agregada satisfactoriamente");
+                    
+                    const Toast = Swal.mixin({
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: false,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                      })
+                      
+                      Toast.fire({
+                        icon: 'success',
+                        title: 'Tarjeta agregada satisfactoriamente'
+                      })
+
                     //return to backlog
                     var co_usernames : Array<string | undefined> = [];
                     var co_avatars : Array<string | undefined> = []
