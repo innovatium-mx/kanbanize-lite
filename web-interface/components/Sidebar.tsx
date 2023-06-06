@@ -12,14 +12,10 @@ var globalCookie = new Cookies();
 
 
 const Sidebar = () => {
-    
 
     const router = useRouter();
-
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
     const LanguageButton = dynamic(import('./LanguageDropdown'), { ssr: false });
-
 
     const ref: React.MutableRefObject<any> = useRef();
     const tooltipRef: React.MutableRefObject<any> = useRef();
@@ -59,15 +55,6 @@ const Sidebar = () => {
 
             if (result.isConfirmed) {
                 
-                globalCookie.remove('apikey')
-                globalCookie.remove('host')
-                globalCookie.remove('email')
-                globalCookie.remove('userid')
-                globalCookie.remove('avatar')
-                globalCookie.remove('username')
-                globalCookie.remove('workspace')
-                router.replace({ pathname: '/' })
-                
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -78,6 +65,15 @@ const Sidebar = () => {
                         toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
+
+                globalCookie.remove('apikey')
+                globalCookie.remove('host')
+                globalCookie.remove('email')
+                globalCookie.remove('userid')
+                globalCookie.remove('avatar')
+                globalCookie.remove('username')
+                globalCookie.remove('workspace')
+                router.replace({ pathname: '/' })
 
                 Toast.fire({
                     icon: 'success',

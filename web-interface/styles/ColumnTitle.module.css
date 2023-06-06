@@ -13,14 +13,12 @@
 .breadcrumb_trail {
     font-size: 0.9em;
     color: rgb(255, 255, 255);
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
 }
 
 .container {
     width: 100%;
-    padding-top: 2em;
     display: flex;
-    padding-bottom: 2em;
     justify-content: center;
     align-items: center;
     padding: 0.7em;
@@ -39,6 +37,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media screen and (max-width: 550px) {
+    .title{
+        font-size: 1.2em;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .title{
+        font-size: 1em;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .title{
+        font-size: 0.8em;
+    }
 }
 
 @media screen and (max-width: 307px) {

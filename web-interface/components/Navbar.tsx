@@ -2,43 +2,17 @@ import { FC, useState } from "react"
 import { NavigationBarItem } from "typescript"
 import Image from "next/image"
 import InterfaceDropdown from "./InterfaceDropdown"
-import LanguageDropdown from "./LanguageDropdown"
-import { boardCard } from "./Dashboard"
+import { boardCard } from "../types/types"
 import Sidebar from "./Sidebar"
 import navbar from '../styles/Navbar.module.css'
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { GetServerSideProps } from "next"
-import Cookies from "cookies"
-import {urlCloud} from '../constants'
-
-
+import { NextJsI18NConfig, NavBarData} from "../types/types"
 
 type Props = {}
-
-interface Data {
-    workspace_id: number,
-    type: number,
-    is_archived: number,
-    name: string,
-    boards: Array<boardCard> | null
+  
+  interface PropsResponse {
+    data : Array<NavBarData>
+    _nextI18Next : NextJsI18NConfig
   }
-  
-    type NextJsI18NConfig = {
-      defaultLocale: string
-      domains?: {
-        defaultLocale: string
-        domain: string
-        http?: true
-        locales?: string[]
-      }[]
-      localeDetection?: false
-      locales: string[]
-    }
-  
-    interface PropsResponse {
-      data : Array<Data>
-      _nextI18Next : NextJsI18NConfig
-    }
 
 const Navbar = ({data} : PropsResponse) => {
 
@@ -66,8 +40,6 @@ const Navbar = ({data} : PropsResponse) => {
         </>
     )
 }
-
-
   
 export default Navbar
 

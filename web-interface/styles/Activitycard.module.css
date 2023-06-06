@@ -1,9 +1,10 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap'); */
+
 div.boardCard {
     position: relative;
 
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     width: 32em;
     height: auto;
@@ -25,8 +26,8 @@ div.innerContainer {
 }
 
 footer.bottom {
-    border-bottom-left-radius: .3em;
-    border-bottom-right-radius: .3em;
+    border-bottom-left-radius: .4em;
+    border-bottom-right-radius: .4em;
     padding-bottom: 0.3em;
     text-align: right;
     color: white;
@@ -38,16 +39,17 @@ footer.bottom {
 
 div.lane {
     z-index: 0;
-    width: 12em;
-    font-size: 0.8em;
-    margin-top: 0.5em;
-    margin-left: 1.5em;
-    padding: 0.25em 0.25em;
+    width: auto;
+    font-size: 0.6em;
+    color: white;
+    margin-top: 0.7em;
+    margin-left: 0.7em;
+    padding: 0.25em 1em;
     border-radius: 1.2em;
     align-self: baseline;
     font-weight: bold;
     text-align: center;
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     overflow-wrap: break-word;
     color: white;
     background-color: #919191;
@@ -55,14 +57,15 @@ div.lane {
 }
 
 div.text {
+
     text-align: center;
     padding-top: 1em;
     padding-bottom: 1em;
     padding-right: 0em;
     width: 17.5em;
     overflow-wrap: break-word;
-    z-index: 0;
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    z-index: 1;
+    /* font-family:  'Roboto', helvetica, sans-serif; */
 }
 
 div.name {
@@ -76,9 +79,9 @@ div.name {
     margin-left: 1.5em;
     height: 4em;
     width: 4em;
-    border: 1px solid white;
+    /* border: 1px solid white; */
     border-radius: 50%;
-    filter: drop-shadow(.2em 1em .3em rgba(0, 0, 0, 0.06));
+    filter: drop-shadow(.01em 0.5em .3em rgba(160, 160, 160, 0.425));
     z-index: 0;
 }
 
@@ -91,8 +94,8 @@ div.name {
     width: 4em;
     border-radius: 50%;
     z-index: 1;
-    filter: drop-shadow(.2em 1em .3em rgba(0, 0, 0, 0.06));
-    border: 1px solid white;
+    filter: drop-shadow(.01em 0.5em .3em rgba(160, 160, 160, 0.425));
+    /*border: 1px solid white;*/
 
 }
 
@@ -105,8 +108,8 @@ div.name {
     width: 4em;
     border-radius: 50%;
     z-index: 0;
-    filter: drop-shadow(.2em 1em .3em rgba(0, 0, 0, 0.06));
-    border: 1px solid white;
+    filter: drop-shadow(.01em 0.3em .3em rgba(130, 130, 130, 0.3));
+    /* border: 1px solid white; */
 }
 
 div.letter {
@@ -117,10 +120,23 @@ div.letter {
 }
 
 div.imageSection {
+    /*
     display: grid;
     text-align: center;
     place-items: center;
     font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.5rem;
+
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
 }
 
 @media screen and (max-width: 550px) {
@@ -172,11 +188,11 @@ div.imageSection {
 
 @media screen and (max-width: 420px) {
     div.boardCard {
-        width: 19em;
+        width: 18em;
     }
 
     footer.bottom {
-        width: 19em;
+        width: 18em;
     }
 
     .photo {
@@ -222,9 +238,11 @@ div.imageSection {
 @media screen and (max-width: 360px) {
     div.boardCard {
         width: 14em;
+        width: 14em;
     }
 
     footer.bottom {
+        width: 14em;
         width: 14em;
     }
 
@@ -236,27 +254,77 @@ div.imageSection {
     }
 
     .noPhoto_noUser {
-        height: 2em;
-        width: 2em;
-        margin-left: 0.7em;
-        margin-right: 0.4em;
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.05em;
+        margin-right: 0.25em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
     }
 
     .noPhoto_user {
-        height: 2em;
-        width: 2em;
-        margin-left: 0.7em;
-        margin-right: 0.4em;
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.05em;
+        margin-right: 0.05em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    div.letter {
+        font-size: 1.2em;
+        padding-top: 0em;
+    }
+
+    div.text {
+        font-size: 0.8rem;
+        width: 10em;
+    }
+}
+
+
+@media screen and (max-width: 280px) {
+    div.boardCard {
+        width: 12em;
+    }
+
+    footer.bottom {
+        width: 12em;
+    }
+
+    .noPhoto_noUser {
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.05em;
+        margin-right: 0.25em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .noPhoto_user {
+        height: 2.5em;
+        width: 2.5em;
+        margin-left: 0.05em;
+        margin-right: 0.05em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
     }
 
     div.letter {
         font-size: 1em;
+        padding-top: 0em;
     }
 
     div.text {
-        font-size: 70%;
+        font-size: 0.8em;
         width: 10em;
     }
 

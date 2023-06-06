@@ -26,6 +26,28 @@ button.FloatButton{
     }
 }
 
+@media screen and (max-width: 810px){
+    div.buttonContainer{
+        width: 45%;
+    }
+
+}
+
+@media screen and (max-width: 420px){
+    div.buttonContainer{
+        width: 43%;
+    }
+
+}
+
+@media screen and (max-width: 360px){
+    div.buttonContainer{
+        width: 40%;
+    }
+
+}
+
+
 @media screen and (max-width: 550px){
     button.FloatButton{
         width: 3.2em;

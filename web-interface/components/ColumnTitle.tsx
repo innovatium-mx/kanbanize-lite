@@ -3,38 +3,8 @@ import {faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import columntitle from '../styles/ColumnTitle.module.css';
 import Filter from './Filter';
 import OpenFilter from './OpenFilter';
+import { ColumnTitleProps } from '../types/types';
 
-type selection = {
-    user_id: number | null,
-    checked: boolean
-}
-
-type user = {
-    user_id: number | null,
-    username: string,
-    realname: string,
-    avatar: string
-}
-
-type parent_columns = {
-    parent_id: number,
-    parent_name: string,
-    parent_section: number,
-    parent_position: number,
-} 
-
-type ColumnTitleProps = {
-    name: string,
-    left: boolean,
-    right: boolean,
-    color: string,
-    returnResponse: any,
-    parent_column_id: Array<parent_columns> | null,
-    workflow_name: string,
-    users: Array<user>,
-    selected: Array<selection>,
-    setFilter: any
-}
 
 const ColumnTitle = ({name, left, right, color, returnResponse, parent_column_id, workflow_name, users, selected, setFilter} : ColumnTitleProps) => {
     var breadcrumb_trail = workflow_name;

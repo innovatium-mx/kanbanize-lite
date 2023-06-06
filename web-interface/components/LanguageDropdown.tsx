@@ -5,8 +5,6 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import { useRouter } from 'next/router'
-
-//
 import {useTranslation} from 'next-i18next';
 
 export interface LanguageDropdownProps {
@@ -15,7 +13,6 @@ export interface LanguageDropdownProps {
 
 const LanguageButton = ({color} : LanguageDropdownProps) => {
 
-    //
     const router = useRouter();
     const {t} = useTranslation('common');
 

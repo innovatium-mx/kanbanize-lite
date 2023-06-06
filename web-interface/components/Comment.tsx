@@ -1,14 +1,5 @@
 import comment from '../styles/Comment.module.css'
-import {Attachment} from './OpenedActivityCard';
-
-export type CommentProps = {
-    "text" : string,
-    "last_modified" : string,
-    "avatar" : string | null,
-    "color" : string,
-    "username" : string | undefined,
-    "attachments" : Array<Attachment>
-}
+import { CommentProps } from '../types/types';
 
 const Comment = ({text, last_modified, avatar, color, username, attachments}: CommentProps) =>{
 

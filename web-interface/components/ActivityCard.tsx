@@ -1,18 +1,6 @@
 import actCard from '../styles/Activitycard.module.css';
 import adjustColor from '../helpers/lightenColor';
-
-
-export type ActivityCardProps = {
-    "card_id": number,
-    "color": string,
-    "owner_avatar": string | null,
-    "title": string, 
-    "owner_username": string | null,
-    "retrieveIndex" : any,
-    "displayModal": any,
-    "lane_name": string,
-    "lane_color": string
-}
+import { ActivityCardProps } from '../types/types';
 
 
 const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, retrieveIndex, displayModal, lane_name, lane_color} : ActivityCardProps) =>{
@@ -44,12 +32,15 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, retr
         <div>
             
             <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}} onClick={()=> handleClick()}>
-                <div className={actCard.innerContainer}>
-                <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
-                    <div className={actCard.text}>{title}</div>
-                    <div className={actCard.imageSection}>
-                        {(owner_avatar !=  null &&  owner_avatar!="") ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
+                
+                <div className={actCard.container}>
+                    <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
+                    <div className={actCard.innerContainer}>
+                        <div className={actCard.text}>{title}</div>
                     </div>
+                </div>
+                <div className={actCard.imageSection}>
+                        {(owner_avatar !=  null &&  owner_avatar!="") ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
                 </div> 
             </div>
             <footer className={actCard.bottom} style={{backgroundColor:newColor}}></footer>

@@ -9,6 +9,7 @@ import adjustColor from '../helpers/lightenColor';
 import { t } from 'i18next';
 import { urlCloud } from '../constants';
 import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
 
 
 const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color}: newCard) =>{
@@ -101,10 +102,40 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                     cookieCutter.set('username', '', { expires: new Date(0) }) 
                     cookieCutter.set('workspace', '', { expires: new Date(0) })
                     router.replace({pathname: '/'});
+                    
+                    const Toast = Swal.mixin({
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: false,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                      })
+                      
+                      Toast.fire({
+                        icon: 'error',
+                        title: 'Hubo un error'
+                      })
                 }
                 else{
-                    alert("Tarjeta agregada satisfactoriamente");
-    
+                    //alert("Tarjeta agregada satisfactoriamente");
+                    
+                    const Toast = Swal.mixin({
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: false,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                      })
+                      
+                      Toast.fire({
+                        icon: 'success',
+                        title: 'Tarjeta agregada satisfactoriamente'
+                      })
+
                     //return to backlog
                     var co_usernames : Array<string | undefined> = [];
                     var co_avatars : Array<string | undefined> = []
@@ -167,7 +198,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
         for(var x = 0; x < alteredSelected.length; x++){
             //coOwner[x] existance
 
-            if(alteredSelected!=null && avatars[x]!=undefined && (avatars[x].avatar===undefined || avatars[x].avatar==="")){ // coOwners exist, but don't have avatar
+            if(alteredSelected!=null && avatars[x]!=undefined && (avatars[x].avatar===undefined || avatars[x].avatar==="" || avatars[x].avatar===null)){ // coOwners exist, but don't have avatar
                 letterCo[x]=users.find(item => item.user_id === avatars[x].user_id)?.username.charAt(0); 
                 letterCoBg[x]=adjustColor(color, 500*(x+0.7)/10);
             }   
@@ -274,7 +305,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
 
 
                             <div style={{display:'flex', paddingTop:'4em'}}>
-                                CoOwner
+                                Co-Owner
                                 <button className={newcard.showCoOwnersButton} onClick={()=> handleAddCoOwners()}>
                                     <FontAwesomeIcon icon={faPlus} style={{color: "#000000", height: "1em", paddingLeft:'0.4em', paddingTop:'0.2em'}} />
                                 </button>
