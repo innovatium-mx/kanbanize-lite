@@ -59,21 +59,17 @@ button.closeButton {
 }
 
 div.owner {
-    padding-left: 3em;
-    justify-content: center;
     text-align: center;
 }
 
 div.coOwners {
-    padding-right: 3em;
-    justify-content: center;
     text-align: center;
     position: relative;
 }
 
 div.ownersWrap {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     padding-top: 1.5em;
     padding-bottom: 1em;
     /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
@@ -190,4 +186,78 @@ div.image3 {
     top: 0em;
     left: 2.9em;
     z-index: 0;
+}
+
+@media screen and (max-width: 420px) {
+    div.NewCard {
+        width: 22.5em;
+    }
+
+    input.inputTitle {
+        width: 17.5em
+    }
+
+    textarea.inputDescription {
+        width: 17.5em;
+    }
+
+    button.createButton {
+        width: 15.75em;
+    }
+
+}
+
+@media screen and (max-width: 380px) {
+    div.NewCard {
+        width: 20em;
+    }
+
+    input.inputTitle {
+        width: 15em
+    }
+
+    textarea.inputDescription {
+        width: 15em;
+    }
+
+    button.createButton {
+        width: 13.5em;
+    }
+
+}
+
+@media screen and (max-width: 340px) {
+    div.NewCard {
+        width: 17.5em;
+    }
+
+    input.inputTitle {
+        width: 12.5em
+    }
+
+    textarea.inputDescription {
+        width: 12.5em;
+    }
+
+    button.createButton {
+        width: 11.5em;
+    }
+}
+
+@media screen and (max-width: 300px) {
+    div.NewCard {
+        width: 16.5em;
+    }
+
+    input.inputTitle {
+        width: 11.5em
+    }
+
+    textarea.inputDescription {
+        width: 11.5em;
+    }
+
+    button.createButton {
+        width: 10.5em;
+    }
 }
