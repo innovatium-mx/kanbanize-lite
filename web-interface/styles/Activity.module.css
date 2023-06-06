@@ -1,0 +1,32 @@
+div.activity{
+    display: flex;
+    width: 19em;
+
+}
+
+div.idContainer{
+    width: 6em;
+    font-size: 0.6em;
+    margin-top: 0.5em;
+    margin-left: 1.5em;
+    padding: 0.25em 0.25em;
+    border-radius: 1.2em;
+    align-self: baseline;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    overflow-wrap: break-word;
+}
+
+div.title{
+    text-align: justify;
+    width: 17em;
+    position: relative;
+    padding-left: 1em;
+    padding-right: 1em;
+    overflow-wrap: break-word;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 400;
+    padding-bottom: 1em;
+
+}

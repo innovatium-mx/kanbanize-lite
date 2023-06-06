@@ -15,8 +15,10 @@ export type card = {
     "description" : string,
     "comment_count" : number,
     "lane_name" : string,
-    "lane_color" : string
+    "lane_color" : string,
+    "linked_cards" : Array<linkedCards>
 };
+
 
 export type lane = {
     "lane_id": number,
@@ -44,6 +46,8 @@ export type column = {
     "cards": Array<card>,
     "order": number
 }
+
+
 
 export type parent_columns = {
     parent_id: number,
@@ -112,6 +116,32 @@ export type OpenedActivityCardProps = {
     "card_id" : number,
     "comment_count" : number
 }
+
+export type linkedCards = {
+    "card_id" : number,
+    "link_type" : string,
+    "title" : string
+}
+
+
+
+export type OpenedInitiativeCardProps = {
+    "title" : string,
+    "owner" : string | undefined,
+    "owner_avatar" : string | null,
+    "co_owner_usernames"  : Array<string | undefined> | null,
+    "co_owner_avatars" : Array<string | undefined> | null,
+    "description": string,
+    "setDisplayCard": any,
+    "color": string,
+    "card_id" : number,
+    "comment_count" : number,
+    "linked_cards" : Array<linkedCards>
+}
+
+
+
+
 
 export type Author = {
     "type" : string,
@@ -196,7 +226,9 @@ export type InitiativeCardProps = {
     "lane_name": string,
     "lane_color": string
     "child_complete": number,
-    "child_total": number
+    "child_total": number,
+    "showInitiativeModal" : (value:boolean) => void,
+    "retrieveIndex" : any
 }
 
 export interface FilterProps {
