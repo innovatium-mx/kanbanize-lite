@@ -5,6 +5,7 @@ div.activity{
 }
 
 div.idContainer{
+    color: var(--dynamic-id-text-color-);
     width: 6em;
     font-size: 0.6em;
     margin-top: 0.5em;
@@ -19,6 +20,7 @@ div.idContainer{
 }
 
 div.title{
+    
     text-align: justify;
     width: 17em;
     position: relative;

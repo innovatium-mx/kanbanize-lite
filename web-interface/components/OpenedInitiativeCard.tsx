@@ -120,7 +120,6 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
         }
         else{
             document.documentElement.style.setProperty('--dynamic-scroll-', 'hidden');
-
         }
     })
 
@@ -185,8 +184,6 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
 
     const handleOpenComments = () =>{
         setOpenComments(!openComments);
-        /* console.log(localCommentsCount);
-        console.log(comment_count); */
 
         if(openComments){
             setArrowDown(openedCard.rotated);
