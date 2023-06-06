@@ -37,7 +37,7 @@ const InitiativeCard = ({card_id, color, owner_avatar, title, owner_username, re
         <div>
             <div className={initCard.card} onClick={()=> handleClick()}>
                 <div className={initCard.tags}>
-                    <div>
+                    <div className={initCard.leftTags}>
                         <span className={initCard.tag}>{completeness}%</span>
                         <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
                     </div>
