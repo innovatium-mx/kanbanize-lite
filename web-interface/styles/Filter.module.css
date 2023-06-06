@@ -50,6 +50,11 @@
     white-space: nowrap;
 }
 
+.selectAll {
+    width: 10em;
+    padding: 0.25em;
+}
+
 .checkbox {
     padding: 0.25em;
 }

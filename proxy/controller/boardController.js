@@ -265,9 +265,9 @@ module.exports.boardDetails = async (req,res) =>{
                                     }
                                     if(tempCard.linked_cards.length > 0){
                                         for(var j= 0; j < tempCard.linked_cards.length; j++){
-                                            const lccardd = tempCard.linked_cards[j].card_id;
+                                            const lccardd = tempCard.linked_cards[j].card_id;                                            
                                             const cardobject = boardCards.find(item => item.card_id === lccardd);
-                                            tempCard.linked_cards[j].title = cardobject.title;
+                                            tempCard.linked_cards[j].title = cardobject !== undefined ? cardobject.title : 'CARD NOT FOUND IN THIS BOARD';
                                         }
                                     }
                                     tempCard.lane_name = lane_name;

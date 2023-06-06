@@ -8,10 +8,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import Cookies from 'universal-cookie';
+import { workSpace } from '@/types/types';
 var globalCookie = new Cookies();
 
+interface SidebarProps {
+    "workspaces" : string,
+    "LogOut": string,
+    "confirmlogout": string,
+    "cancellogout": string,
+    "loggedout": string,
+}
 
-const Sidebar = () => {
+
+const Sidebar = ({workspaces, LogOut, confirmlogout, cancellogout, loggedout} : SidebarProps) => {
 
     const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,10 +55,11 @@ const Sidebar = () => {
     const handleLogout = () => {
 
         Swal.fire({
-            title: 'Confirm Logout',
+            title: confirmlogout,
             icon: 'question',
-            confirmButtonText: 'Logout',
+            confirmButtonText: LogOut,
             showCancelButton: true,
+            cancelButtonText: cancellogout,
             confirmButtonColor: '#42AD49'
         }).then((result) => {
 
@@ -73,12 +83,12 @@ const Sidebar = () => {
                 globalCookie.remove('avatar')
                 globalCookie.remove('username')
                 globalCookie.remove('workspace')
-                router.replace({ pathname: '/' })
 
                 Toast.fire({
                     icon: 'success',
-                    title: "Logged Out"
+                    title: loggedout
                 })
+                router.replace({ pathname: '/' })
             }
         })
     }
@@ -88,7 +98,7 @@ const Sidebar = () => {
             <ul className={sidebar.list}>
                 <li>
                     <Link href={"/dashboard"} >
-                        <span className={sidebar.workspaces}>Workspaces</span>
+                        <span className={sidebar.workspaces}>{workspaces}</span>
                     </Link>
                 </li>
                 <li>
@@ -97,7 +107,7 @@ const Sidebar = () => {
                 <li>
                     <button className={sidebar.button} onClick={handleLogout}>
                         <FontAwesomeIcon icon={faArrowRightFromBracket} className={sidebar.icon} />
-                        Logout
+                        {LogOut}
                     </button>
                 </li>
             </ul>
@@ -114,7 +124,7 @@ const Sidebar = () => {
                         <ul className={sidebar.listPanel}>
                             <li>
                                 <Link href={"/dashboard"} >
-                                    <span className={sidebar.workspaces}>Workspaces</span>
+                                    <span className={sidebar.workspaces}>{workspaces}</span>
                                 </Link>
                             </li>
                             <li>
@@ -123,7 +133,7 @@ const Sidebar = () => {
                             <li>
                                 <button className={sidebar.buttonPanel} onClick={handleLogout}>
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} className={sidebar.icon} />
-                                    Logout
+                                    {LogOut}
                                 </button>
                             </li>
                         </ul>
