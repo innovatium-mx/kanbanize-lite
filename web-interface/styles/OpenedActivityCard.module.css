@@ -25,7 +25,7 @@ div.title {
     padding-left: 2em;
     padding-right: 2em;
     overflow-wrap: break-word;
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     font-weight: 500;
 
 }
@@ -34,7 +34,7 @@ div.ownersWrap {
     display: flex;
     justify-content: space-between;
     padding-top: 1.5em;
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
 }
 
 div.owner {
@@ -143,7 +143,7 @@ div.description {
     padding-right: 2em;
     padding-top: 1em;
     overflow-wrap: break-word;
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     color: #505050;
 }
 
@@ -196,7 +196,7 @@ div.commentsWrap {
 }
 
 div.commentsText {
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     text-align: left;
 
     padding-left: 3em;
