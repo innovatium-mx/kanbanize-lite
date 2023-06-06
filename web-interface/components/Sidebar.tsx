@@ -13,11 +13,14 @@ var globalCookie = new Cookies();
 
 interface SidebarProps {
     "workspaces" : string,
-    "LogOut": string
+    "LogOut": string,
+    "confirmlogout": string,
+    "cancellogout": string,
+    "loggedout": string,
 }
 
 
-const Sidebar = ({workspaces, LogOut} : SidebarProps) => {
+const Sidebar = ({workspaces, LogOut, confirmlogout, cancellogout, loggedout} : SidebarProps) => {
 
     const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,10 +55,11 @@ const Sidebar = ({workspaces, LogOut} : SidebarProps) => {
     const handleLogout = () => {
 
         Swal.fire({
-            title: 'Confirm Logout',
+            title: confirmlogout,
             icon: 'question',
-            confirmButtonText: 'Logout',
+            confirmButtonText: LogOut,
             showCancelButton: true,
+            cancelButtonText: cancellogout,
             confirmButtonColor: '#42AD49'
         }).then((result) => {
 
@@ -83,7 +87,7 @@ const Sidebar = ({workspaces, LogOut} : SidebarProps) => {
 
                 Toast.fire({
                     icon: 'success',
-                    title: "Logged Out"
+                    title: loggedout
                 })
             }
         })
@@ -103,7 +107,7 @@ const Sidebar = ({workspaces, LogOut} : SidebarProps) => {
                 <li>
                     <button className={sidebar.button} onClick={handleLogout}>
                         <FontAwesomeIcon icon={faArrowRightFromBracket} className={sidebar.icon} />
-                        Logout
+                        {LogOut}
                     </button>
                 </li>
             </ul>

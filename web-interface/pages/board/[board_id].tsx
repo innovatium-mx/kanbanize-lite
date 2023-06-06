@@ -246,7 +246,7 @@ const Board = (props: PropsResponse) => {
             </div>
           </div>
           {<div className={dashboard.menu}>
-            <Sidebar workspaces={t('sidebar.workspaces')} LogOut={t('sidebar.logout')} />
+            <Sidebar workspaces={t('sidebar.workspaces')} LogOut={t('sidebar.logout')} confirmlogout={t('sidebar.confirmlogout')} cancellogout={t('sidebar.cancellogout')} loggedout={t('sidebar.loggedout')}/>
           </div>}
         </div>
 
