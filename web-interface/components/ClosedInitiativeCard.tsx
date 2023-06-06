@@ -40,11 +40,11 @@ const InitiativeCard = ({card_id, color, owner_avatar, title, owner_username, la
         <div>
             <div className={initCard.card}/*  onClick={()=> handleClick()} */>
                 <div className={initCard.tags}>
-                    <div>
+                    <div className={initCard.leftTags}>
                         <span className={initCard.tag}>{completeness}%</span>
                         <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
                     </div>
-                    <span className={initCard.owner}>
+                    <span>
                         {(owner_avatar !=  null &&  owner_avatar!="") ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
                     </span>
                 </div>
