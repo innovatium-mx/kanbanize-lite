@@ -83,12 +83,12 @@ const Sidebar = ({workspaces, LogOut, confirmlogout, cancellogout, loggedout} : 
                 globalCookie.remove('avatar')
                 globalCookie.remove('username')
                 globalCookie.remove('workspace')
-                router.replace({ pathname: '/' })
 
                 Toast.fire({
                     icon: 'success',
                     title: loggedout
                 })
+                router.replace({ pathname: '/' })
             }
         })
     }
