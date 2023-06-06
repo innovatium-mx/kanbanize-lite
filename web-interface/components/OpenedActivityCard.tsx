@@ -11,6 +11,7 @@ import {urlCloud, urlLocal} from '../constants';
 import { comment, OpenedActivityCardProps, Author, Attachment } from '../types/types';
 import Swal from 'sweetalert2';
 import { TailSpin } from  'react-loader-spinner'
+import Image from 'next/image';
 
 const cookieCutter= require('cookie-cutter');
 
@@ -42,7 +43,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const componentRef = useRef<any>(null);
     const [openedCardHeight, setOpenedCardHeight] = useState({height:0})
     const [scrollClass, setScrollClass] = useState(openedCard.nonScroll);
-    const [justResized, setJustResized] = useState<boolean>(false);
+    const [justResized, setJustResized] = useState<boolean>(false); 
+
 
     //change send icon to loading
     const [sending, setSending] = useState<boolean>(false);
@@ -483,7 +485,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     </div>
 
                     <div className={openedCard.commentsWrap}>
-                        <div className={openedCard.commentsText}>
+                        <div className={openedCard.commentsText} onClick={()=>{handleOpenComments()}}>
                             Comentarios
                         </div>
 
