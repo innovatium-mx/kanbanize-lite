@@ -4,7 +4,7 @@ import CardFilter from '../styles/Filter.module.css';
 import { FilterProps } from "../types/types";
 
 
-const Filter = ({users, selected, setFilter} : FilterProps) => {
+const Filter = ({users, selected, setFilter, filterSelectAll} : FilterProps) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -37,7 +37,7 @@ const Filter = ({users, selected, setFilter} : FilterProps) => {
             {
                 isOpen && (
                     <div ref={ref}>
-                        <OpenFilter  users={users} selected={selected} setFilter={setFilter}/>
+                        <OpenFilter filterSelectAll={filterSelectAll} users={users} selected={selected} setFilter={setFilter}/>
                     </div>
                 )
             }

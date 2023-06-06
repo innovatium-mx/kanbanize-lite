@@ -32,12 +32,15 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, retr
         <div>
             
             <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}} onClick={()=> handleClick()}>
-                <div className={actCard.innerContainer}>
-                <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
-                    <div className={actCard.text}>{title}</div>
-                    <div className={actCard.imageSection}>
-                        {(owner_avatar !=  null &&  owner_avatar!="") ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
+                
+                <div className={actCard.container}>
+                    <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
+                    <div className={actCard.innerContainer}>
+                        <div className={actCard.text}>{title}</div>
                     </div>
+                </div>
+                <div className={actCard.imageSection}>
+                        {(owner_avatar !=  null &&  owner_avatar!="") ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}
                 </div> 
             </div>
             <footer className={actCard.bottom} style={{backgroundColor:newColor}}></footer>

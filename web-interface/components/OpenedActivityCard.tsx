@@ -9,11 +9,14 @@ import CommentContainer from './CommentContainer';
 import axios from 'axios';
 import {urlCloud} from '../constants';
 import { comment, OpenedActivityCardProps, Author, Attachment } from '../types/types';
+import Swal from 'sweetalert2';
+import { TailSpin } from  'react-loader-spinner'
+import Image from 'next/image';
 
 const cookieCutter= require('cookie-cutter');
 
 
-const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count}: OpenedActivityCardProps) =>{
+const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, openedCardOwner, openedCardCoowner, openedCardAddComment, openedCardComments}: OpenedActivityCardProps) =>{
     const router = useRouter();
 
     const [openComments, setOpenComments] = useState<boolean>(false);
@@ -40,7 +43,11 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const componentRef = useRef<any>(null);
     const [openedCardHeight, setOpenedCardHeight] = useState({height:0})
     const [scrollClass, setScrollClass] = useState(openedCard.nonScroll);
-    const [justResized, setJustResized] = useState<boolean>(false);
+    const [justResized, setJustResized] = useState<boolean>(false); 
+
+
+    //change send icon to loading
+    const [sending, setSending] = useState<boolean>(false);
 
     const apikey = cookieCutter.get('apikey');
     const host = cookieCutter.get('host');
@@ -56,7 +63,14 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             if(tempFile.size / 1024 > 15000){
                 //e.target.value = null;
                 setHasFile(false);
-                alert("File size must not be greater than to 15MB");
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'File size must not be greater than to 15MB',
+                    showCloseButton: true
+                })
+
+
                 return;
             }
             else{
@@ -71,7 +85,14 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             }
         }
         else{
-            alert("There was an error uploading the file");
+
+            Swal.fire({
+                icon: 'error',
+                title: 'There was an error uploading the file',
+                showCloseButton: true
+            })
+
+            
             setHasFile(false);
             return;
         }
@@ -132,6 +153,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             }
         })
         .then(response => response.json())
+        .then(res => res.reverse())
         .then((data)=>{
             if(data.error){
                 //error
@@ -220,7 +242,30 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     formData, config
                 );
                 if(res.status === 200){
-                    alert(`Comment successfully sent`);
+
+                    setSending(false)
+
+                    const Toast = Swal.mixin({
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: false,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        },
+                        willClose: () => {
+                            clearInterval(1500)
+                          }
+                      })
+                      
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Comment successfully sent'
+                    })
+
+
+
+
                     const newAuthor: Author = {
                         "avatar": sessionAvatar,
                         "type" : "internal",
@@ -244,7 +289,14 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     setLocalCommentsCount(localCommentsCount+1);
                 }
                 else{
-                    alert("Something failed while sending the comment");
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Something failed while sending the comment',
+                        showCloseButton: true
+                    })
+
+
                     cookieCutter.set('apikey', '', { expires: new Date(0) })
                     cookieCutter.set('host', '', { expires: new Date(0) })
                     cookieCutter.set('email', '', { expires: new Date(0) })
@@ -263,7 +315,13 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 cookieCutter.set('userid', '', { expires: new Date(0) }) 
                 cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
-                alert("There was an error sending the comment");
+
+                  
+                Swal.fire({
+                    icon: 'error',
+                    title: 'There was an error sending the comment',
+                    showCloseButton: true
+                })
             }
             
             //sets variable that rerenders comments component
@@ -349,7 +407,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             {owner==undefined && owner_avatar==undefined && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user doesn't exis*/}
                             {owner!=null && (owner_avatar=="" || owner_avatar== null) && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
 
-                            <div>Owner</div>
+                            <div>{openedCardOwner}</div>
                         </div>
 
 
@@ -376,7 +434,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             {co_owner_usernames==null && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
                             {/*coOwners doesn't exist*/}
 
-                            {<div>Co-Owner</div>}
+                            {<div>{openedCardCoowner}</div>}
 
                         </div>
 
@@ -406,17 +464,28 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             <input type="file" id="file-input" name="file" onChange={handleChange} />
                         </div>
 
-                        <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={'Agregar comentario...'} onChange={handleNewComment} value={newComment}></input>
+                        <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={openedCardAddComment} onChange={handleNewComment} value={newComment}></input>
 
-                        <button className={openedCard.sendButton} onClick={()=>{handleSend()}}>
-                            <img src="/send/blue_send_button.png" className={openedCard.send}></img>
+                        <button className={openedCard.sendButton} onClick={()=>{handleSend(); setSending(true)}}>
+                            {sending ? <TailSpin
+                                        height="30"
+                                        width="30"
+                                        color="#2666BE"
+                                        ariaLabel="tail-spin-loading"
+                                        radius="1"
+                                        wrapperStyle={{}}
+                                        wrapperClass=""
+                                        visible={true}
+                                        />
+                                        : <img src="/send/blue_send_button.png" className={openedCard.send} />}
+                            
                         </button>    
                         
                     </div>
 
                     <div className={openedCard.commentsWrap}>
-                        <div className={openedCard.commentsText}>
-                            Comentarios
+                        <div className={openedCard.commentsText} onClick={()=>{handleOpenComments()}}>
+                            {openedCardComments}
                         </div>
 
                         <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton}>

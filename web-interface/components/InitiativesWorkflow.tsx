@@ -12,6 +12,7 @@ type InitiativesWorkflowProps = {
     workflow_name: string,
     showInitiativeModal : (value:boolean) =>void,
     updateCurrentInitiativeCard : any
+    filterSelectAll : string
 }
 
 type showButtons = {
@@ -19,7 +20,7 @@ type showButtons = {
     right: boolean
 };
 
-const InitiativesWorkflow = ({data, users, workflow_name, showInitiativeModal, updateCurrentInitiativeCard} : InitiativesWorkflowProps) =>{
+const InitiativesWorkflow = ({data, users, workflow_name, showInitiativeModal, updateCurrentInitiativeCard, filterSelectAll} : InitiativesWorkflowProps) =>{
 
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
@@ -118,7 +119,7 @@ const InitiativesWorkflow = ({data, users, workflow_name, showInitiativeModal, u
     return(
         <>
             <div style={{position: 'fixed', paddingTop:'5.6em', width:'100%', zIndex:'1'}}>
-                <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users} selected={selected} setFilter={setFilter}/>
+                <ColumnTitle filterSelectAll={filterSelectAll} name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users} selected={selected} setFilter={setFilter}/>
             </div>
         
             <div className={DynamicBoard.grid}>

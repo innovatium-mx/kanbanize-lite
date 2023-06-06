@@ -48,6 +48,7 @@
     "react-hook-form": "^7.43.9",
     "react-i18next": "^12.2.0",
     "react-intl": "^6.3.2",
+    "react-loader-spinner": "^5.3.4",
     "react-meta-tags": "^1.0.1",
     "react-modal": "^3.16.1",
     "reactstrap": "^9.1.8",

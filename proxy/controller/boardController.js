@@ -247,8 +247,8 @@ module.exports.boardDetails = async (req,res) =>{
                                     if(tempCard.co_owner_ids.length > 0){
                                         const co_owner_usernames = []
                                         const co_owner_avatars = [];
-                                        for(var x =0; x < tempCard.co_owner_ids.length; x++){
-                                            const coOwnerObject = users.find(item => item.user_id === tempCard.co_owner_ids[x])
+                                        for(var o =0; o < tempCard.co_owner_ids.length; o++){
+                                            const coOwnerObject = users.find(item => item.user_id === tempCard.co_owner_ids[o])
                                             co_owner_usernames.push(coOwnerObject.username);
                                             co_owner_avatars.push(coOwnerObject.avatar);
                                         }
@@ -262,6 +262,13 @@ module.exports.boardDetails = async (req,res) =>{
                                                 lane_color = lane.color
                                             }
                                         })
+                                    }
+                                    if(tempCard.linked_cards.length > 0){
+                                        for(var j= 0; j < tempCard.linked_cards.length; j++){
+                                            const lccardd = tempCard.linked_cards[j].card_id;                                            
+                                            const cardobject = boardCards.find(item => item.card_id === lccardd);
+                                            tempCard.linked_cards[j].title = cardobject !== undefined ? cardobject.title : 'CARD NOT FOUND IN THIS BOARD';
+                                        }
                                     }
                                     tempCard.lane_name = lane_name;
                                     tempCard.lane_color = lane_color;

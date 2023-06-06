@@ -9,9 +9,10 @@ import adjustColor from '../helpers/lightenColor';
 import { t } from 'i18next';
 import { urlCloud } from '../constants';
 import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
 
 
-const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color}: newCard) =>{
+const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color, newCardTitle, newCardDescription, newCardOwner, newCardCoowner, newCardCreate}: newCard) =>{
 
     const [showCoOwners, setShowCoOwners] = useState<boolean>(false);
 
@@ -101,10 +102,40 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                     cookieCutter.set('username', '', { expires: new Date(0) }) 
                     cookieCutter.set('workspace', '', { expires: new Date(0) })
                     router.replace({pathname: '/'});
+                    
+                    const Toast = Swal.mixin({
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: false,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                      })
+                      
+                      Toast.fire({
+                        icon: 'error',
+                        title: 'Hubo un error'
+                      })
                 }
                 else{
-                    alert("Tarjeta agregada satisfactoriamente");
-    
+                    //alert("Tarjeta agregada satisfactoriamente");
+                    
+                    const Toast = Swal.mixin({
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: false,
+                        didOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                      })
+                      
+                      Toast.fire({
+                        icon: 'success',
+                        title: 'Tarjeta agregada satisfactoriamente'
+                      })
+
                     //return to backlog
                     var co_usernames : Array<string | undefined> = [];
                     var co_avatars : Array<string | undefined> = []
@@ -131,7 +162,8 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                         description : description,
                         comment_count : 0,
                         lane_name : lane_name,
-                        lane_color: lane_color
+                        lane_color: lane_color,
+                        linked_cards: []
                       }
     
                       insertCardUpdate(tempNewCard);
@@ -218,7 +250,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                         </button>
                     </div>
 
-                    <input type="text" className={newcard.inputTitle} placeholder='Título de tarjeta' onChange={handleUpdateTitle} />
+                    <input type="text" className={newcard.inputTitle} placeholder={newCardTitle} onChange={handleUpdateTitle} />
 
                     <div className={newcard.ownersWrap}>
                         <div className={newcard.owner}>
@@ -226,7 +258,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                             {sessionAvatar!="" && sessionAvatar!=undefined && <img src={sessionAvatar} alt="owner_avatar" className={newcard.ownerPhoto}/> /*user exists and have photo*/} 
                             {sessionUsername!=null && (sessionAvatar=="" || sessionAvatar== null) && <div className={newcard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={newcard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
 
-                            <div>Owner</div>
+                            <div>{newCardOwner}</div>
                         </div>
 
                         <div className={newcard.coOwners}>
@@ -274,7 +306,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
 
 
                             <div style={{display:'flex', paddingTop:'4em'}}>
-                                CoOwner
+                                {newCardCoowner}
                                 <button className={newcard.showCoOwnersButton} onClick={()=> handleAddCoOwners()}>
                                     <FontAwesomeIcon icon={faPlus} style={{color: "#000000", height: "1em", paddingLeft:'0.4em', paddingTop:'0.2em'}} />
                                 </button>
@@ -285,10 +317,10 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                         </div>
                     </div>
 
-                    <textarea className={newcard.inputDescription} placeholder='Descripción' onChange={handleUpdateDescription}/>
+                    <textarea className={newcard.inputDescription} placeholder={newCardDescription} onChange={handleUpdateDescription}/>
 
                     <button className={newcard.createButton} onClick={()=>handleInsert()}>
-                        Crear
+                        {newCardCreate}
                     </button>
  
                </div>

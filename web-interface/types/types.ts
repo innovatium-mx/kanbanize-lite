@@ -101,7 +101,12 @@ export type newCard = {
     "applyInsertEffect" : (val: boolean) => void,
     "updateCurrentCard" : (curr:card) => void,
     "lane_name" : string,
-    "lane_color" : string
+    "lane_color" : string,
+    "newCardTitle": string,
+    "newCardDescription": string,
+    "newCardOwner": string,
+    "newCardCoowner": string,
+    "newCardCreate": string
 }
 
 export type OpenedActivityCardProps = {
@@ -114,7 +119,11 @@ export type OpenedActivityCardProps = {
     "setDisplayCard": any,
     "color": string,
     "card_id" : number,
-    "comment_count" : number
+    "comment_count" : number,
+    "openedCardOwner": string,
+    "openedCardCoowner": string,
+    "openedCardAddComment": string,
+    "openedCardComments": string,
 }
 
 export type linkedCards = {
@@ -196,7 +205,8 @@ export type ColumnTitleProps = {
     workflow_name: string,
     users: Array<user>,
     selected: Array<selection>,
-    setFilter: any
+    setFilter: any,
+    filterSelectAll: string
 }
 
 export type croppedUser = {
@@ -234,7 +244,8 @@ export type InitiativeCardProps = {
 export interface FilterProps {
     users : Array<user>,
     selected: Array<selection>,
-    setFilter: any
+    setFilter: any,
+    filterSelectAll : string
 }
 
 export interface AddCoOwners{
