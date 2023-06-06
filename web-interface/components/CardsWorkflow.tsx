@@ -19,7 +19,8 @@ type CardsWorkflowProps = {
     displayModal: any,
     moveCards: any,
     goBack : boolean,
-    applyInsertEffect : (val:boolean) => void
+    applyInsertEffect : (val:boolean) => void,
+    filterSelectAll : string
 }
 
 type showButtons = {
@@ -27,7 +28,7 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect} : CardsWorkflowProps) => {
+const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect, filterSelectAll} : CardsWorkflowProps) => {
     const router = useRouter();
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
@@ -271,7 +272,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             
 
                 <div style={{position: 'fixed', paddingTop:'5.6em', width:'100%', zIndex:'1'}}>
-                    <ColumnTitle name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users} selected={selected} setFilter={setFilter}/>
+                    <ColumnTitle filterSelectAll={filterSelectAll} name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users} selected={selected} setFilter={setFilter}/>
                 </div>
                 <div className={Dynamicboard.grid}>
                     { activities != null && activities.map((element: any) =>
