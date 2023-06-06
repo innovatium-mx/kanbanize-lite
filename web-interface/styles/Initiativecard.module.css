@@ -1,53 +1,88 @@
 .card {
-    font-family: roboto, arial;
-    position: relative;
-    color: #2e2e2f;
-    cursor: move;
-    background-color: #f9f9f9;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    margin-bottom: 1rem;
-    border: 3px solid transparent;
-    max-width: 350px;
-  }
-  
-  .card:hover {
-    box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
-  }
-  
-  .card p {
-    font-size: 15px;
-    margin: 1.2rem 0;
-  }
-  
-  .tags {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .tag {
-    border-radius: 100px;
-    padding: 0.3rem 0.8rem;
-    font-size: 0.8rem;
-    color: #ffffff;
-    background-color: #2666BE;
-    margin: 0rem 0.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-  }
-  
+  font-family: roboto, arial;
+  position: relative;
+  color: #2e2e2f;
+  cursor: move;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 0.4rem;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  margin-bottom: 1rem;
+  max-width: 32em;
+}
 
-  .line {
-    margin-top: 1rem;
-    height: 1px;
-    background: #C8C8C8;
+.card:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+}
+
+.card p {
+  font-size: 15px;
+  margin: 1.2rem 0;
+}
+
+.tags {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tag {
+  border-radius: 100px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+  color: #ffffff;
+  background-color: #2666BE;
+  margin: 0rem 0.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+
+.line {
+  margin-top: 1rem;
+  height: 1px;
+  background: #C8C8C8;
+}
+
+.leftTags {
+  display: flex;
+}
+
+
+@media screen and (max-width: 550px) {
+  .card {
+    width: 23em;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .card {
+    width: 18em;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .card {
+    width: 14em;
+  }
+
+  .tag {
+    font-size: 0.6rem;
   }
 
   .leftTags {
-    display: flex;
+    flex-direction: column;
   }
+}
+
+@media screen and (max-width: 280px) {
+  .card {
+    width: 12em;
+  }
+
+  
+
+}

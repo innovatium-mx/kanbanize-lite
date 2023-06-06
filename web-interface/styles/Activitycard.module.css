@@ -41,7 +41,7 @@ div.lane {
     z-index: 0;
     width: auto;
     font-size: 0.6em;
-    color: white;
+    color: gray;
     margin-top: 0.7em;
     margin-left: 0.7em;
     padding: 0.25em 1em;
@@ -51,9 +51,7 @@ div.lane {
     text-align: center;
     /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     overflow-wrap: break-word;
-    color: white;
     background-color: #919191;
-    padding: 0.3rem;
 }
 
 div.text {
@@ -64,7 +62,7 @@ div.text {
     padding-right: 0em;
     width: 17.5em;
     overflow-wrap: break-word;
-    z-index: 1;
+    z-index: 0;
     /* font-family:  'Roboto', helvetica, sans-serif; */
 }
 
@@ -238,11 +236,10 @@ div.imageSection {
 @media screen and (max-width: 360px) {
     div.boardCard {
         width: 14em;
-        width: 14em;
+
     }
 
     footer.bottom {
-        width: 14em;
         width: 14em;
     }
 
