@@ -2,7 +2,7 @@ import { useState , useEffect} from "react";
 import CardFilter from '../styles/Filter.module.css';
 import {selection, user, FilterProps} from '../types/types';
 
-const OpenFilter = ({users, selected, setFilter} : FilterProps) => {  
+const OpenFilter = ({users, selected, setFilter, filterSelectAll} : FilterProps) => {  
 
     const [checkedAll, setCheckedAll] = useState(false);
     const [checked, setChecked] = useState<Array<selection>>([]);
@@ -75,8 +75,8 @@ const OpenFilter = ({users, selected, setFilter} : FilterProps) => {
     return (
          <div className={CardFilter.open}>
             <div className={CardFilter.content} >
-                <div className={CardFilter.username}>
-                    Select All
+                <div className={CardFilter.selectAll}>
+                    {filterSelectAll}
                 </div>
                 <div className={CardFilter.checkbox}>
                     <input type="checkbox" value={0} checked={ checkedAll} onChange={handleCheckAllChange}/>

@@ -166,7 +166,8 @@ export type ColumnTitleProps = {
     workflow_name: string,
     users: Array<user>,
     selected: Array<selection>,
-    setFilter: any
+    setFilter: any,
+    filterSelectAll: string
 }
 
 export type croppedUser = {
@@ -202,7 +203,8 @@ export type InitiativeCardProps = {
 export interface FilterProps {
     users : Array<user>,
     selected: Array<selection>,
-    setFilter: any
+    setFilter: any,
+    filterSelectAll : string
 }
 
 export interface AddCoOwners{

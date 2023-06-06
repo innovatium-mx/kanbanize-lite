@@ -242,22 +242,22 @@ const Board = (props: PropsResponse) => {
               <Image src={"/LogoKanbanize.png"} width={64} height={36} />
             </div>
             <div className={dashboard.dropdownFragment}>
-              <InterfaceDropdown data={board} name={"WORKFLOW"} getData={getWorkflow} />
+              <InterfaceDropdown data={board} name={t('board.workflows')} getData={getWorkflow} />
             </div>
           </div>
           {<div className={dashboard.menu}>
-            <Sidebar />
+            <Sidebar workspaces={t('sidebar.workspaces')} LogOut={t('sidebar.logout')} />
           </div>}
         </div>
 
 
         <div>
           { workflow.type === 0 && 
-            <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
+            <CardsWorkflow filterSelectAll={t('filter.selectAll')} data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
           }
 
           {workflow.type === 1 &&
-            <InitiativesWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name}/>
+            <InitiativesWorkflow filterSelectAll={t('filter.selectAll')} data={workflow.columns} users={workflow.users} workflow_name={workflow.name}/>
           }
 
           

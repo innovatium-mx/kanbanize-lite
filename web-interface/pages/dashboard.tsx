@@ -101,11 +101,11 @@ const MyBoards = (props: PropsResponse) => {
             <Image src={"/LogoKanbanize.png"} width={64} height={36} />
           </div>
           <div className={dashboard.dropdownFragment}>
-            <InterfaceDropdown data={workspaces} name={"WORKSPACE"} getData={getBoards} />
+            <InterfaceDropdown data={workspaces} name={t('dashboard.workspaces')} getData={getBoards} />
           </div>
         </div>
         <div className={dashboard.menu}>
-          <Sidebar />
+          <Sidebar workspaces={t('sidebar.workspaces')} LogOut={t('sidebar.logout')}/>
         </div>
       </div>
 

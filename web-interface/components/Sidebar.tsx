@@ -8,10 +8,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import Cookies from 'universal-cookie';
+import { workSpace } from '@/types/types';
 var globalCookie = new Cookies();
 
+interface SidebarProps {
+    "workspaces" : string,
+    "LogOut": string
+}
 
-const Sidebar = () => {
+
+const Sidebar = ({workspaces, LogOut} : SidebarProps) => {
 
     const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -88,7 +94,7 @@ const Sidebar = () => {
             <ul className={sidebar.list}>
                 <li>
                     <Link href={"/dashboard"} >
-                        <span className={sidebar.workspaces}>Workspaces</span>
+                        <span className={sidebar.workspaces}>{workspaces}</span>
                     </Link>
                 </li>
                 <li>
@@ -114,7 +120,7 @@ const Sidebar = () => {
                         <ul className={sidebar.listPanel}>
                             <li>
                                 <Link href={"/dashboard"} >
-                                    <span className={sidebar.workspaces}>Workspaces</span>
+                                    <span className={sidebar.workspaces}>{workspaces}</span>
                                 </Link>
                             </li>
                             <li>
@@ -123,7 +129,7 @@ const Sidebar = () => {
                             <li>
                                 <button className={sidebar.buttonPanel} onClick={handleLogout}>
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} className={sidebar.icon} />
-                                    Logout
+                                    {LogOut}
                                 </button>
                             </li>
                         </ul>
