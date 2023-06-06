@@ -10,6 +10,8 @@ import axios from 'axios';
 import {urlCloud, urlLocal} from '../constants';
 import { comment, OpenedActivityCardProps, Author, Attachment } from '../types/types';
 import Swal from 'sweetalert2';
+import { TailSpin } from  'react-loader-spinner'
+import Image from 'next/image';
 
 const cookieCutter= require('cookie-cutter');
 
@@ -41,7 +43,11 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const componentRef = useRef<any>(null);
     const [openedCardHeight, setOpenedCardHeight] = useState({height:0})
     const [scrollClass, setScrollClass] = useState(openedCard.nonScroll);
-    const [justResized, setJustResized] = useState<boolean>(false);
+    const [justResized, setJustResized] = useState<boolean>(false); 
+
+
+    //change send icon to loading
+    const [sending, setSending] = useState<boolean>(false);
 
     const apikey = cookieCutter.get('apikey');
     const host = cookieCutter.get('host');
@@ -148,6 +154,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             }
         })
         .then(response => response.json())
+        .then(res => res.reverse())
         .then((data)=>{
             if(data.error){
                 //error
@@ -237,20 +244,27 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 );
                 if(res.status === 200){
 
+                    setSending(false)
+
                     const Toast = Swal.mixin({
                         showConfirmButton: false,
-                        timer: 1500,
+                        timer: 1000,
                         timerProgressBar: false,
                         didOpen: (toast) => {
                           toast.addEventListener('mouseenter', Swal.stopTimer)
                           toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
+                        },
+                        willClose: () => {
+                            clearInterval(1500)
+                          }
                       })
                       
                     Toast.fire({
                         icon: 'success',
                         title: 'Comment successfully sent'
                     })
+
+
 
 
                     const newAuthor: Author = {
@@ -453,14 +467,25 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                         <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={openedCardAddComment} onChange={handleNewComment} value={newComment}></input>
 
-                        <button className={openedCard.sendButton} onClick={()=>{handleSend()}}>
-                            <img src="/send/blue_send_button.png" className={openedCard.send}></img>
+                        <button className={openedCard.sendButton} onClick={()=>{handleSend(); setSending(true)}}>
+                            {sending ? <TailSpin
+                                        height="30"
+                                        width="30"
+                                        color="#2666BE"
+                                        ariaLabel="tail-spin-loading"
+                                        radius="1"
+                                        wrapperStyle={{}}
+                                        wrapperClass=""
+                                        visible={true}
+                                        />
+                                        : <img src="/send/blue_send_button.png" className={openedCard.send} />}
+                            
                         </button>    
                         
                     </div>
 
                     <div className={openedCard.commentsWrap}>
-                        <div className={openedCard.commentsText}>
+                        <div className={openedCard.commentsText} onClick={()=>{handleOpenComments()}}>
                             {openedCardComments}
                         </div>
 
