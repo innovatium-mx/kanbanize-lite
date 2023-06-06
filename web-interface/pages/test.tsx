@@ -24,7 +24,7 @@ const test = () =>{
 
             {}
 
-            <InitCard card_id={345} color={"#d59beb"} owner_avatar={null} title={"Test Initiative Card"} owner_username={"Georgees"} retrieveIndex={undefined} displayModal={undefined} lane_name={"This is a very long lane name"} lane_color={"e81c1c"} child_complete={5} child_total={20} />
+            {/* <InitCard card_id={345} color={"#d59beb"} owner_avatar={null} title={"Test Initiative Card"} owner_username={"Georgees"} retrieveIndex={undefined} displayModal={undefined} lane_name={"This is a very long lane name"} lane_color={"e81c1c"} child_complete={5} child_total={20} /> */}
 
         </>
     )
