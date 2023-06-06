@@ -14,6 +14,7 @@ import Cookies from 'cookies';
 import {useRouter} from 'next/router';
 import { workflow, card, user, selection, } from '@/types/types';
 import NewCardComponent from '../../components/NewCardComponent';
+import OpenedInitiativeCard from '../../components/OpenedInitiativeCard';
 const cookieCutter= require('cookie-cutter');
 
 import Image from 'next/image';
@@ -49,7 +50,10 @@ const Board = (props: PropsResponse) => {
   const OpenedActivityCard = dynamic(import('../../components/OpenedActivityCard'), { ssr: false });
 
   const [currentCard, setCurrentCard] = useState<card>()
+  const [currentInitiativeCard, setCurrentInitiativeCard] = useState<card>();
+
   const [displayCard, setDisplayCard] = useState<boolean>(false);
+  const [displayInitiativeCard, setDisplayInitiativeCard] = useState<boolean>(false);
   const [retrievedWorkflow, setRetrievedWorflow] = useState<boolean>(false);
   const [resetIndex, setResetIndex] = useState<number>(0);
   
@@ -62,20 +66,6 @@ const Board = (props: PropsResponse) => {
   const [pageWidth, setPageWidth] = useState<{width: number;}>({width:0})
 
   const userId = cookieCutter.get('userid');
-
-  useLayoutEffect(()=>{
-    if(pageRef.current){
-      setPageWidth({width : pageRef.current.clientWidth})
-      console.log(pageWidth.width)
-    }
-  },[])
-
-  useLayoutEffect(()=>{
-    if(pageWidth.width < 810){
-      pageRef.current?.scrollIntoView({behavior: 'smooth'});
-    }
-  })
-
 
   const activateInsertCard = (param: boolean) =>{
     setInsertCard(param);
@@ -142,7 +132,9 @@ const Board = (props: PropsResponse) => {
     setResetIndex(0);
   }
 
-
+  const updateCurrentInitiativeCard = (curr: card) =>{
+    setCurrentInitiativeCard(curr);
+  }
 
 
   const updateCurrentCard = (curr: card) =>{
@@ -187,6 +179,10 @@ const Board = (props: PropsResponse) => {
     setDisplayCard(value);
   }
 
+  const showInitiativeModal = (value: boolean) =>{
+    setDisplayInitiativeCard(value);
+  }
+
   const [newUsers, setNewUsers] = useState<Array<user>>([]);
   const [selected, setSelected] = useState<Array<selection>>([]);
 
@@ -227,6 +223,11 @@ const Board = (props: PropsResponse) => {
           {displayCard && currentCard!=undefined && <OpenedActivityCard openedCardOwner={t('openedCard.owner')} openedCardCoowner={t('openedCard.co-owner')} openedCardAddComment={t('openedCard.addComment')} openedCardComments={t('openedCard.comments')} title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
       
       </div>
+
+      <div className={dashboard.modalWrap}>
+        {displayInitiativeCard && currentInitiativeCard !=undefined && <OpenedInitiativeCard title={currentInitiativeCard.title} owner={currentInitiativeCard.owner_username} owner_avatar={currentInitiativeCard.owner_avatar} co_owner_usernames={currentInitiativeCard.co_owner_usernames} co_owner_avatars={currentInitiativeCard.co_owner_avatars} description={currentInitiativeCard.description} setDisplayCard={setDisplayInitiativeCard} color={currentInitiativeCard.color} card_id={currentInitiativeCard.card_id} comment_count={currentInitiativeCard.comment_count} linked_cards={currentInitiativeCard.linked_cards}/>}
+      </div>
+
       
       <div className={dashboard.modalWrap}>
 
@@ -257,15 +258,10 @@ const Board = (props: PropsResponse) => {
           }
 
           {workflow.type === 1 &&
-            <InitiativesWorkflow filterSelectAll={t('filter.selectAll')} data={workflow.columns} users={workflow.users} workflow_name={workflow.name}/>
+            <InitiativesWorkflow filterSelectAll={t('filter.selectAll')} data={workflow.columns} users={workflow.users} workflow_name={workflow.name} showInitiativeModal = {showInitiativeModal} updateCurrentInitiativeCard = {updateCurrentInitiativeCard}/>
           }
 
-          
         </div>
-
-
-
-
       </div>
 
 

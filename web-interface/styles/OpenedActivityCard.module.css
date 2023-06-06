@@ -237,7 +237,15 @@ div.commentsContainer {
     display: var(--comments-display-);
     overflow: scroll;
     overflow-x: hidden;
+}
 
+div.activitiesContainer{
+    margin-top: 1em;
+    height: 10.5em;
+    align-self: center;
+    display: var(--activities-display-);
+    overflow: scroll;
+    overflow-x: hidden;
 }
 
 div.cameraIcon {
@@ -282,7 +290,7 @@ img.preview {
 div.scroll {
     height: var(--dynamic-opened-card-height-);
     /* height: 40em; */
-    overflow-y: scroll;
+    overflow-y: var(--dynamic-scroll-);
     overflow-x: hidden;
 }
 

@@ -162,7 +162,8 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                         description : description,
                         comment_count : 0,
                         lane_name : lane_name,
-                        lane_color: lane_color
+                        lane_color: lane_color,
+                        linked_cards: []
                       }
     
                       insertCardUpdate(tempNewCard);
