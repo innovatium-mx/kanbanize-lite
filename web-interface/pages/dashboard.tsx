@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import authRoute from '../components/authRoute';
 import dynamic from 'next/dynamic';
 import Dashboard from '../components/Dashboard'
-import type { boardCard } from '../components/Dashboard';
+import { boardCard } from '../types/types';
 import { urlCloud } from '../constants'
 import dashboard from '../styles/Dashboards.module.css';
 import Image from 'next/image';
@@ -114,7 +114,7 @@ const MyBoards = (props: PropsResponse) => {
         {<div className={dashboard.title} style={{paddingTop:'2em'}}>{workspaceName}</div>}
 
         {boards !== null && boards !== undefined && boards.map((element: any, index) =>
-          <Dashboard key={element.key} board_id={element.board_id} workspace_id={element.workspace_id} is_archived={element.is_archived} name={element.name} description={element.description} index={index} />
+          <Dashboard key={element.key} board_id={element.board_id} name={element.name} description={element.description} index={index} />
         )}
 
       </div>

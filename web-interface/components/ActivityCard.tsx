@@ -1,18 +1,6 @@
 import actCard from '../styles/Activitycard.module.css';
 import adjustColor from '../helpers/lightenColor';
-
-
-export type ActivityCardProps = {
-    "card_id": number,
-    "color": string,
-    "owner_avatar": string | null,
-    "title": string, 
-    "owner_username": string | null,
-    "retrieveIndex" : any,
-    "displayModal": any,
-    "lane_name": string,
-    "lane_color": string
-}
+import { ActivityCardProps } from '../types/types';
 
 
 const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, retrieveIndex, displayModal, lane_name, lane_color} : ActivityCardProps) =>{

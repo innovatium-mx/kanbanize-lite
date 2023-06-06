@@ -4,6 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import type { GetServerSideProps } from 'next'
 import authRoute from '../../components/authRoute';
 import CardsWorkflow from '../../components/CardsWorkflow';
+import InitiativesWorkflow from '../../components/InitiativesWorkflow';
 import FloatButton from '../../components/FloatButton';
 import {useEffect, useState, useRef, useLayoutEffect} from "react";
 import dynamic from 'next/dynamic';
@@ -31,35 +32,7 @@ type Props = {}
     localeDetection?: false
     locales: string[]
   }
-
-type parent_columns = {
-  parent_id: number,
-  parent_name: string,
-  parent_section: number,
-  parent_position: number,
-}
-
-type column = {
-  "column_id": number,
-  "workflow_id": number,
-  "section": number,
-  "parent_column_id": Array<parent_columns> | null,
-  "position": number,
-  "name": string,
-  "description": string,
-  "color": string,
-  "limit": number,
-  "cards_per_row": number,
-  "flow_type": number,
-  "card_ordering": string | null,
-  "cards": Array<card>,
-  "order": number
-}
-
-
-
-
-
+  
 interface PropsResponse {
   data: Array<workflow>
   _nextI18Next: NextJsI18NConfig
@@ -243,6 +216,8 @@ const Board = (props: PropsResponse) => {
     setSelected(newSelected);
   }
 
+  console.log(workflow);
+
   return (
     <>
     
@@ -281,20 +256,25 @@ const Board = (props: PropsResponse) => {
             <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
           }
 
-          {/*workflow.type === 1 &&
-            <CardsWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards} />
-        */}
-
-          {
-            workflow.type === 0 && 
-            <FloatButton activateInsertCard={activateInsertCard}/>
+          {workflow.type === 1 &&
+            <InitiativesWorkflow data={workflow.columns} users={workflow.users} workflow_name={workflow.name}/>
           }
+
+          
         </div>
+
+
+
 
       </div>
 
 
     </div>
+
+          {
+            workflow.type === 0 && 
+            <FloatButton activateInsertCard={activateInsertCard}/>
+          }
 
     </>
 

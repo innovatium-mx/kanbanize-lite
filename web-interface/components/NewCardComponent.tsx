@@ -198,7 +198,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
         for(var x = 0; x < alteredSelected.length; x++){
             //coOwner[x] existance
 
-            if(alteredSelected!=null && avatars[x]!=undefined && (avatars[x].avatar===undefined || avatars[x].avatar==="")){ // coOwners exist, but don't have avatar
+            if(alteredSelected!=null && avatars[x]!=undefined && (avatars[x].avatar===undefined || avatars[x].avatar==="" || avatars[x].avatar===null)){ // coOwners exist, but don't have avatar
                 letterCo[x]=users.find(item => item.user_id === avatars[x].user_id)?.username.charAt(0); 
                 letterCoBg[x]=adjustColor(color, 500*(x+0.7)/10);
             }   

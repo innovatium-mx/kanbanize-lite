@@ -52,6 +52,18 @@ export type parent_columns = {
     parent_position: number,
 } 
 
+export type ActivityCardProps = {
+    "card_id": number,
+    "color": string,
+    "owner_avatar": string | null,
+    "title": string, 
+    "owner_username": string | null,
+    "retrieveIndex" : any,
+    "displayModal": any,
+    "lane_name": string,
+    "lane_color": string
+}
+
 export type workSpace ={
     "workspace_id": number,
     "type": number,
@@ -88,6 +100,75 @@ export type newCard = {
     "lane_color" : string
 }
 
+export type OpenedActivityCardProps = {
+    "title" : string,
+    "owner" : string | undefined,
+    "owner_avatar" : string | null,
+    "co_owner_usernames"  : Array<string | undefined> | null,
+    "co_owner_avatars" : Array<string | undefined> | null,
+    "description": string,
+    "setDisplayCard": any,
+    "color": string,
+    "card_id" : number,
+    "comment_count" : number
+}
+
+export type Author = {
+    "type" : string,
+    "value" : number,
+    "avatar" : string | null,
+    "username" : string | undefined
+}
+
+export type Attachment = {
+    "id": number,
+    "file_name": string,
+    "link": string
+}
+
+export type comment = {
+    "text": string,
+    "last_modified": string,
+    "author": Author,
+    "attachments" : Array<Attachment>
+}
+
+export type CommentProps = {
+    "text" : string,
+    "last_modified" : string,
+    "avatar" : string | null,
+    "color" : string,
+    "username" : string | undefined,
+    "attachments" : Array<Attachment>
+}
+
+export type CommentContainerProps = {
+    "commentsArray" : Array<comment | null>,
+    "justSent" : string,
+    "arrowDown" : any,
+    "color" : string
+}
+
+export type boardCard = {
+    "board_id": number,
+    "name": string, 
+    "description": string,
+    "index": number
+}
+
+export type ColumnTitleProps = {
+    name: string,
+    left: boolean,
+    right: boolean,
+    color: string,
+    returnResponse: any,
+    parent_column_id: Array<parent_columns> | null,
+    workflow_name: string,
+    users: Array<user>,
+    selected: Array<selection>,
+    setFilter: any
+}
+
 export type croppedUser = {
     "user_id" : number,
     "avatar" : string | undefined,
@@ -106,6 +187,18 @@ export type user = {
     avatar: string
 }
 
+export type InitiativeCardProps = {
+    "card_id": number,
+    "color": string,
+    "owner_avatar": string | null,
+    "title": string, 
+    "owner_username": string | undefined,
+    "lane_name": string,
+    "lane_color": string
+    "child_complete": number,
+    "child_total": number
+}
+
 export interface FilterProps {
     users : Array<user>,
     selected: Array<selection>,
@@ -118,4 +211,30 @@ export interface AddCoOwners{
     setNewSelection: any,
     updateAvatars : any,
     avatarsList: Array<croppedUser>
+}
+
+export interface DropdownProps {
+    data : Array<workSpace | workflow>
+    getData : any
+    name : string
+}
+
+export type NextJsI18NConfig = {
+    defaultLocale: string
+    domains?: {
+      defaultLocale: string
+      domain: string
+      http?: true
+      locales?: string[]
+    }[]
+    localeDetection?: false
+    locales: string[]
+  }
+
+export interface NavBarData {
+    workspace_id: number,
+    type: number,
+    is_archived: number,
+    name: string,
+    boards: Array<boardCard> | null
 }
