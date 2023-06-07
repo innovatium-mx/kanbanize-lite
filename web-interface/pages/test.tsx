@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import NewCardComponent from "../components/NewCardComponent";
 
 
+
 const test = () =>{
 
     const ActivityCard = dynamic(import('../components/ActivityCard'),{ssr:false});

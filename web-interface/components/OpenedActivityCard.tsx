@@ -485,8 +485,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     </div>
 
                     <div className={openedCard.commentsWrap}>
-                        <div className={openedCard.commentsText} onClick={()=>{handleOpenComments()}}>
-                            {openedCardComments}
+                        <div className={openedCard.commentsText}>
+                            Comentarios
                         </div>
 
                         <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton}>

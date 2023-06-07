@@ -18,6 +18,7 @@ const cookieCutter= require('cookie-cutter');
 
 import Image from 'next/image';
 import Sidebar from '../../components/Sidebar';
+import Link from 'next/link';
 
 type Props = {}
 
@@ -239,7 +240,9 @@ const Board = (props: PropsResponse) => {
         <div className={dashboard.topBar} style={{position: 'fixed', zIndex:'2'}}>
           <div className={dashboard.left}>
             <div>
-              <Image src={"/LogoKanbanize.png"} width={64} height={36} />
+              <Link href={'/dashboard'}>
+                <Image src={"/logo.svg"} width={64} height={36} />
+              </Link>
             </div>
             <div className={dashboard.dropdownFragment}>
               <InterfaceDropdown data={board} name={t('board.workflows')} getData={getWorkflow} />
