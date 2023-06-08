@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 
 
-const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color, newCardTitle, newCardDescription, newCardOwner, newCardCoowner, newCardCreate}: newCard) =>{
+const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color, newCardTitle, newCardDescription, newCardOwner, newCardCoowner, newCardCreate, msgError, msgSuccess}: newCard) =>{
 
     const [showCoOwners, setShowCoOwners] = useState<boolean>(false);
 
@@ -115,7 +115,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                       
                       Toast.fire({
                         icon: 'error',
-                        title: 'Hubo un error'
+                        title: msgError
                       })
                 }
                 else{
@@ -133,7 +133,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                       
                       Toast.fire({
                         icon: 'success',
-                        title: 'Tarjeta agregada satisfactoriamente'
+                        title: msgSuccess
                       })
 
                     //return to backlog

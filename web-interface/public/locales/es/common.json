@@ -27,5 +27,12 @@
     "newCard.description": "Descripción",
     "newCard.owner": "Propietario",
     "newCard.co-owner": "Copropietarios",
-    "newCard.create": "Crear"
+    "newCard.create": "Crear",
+    "alertCreate.error1": "Algo salió mal",
+    "alertCreate.success": "Tarjeta creada exitosamente",
+    "alertComment.error1" : "El archivo debe ser menor a 15MB",
+    "alertComment.error2" : "Hubo un error subiendo el archivo",
+    "alertComment.error3" : "Algo salió mal, no se envió el comentario",
+    "alertComment.error4" : "Hubo un error enviando el comentario",
+    "alertComment.success" : "Comentado enviado satisfactoriamente"
 }

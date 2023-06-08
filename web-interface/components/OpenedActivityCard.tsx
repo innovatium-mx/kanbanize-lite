@@ -16,7 +16,7 @@ import Image from 'next/image';
 const cookieCutter= require('cookie-cutter');
 
 
-const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, openedCardOwner, openedCardCoowner, openedCardAddComment, openedCardComments}: OpenedActivityCardProps) =>{
+const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, openedCardOwner, openedCardCoowner, openedCardAddComment, openedCardComments, msgError1, msgError2, msgError3, msgError4, msgSuccess}: OpenedActivityCardProps) =>{
     const router = useRouter();
 
     const [openComments, setOpenComments] = useState<boolean>(false);
@@ -67,7 +67,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                 Swal.fire({
                     icon: 'warning',
-                    title: 'File size must not be greater than to 15MB',
+                    title: msgError1,
                     showCloseButton: true
                 })
 
@@ -89,7 +89,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
             Swal.fire({
                 icon: 'error',
-                title: 'There was an error uploading the file',
+                title: msgError2,
                 showCloseButton: true
             })
 
@@ -261,7 +261,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                       
                     Toast.fire({
                         icon: 'success',
-                        title: 'Comment successfully sent'
+                        title: msgSuccess
                     })
 
 
@@ -293,7 +293,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                     Swal.fire({
                         icon: 'error',
-                        title: 'Something failed while sending the comment',
+                        title: msgError3,
                         showCloseButton: true
                     })
 
@@ -320,7 +320,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                   
                 Swal.fire({
                     icon: 'error',
-                    title: 'There was an error sending the comment',
+                    title: msgError4,
                     showCloseButton: true
                 })
             }

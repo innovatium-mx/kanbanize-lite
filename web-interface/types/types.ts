@@ -102,7 +102,9 @@ export type newCard = {
     "newCardDescription": string,
     "newCardOwner": string,
     "newCardCoowner": string,
-    "newCardCreate": string
+    "newCardCreate": string, 
+    "msgSuccess" : string, 
+    "msgError" : string
 }
 
 export type OpenedActivityCardProps = {
@@ -120,6 +122,11 @@ export type OpenedActivityCardProps = {
     "openedCardCoowner": string,
     "openedCardAddComment": string,
     "openedCardComments": string,
+    "msgError1": string,
+    "msgError2" : string,
+    "msgError3" : string,
+    "msgError4" : string,
+    "msgSuccess" : string
 }
 
 export type Author = {

@@ -225,13 +225,13 @@ const Board = (props: PropsResponse) => {
     <div className={dashboard.pageWrap} ref={pageRef}>
       <div className={dashboard.modalWrap}>
 
-          {displayCard && currentCard!=undefined && <OpenedActivityCard openedCardOwner={t('openedCard.owner')} openedCardCoowner={t('openedCard.co-owner')} openedCardAddComment={t('openedCard.addComment')} openedCardComments={t('openedCard.comments')} title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
+          {displayCard && currentCard!=undefined && <OpenedActivityCard openedCardOwner={t('openedCard.owner')} openedCardCoowner={t('openedCard.co-owner')} openedCardAddComment={t('openedCard.addComment')} openedCardComments={t('openedCard.comments')} title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count} msgError1={t('alertComment.error1')} msgError2={'alertComment.error2'} msgError3={'alertCommen.error3'} msgError4={'alertComment.error4'} msgSuccess={'alertComment.success'}/>}
       
       </div>
       
       <div className={dashboard.modalWrap}>
 
-        {insertCard && <NewCardComponent newCardTitle={t('newCard.title')} newCardDescription={t('newCard.description')} newCardOwner={t('newCard.owner')} newCardCoowner={t('newCard.co-owner')} newCardCreate={t('newCard.create')} users={newUsers} activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected} position={newCardPosition} insertCardUpdate={insertCardUpdate} applyInsertEffect={applyInsertEffect} updateCurrentCard={updateCurrentCard} lane_name={workflow.lanes[0].name} lane_color={workflow.lanes[0].color}/>}
+        {insertCard && <NewCardComponent newCardTitle={t('newCard.title')} newCardDescription={t('newCard.description')} newCardOwner={t('newCard.owner')} newCardCoowner={t('newCard.co-owner')} newCardCreate={t('newCard.create')}  users={newUsers} activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.workflow_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected} position={newCardPosition} insertCardUpdate={insertCardUpdate} applyInsertEffect={applyInsertEffect} updateCurrentCard={updateCurrentCard} lane_name={workflow.lanes[0].name} lane_color={workflow.lanes[0].color} msgError={t('alertCreate.error1')} msgSuccess={t('alertCreate.success')}/>}
 
       </div>
 
@@ -253,7 +253,6 @@ const Board = (props: PropsResponse) => {
           </div>}
         </div>
 
-
         <div>
           { workflow.type === 0 && 
             <CardsWorkflow filterSelectAll={t('filter.selectAll')} data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
@@ -263,14 +262,9 @@ const Board = (props: PropsResponse) => {
             <InitiativesWorkflow filterSelectAll={t('filter.selectAll')} data={workflow.columns} users={workflow.users} workflow_name={workflow.name}/>
           }
 
-          
         </div>
 
-
-
-
       </div>
-
 
     </div>
 
