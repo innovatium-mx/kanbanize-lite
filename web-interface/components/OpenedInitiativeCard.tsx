@@ -13,7 +13,7 @@ import {urlCloud} from '../constants';
 const cookieCutter= require('cookie-cutter');
 
 
-const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, linked_cards}: OpenedInitiativeCardProps) =>{
+const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, linked_cards, openedCardOwner, openedCardComments, openedCardAddComment, openedCardCoowner, openedCardActivities}: OpenedInitiativeCardProps) =>{
 
     const router = useRouter();
 
@@ -101,25 +101,11 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
     },[])
 
     useLayoutEffect(()=>{
-        console.log(openedCardHeight.height);
-        console.log( windowHeight.current[0])
-
         if((openedCardHeight.height > windowHeight.current[0]) && justResized == false){
                 setScrollClass(openedCard.scroll)
-
                 document.documentElement.style.setProperty('--dynamic-opened-card-height-', (windowHeight.current[0]-50).toString() + 'px');
                 document.documentElement.style.setProperty('--dynamic-scroll-', 'scroll');
-
-
             setJustResized(true);
-        }
-        else if(justResized && scrollClass==openedCard.nonScroll){
-            //setJustResized(false);
-            setScrollClass(openedCard.nonScroll)
-            document.documentElement.style.setProperty('--dynamic-scroll-', 'hidden');
-        }
-        else{
-            document.documentElement.style.setProperty('--dynamic-scroll-', 'hidden');
         }
     })
 
@@ -393,7 +379,7 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
                                 {owner==undefined && owner_avatar==undefined && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user doesn't exis*/}
                                 {owner!=null && (owner_avatar=="" || owner_avatar== null) && <div className={openedCard.ownerPhoto} style={{backgroundColor:letterBackground}}><div className={openedCard.letter}>{letter}</div></div> /*user exists, but doesn't have photo*/}
 
-                                <div>Owner</div>
+                                <div>{openedCardOwner}</div>
                             </div>
 
 
@@ -420,7 +406,7 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
                                 {co_owner_usernames==null && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
                                 {/*coOwners doesn't exist*/}
 
-                                {<div>Co-Owner</div>}
+                                {<div  style={{paddingTop:'4em'}}>{openedCardCoowner}</div>}
 
                             </div>
 
@@ -450,7 +436,7 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
                                 <input type="file" id="file-input" name="file" onChange={handleChange} />
                             </div>
 
-                            <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={'Agregar comentario...'} onChange={handleNewComment} value={newComment}></input>
+                            <input type="text" className={openedCard.inputComment} name = 'addComment' placeholder={openedCardAddComment} onChange={handleNewComment} value={newComment}></input>
 
                             <button className={openedCard.sendButton} onClick={()=>{handleSend()}}>
                                 <img src="/send/blue_send_button.png" className={openedCard.send}></img>
@@ -458,9 +444,11 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
                             
                         </div>
 
+                        <div className={openedCard.line}></div>
+
                         <div className={openedCard.commentsWrap}>
                             <div className={openedCard.commentsText}>
-                                Comentarios
+                                {openedCardComments} <span style={{fontWeight:'600'}}> {"(" + localCommentsCount + ")"} </span>
                             </div>
 
                             <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton}>
@@ -470,12 +458,14 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
 
                         <CommentContainer commentsArray={commentsArray} justSent={justSent} arrowDown={arrowDown} color={color}/>
 
+                        <div className={openedCard.line}></div>
+
                         <div className={openedCard.commentsWrap}>
                             <div className={openedCard.commentsText}>
-                                Actividades
+                                {openedCardActivities} <span style={{fontWeight:'600'}}> {"(" + linked_cards.length + ")"} </span>
                             </div>
 
-                            <button onClick={()=>{handleOpenActivities()}} className={openedCard.arrowButton}>
+                            <button onClick={()=>{handleOpenActivities()}} className={openedCard.arrowButton}  style={{marginLeft:'0.5em'}}>
                                 <FontAwesomeIcon icon={faChevronDown} className={initiativeArrowDown}/>
                             </button>
                         </div>

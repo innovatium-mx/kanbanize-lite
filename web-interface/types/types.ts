@@ -145,7 +145,12 @@ export type OpenedInitiativeCardProps = {
     "color": string,
     "card_id" : number,
     "comment_count" : number,
-    "linked_cards" : Array<linkedCards>
+    "linked_cards" : Array<linkedCards>,
+    "openedCardOwner": string,
+    "openedCardCoowner": string,
+    "openedCardAddComment": string,
+    "openedCardComments": string,
+    "openedCardActivities" : string
 }
 
 

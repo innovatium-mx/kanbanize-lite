@@ -119,12 +119,9 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 setScrollClass(openedCard.scroll)
                 if (typeof window !== 'undefined') {
                     document.documentElement.style.setProperty('--dynamic-opened-card-height-', (windowHeight.current[0]-50).toString() + 'px');
+                    document.documentElement.style.setProperty('--dynamic-scroll-', 'scroll');
                 }
             setJustResized(true);
-        }
-        else if(justResized && scrollClass==openedCard.nonScroll){
-            //setJustResized(false);
-            setScrollClass(openedCard.nonScroll)
         }
     })
 
@@ -203,6 +200,10 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 }
                 //renders comments component only if comments array isn't empty
                 setIsExpanded('block');
+            }
+            else{
+                setIsExpanded('none');
+                setArrowDown(openedCard.nonRotated);
             }
                 
         }
@@ -434,7 +435,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             {co_owner_usernames==null && <div className={openedCard.image3} style={{backgroundColor:currCoBg3}}><div className={openedCard.letter}>{letterCo[2]}</div></div>}
                             {/*coOwners doesn't exist*/}
 
-                            {<div>{openedCardCoowner}</div>}
+                            {<div style={{paddingTop:'4em'}}>{openedCardCoowner}</div>}
 
                         </div>
 
@@ -483,13 +484,16 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                         
                     </div>
 
+                    <div className={openedCard.line}></div>
+
+
                     <div className={openedCard.commentsWrap}>
                         <div className={openedCard.commentsText} onClick={()=>{handleOpenComments()}}>
-                            {openedCardComments}
+                            {openedCardComments} <span style={{fontWeight:'600'}}> {"(" + localCommentsCount + ")"} </span>
                         </div>
 
-                        <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton}>
-                            <FontAwesomeIcon icon={faChevronDown} className={arrowDown}/>
+                        <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton} style={{marginLeft:'5em'}}>
+                            <FontAwesomeIcon icon={faChevronDown} className={arrowDown} />
                         </button>
                     </div>
 
