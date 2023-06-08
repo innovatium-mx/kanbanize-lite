@@ -225,7 +225,7 @@ const Board = (props: PropsResponse) => {
       </div>
 
       <div className={dashboard.modalWrap}>
-        {displayInitiativeCard && currentInitiativeCard !=undefined && <OpenedInitiativeCard title={currentInitiativeCard.title} owner={currentInitiativeCard.owner_username} owner_avatar={currentInitiativeCard.owner_avatar} co_owner_usernames={currentInitiativeCard.co_owner_usernames} co_owner_avatars={currentInitiativeCard.co_owner_avatars} description={currentInitiativeCard.description} setDisplayCard={setDisplayInitiativeCard} color={currentInitiativeCard.color} card_id={currentInitiativeCard.card_id} comment_count={currentInitiativeCard.comment_count} linked_cards={currentInitiativeCard.linked_cards}/>}
+        {displayInitiativeCard && currentInitiativeCard !=undefined && <OpenedInitiativeCard  openedCardOwner={t('openedCard.owner')} openedCardCoowner={t('openedCard.co-owner')} openedCardAddComment={t('openedCard.addComment')} openedCardComments={t('openedCard.comments')} openedCardActivities={t('openedCard.activities')}  title={currentInitiativeCard.title} owner={currentInitiativeCard.owner_username} owner_avatar={currentInitiativeCard.owner_avatar} co_owner_usernames={currentInitiativeCard.co_owner_usernames} co_owner_avatars={currentInitiativeCard.co_owner_avatars} description={currentInitiativeCard.description} setDisplayCard={setDisplayInitiativeCard} color={currentInitiativeCard.color} card_id={currentInitiativeCard.card_id} comment_count={currentInitiativeCard.comment_count} linked_cards={currentInitiativeCard.linked_cards}/>}
       </div>
 
       

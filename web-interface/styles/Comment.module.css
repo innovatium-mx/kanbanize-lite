@@ -58,3 +58,17 @@ div.attachments {
     font-weight: 400;
     padding-bottom: 1em;
 }
+
+@media screen and (max-width: 380px) {
+    div.comment{
+        width: 18em;
+    }
+
+    div.text{
+        font-size: 90%;
+    }
+
+    span.time{
+        font-size: 90%;
+    }
+}

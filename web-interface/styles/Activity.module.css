@@ -32,3 +32,34 @@ div.title{
     padding-bottom: 1em;
 
 }
+
+@media screen and (max-width: 380px) {
+    div.activity{
+        width: 17em;
+    }
+
+    div.idContainer{
+        font-size: 0.5em;
+    }
+
+    div.title{
+        width: 15em;
+    }
+
+}
+
+
+@media screen and (max-width: 300px) {
+    div.activity{
+        width: 15em;
+    }
+
+    div.idContainer{
+        font-size: 0.4em;
+    }
+
+    div.title{
+        width: 13em;
+    }
+
+}
