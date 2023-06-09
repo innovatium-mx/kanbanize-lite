@@ -13,6 +13,7 @@ import Image from 'next/image';
 
 import Cookies from 'cookies'
 import Sidebar from '../components/Sidebar';
+import Link from 'next/link';
 
 //import Navbar from '../components/Navbar';
 const cookieCutter = require('cookie-cutter');
@@ -98,7 +99,9 @@ const MyBoards = (props: PropsResponse) => {
       <div className={dashboard.topBar} style={{position:'fixed', zIndex:'2'}}>
         <div className={dashboard.left}>
           <div>
-            <Image src={"/LogoKanbanize.png"} width={64} height={36} />
+            <Link href={'/dashboard'}>
+              <Image src={"/logo.svg"} width={64} height={36} />
+            </Link>
           </div>
           <div className={dashboard.dropdownFragment}>
             <InterfaceDropdown data={workspaces} name={t('dashboard.workspaces')} getData={getBoards} />

@@ -28,5 +28,6 @@
     "newCard.description": "Descripción",
     "newCard.owner": "Propietario",
     "newCard.co-owner": "Copropietarios",
-    "newCard.create": "Crear"
+    "newCard.create": "Crear",
+    "msgLoader": "Cargando..."
 }
