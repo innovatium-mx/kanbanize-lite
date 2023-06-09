@@ -311,6 +311,7 @@ div.nonScroll {
 
 button.arrowButton {
     margin-top: 0.8em;
+    margin-top: 0rem;
     border: none;
     background-color: white;
     height: 2em;
