@@ -10,6 +10,8 @@ type InitiativesWorkflowProps = {
     data: Array<column>,
     users: Array<user>,
     workflow_name: string,
+    showInitiativeModal : (value:boolean) =>void,
+    updateCurrentInitiativeCard : any
     filterSelectAll : string
 }
 
@@ -18,7 +20,7 @@ type showButtons = {
     right: boolean
 };
 
-const InitiativesWorkflow = ({data, users, workflow_name, filterSelectAll} : InitiativesWorkflowProps) =>{
+const InitiativesWorkflow = ({data, users, workflow_name, showInitiativeModal, updateCurrentInitiativeCard, filterSelectAll} : InitiativesWorkflowProps) =>{
 
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
@@ -26,6 +28,7 @@ const InitiativesWorkflow = ({data, users, workflow_name, filterSelectAll} : Ini
     const [filtered, setFiltered] = useState<Array<card> | null>([]);
     const [selected, setSelected] = useState<Array<selection>>([]);
     const [initiatives, setInitiatives] = useState<Array<card> | null>([]);
+    const [initiativeIndex, setInitiativeIndex] = useState<number>();
 
 
     useEffect(() => {
@@ -106,6 +109,12 @@ const InitiativesWorkflow = ({data, users, workflow_name, filterSelectAll} : Ini
         }
     };
 
+    const retrieveIndex = (cardIndex: number) =>{
+        setInitiativeIndex(cardIndex);
+        const curr = initiatives!=null ? initiatives.find(item => item.card_id === cardIndex) : [];
+
+        updateCurrentInitiativeCard(curr);
+    }
 
     return(
         <>
@@ -118,7 +127,7 @@ const InitiativesWorkflow = ({data, users, workflow_name, filterSelectAll} : Ini
                     initiatives!=null && initiatives.map((element:any)=>
                     <div className={DynamicBoard.cardContainer} key={element.key}>
                         <div className={DynamicBoard.buttons} />
-                        <ClosedInitiativeCard card_id={element.card_id} color={element.color} owner_avatar={element.owner_avatar} owner_username={element.owner_username} title={element.title} lane_name={element.lane_name} lane_color={element.lane_color} child_complete={element.child_card_stats.finished_bottom_child_card_size_sum} child_total={element.child_card_stats.child_card_size_sum}/>
+                        <ClosedInitiativeCard card_id={element.card_id} color={element.color} owner_avatar={element.owner_avatar} owner_username={element.owner_username} title={element.title} lane_name={element.lane_name} lane_color={element.lane_color} child_complete={element.child_card_stats.finished_bottom_child_card_size_sum} child_total={element.child_card_stats.child_card_size_sum} showInitiativeModal = {showInitiativeModal} retrieveIndex = {retrieveIndex}/>
                     </div>
                     )
                 }

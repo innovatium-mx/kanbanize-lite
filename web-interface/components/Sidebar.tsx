@@ -54,7 +54,29 @@ const Sidebar = ({workspaces, LogOut, confirmlogout, cancellogout, loggedout} : 
 
     const handleLogout = () => {
 
-        Swal.fire({
+        globalCookie.remove('apikey');
+        globalCookie.remove('host');
+        globalCookie.remove('email');
+        globalCookie.remove('userid');
+        globalCookie.remove('avatar');
+        globalCookie.remove('username');
+        globalCookie.remove('workspace');
+        const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+        Toast.fire({
+            icon: 'success',
+            title: loggedout
+        })
+        router.replace({ pathname: '/' })
+        /*Swal.fire({
             title: confirmlogout,
             icon: 'question',
             confirmButtonText: LogOut,
@@ -90,7 +112,7 @@ const Sidebar = ({workspaces, LogOut, confirmlogout, cancellogout, loggedout} : 
                 })
                 router.replace({ pathname: '/' })
             }
-        })
+        })*/
     }
 
     return (

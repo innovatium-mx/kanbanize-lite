@@ -1,6 +1,6 @@
 div.Card {
     box-sizing: border-box;
-    display: flex;
+    display: grid;
     width: 22em;
     height: auto;
     background-clip: padding-box;
@@ -11,6 +11,15 @@ div.Card {
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 8;
+}
+
+div.line{
+    margin-top: 1rem;
+    height: 0.05em;
+    width: 80%;
+    justify-self: center;
+    background: #C8C8C8;
+    display: flex;
 }
 
 
@@ -32,7 +41,7 @@ div.title {
 
 div.ownersWrap {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     padding-top: 1.5em;
     /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
 }
@@ -40,6 +49,7 @@ div.ownersWrap {
 div.owner {
     justify-content: center;
     text-align: center;
+    padding-left: 2em;
 }
 
 img.ownerPhoto {
@@ -52,6 +62,7 @@ div.coOwners {
     position: relative;
     top: 0;
     left: 0;
+    padding-right: 4.5em;
 }
 
 img.image1 {
@@ -71,7 +82,7 @@ img.image2 {
     width: 4em;
     height: 4em;
 
-    position: relative;
+    position: absolute;
     top: 0em;
     left: 0.6em;
     z-index: 1;
@@ -105,7 +116,7 @@ div.image2 {
     width: 4em;
     height: 4em;
 
-    position: relative;
+    position: absolute;
     top: 0em;
     left: 0.6em;
     z-index: 1;
@@ -198,7 +209,7 @@ div.commentsText {
     text-align: left;
 
     padding-left: 3em;
-    padding-top: 2em;
+    padding-top: 1em;
 
 }
 
@@ -237,7 +248,15 @@ div.commentsContainer {
     display: var(--comments-display-);
     overflow: scroll;
     overflow-x: hidden;
+}
 
+div.activitiesContainer{
+    margin-top: 1em;
+    height: 10.5em;
+    align-self: center;
+    display: var(--activities-display-);
+    overflow: scroll;
+    overflow-x: hidden;
 }
 
 div.cameraIcon {
@@ -282,7 +301,7 @@ img.preview {
 div.scroll {
     height: var(--dynamic-opened-card-height-);
     /* height: 40em; */
-    overflow-y: scroll;
+    overflow-y: var(--dynamic-scroll-);
     overflow-x: hidden;
 }
 
@@ -291,7 +310,7 @@ div.nonScroll {
 }
 
 button.arrowButton {
-    margin-top: 1.8em;
+    margin-top: 0.8em;
     border: none;
     background-color: white;
     height: 2em;
@@ -304,6 +323,46 @@ button.arrowButton {
 
     input.inputComment {
         width: 10.5em;
+        height: 2.5em;
+    }
+
+    img.ownerPhoto{
+        width: 3.5em;
+        height: 3.5em;
+    }
+
+    div.image1{
+        width: 3.5em;
+        height: 3.5em;    
+    }
+    
+    div.image2{
+        width: 3.5em;
+        height: 3.5em;    
+    }
+    
+    div.image3{
+        width: 3.5em;
+        height: 3.5em;    
+    }
+
+    img.image1{
+        width: 3.5em;
+        height: 3.5em; 
+    }
+
+    img.image2{
+        width: 3.5em;
+        height: 3.5em; 
+    }
+
+    img.image3{
+        width: 3.5em;
+        height: 3.5em; 
+    }
+
+    div.coOwners{
+        padding-right: 4em;
     }
 
 }

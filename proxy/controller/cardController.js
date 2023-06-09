@@ -21,6 +21,64 @@ function generateString(length) {
     return result;
 }
 
+function removeSubstring(text, startIndex, endIndex) {
+  	if (endIndex < startIndex) {
+  		startIndex = endIndex;
+    }
+    var a = text.substring(0, startIndex);
+    var b = text.substring(endIndex);
+    return a + b;
+}
+
+function removeCommentImages(text) {
+    //define variaables
+    const imageHTML = "<img";
+    let cnt = 0;
+    let temp = text;
+    
+    //for to iterate comments
+    //for to iterate characters on text
+    for (let x = 0 ; x < temp.length; x++) {
+        cnt = 0;
+        //for to iterate characters on imageHTML
+        for (let y = 0; y < imageHTML.length; y++) {
+            //if characters match add to cnt
+            if (text[x+y] === imageHTML[y]) {
+                cnt += 1;
+            }
+            //if character doesn't match, stops for cycle
+            else {
+                break;
+            }
+        }
+        //if all characters match, rebuilds text
+        if (cnt === imageHTML.length) {
+            //for to add character before link
+            let src = true;
+            let cnt2 = 0;
+            let y = x;
+            let imageLink = '<a href = "';
+            for ( y ; y < text.length; y++) {
+                if(text[y] == 's' && text[y+1] == 'r' && text[y+2]=='c' && text[y+3]=='='){
+                    break;
+                }
+            }
+            //add link header and reference
+            while (text[y + 5 + cnt2] != '"') {
+                imageLink += text[y + 5 + cnt2]
+                cnt2 += 1;
+            }
+            imageLink += '" target = "_blank">Attachment</a>';
+            //console.log(`${imageLink}\n`)
+            //update test on comment
+            text = removeSubstring(text, x, y + 7 + cnt2);
+            text= text.slice(0, x) + imageLink + text.slice(x);
+            cnt2 = 0;
+        }
+    }
+    return text;
+}
+
 module.exports.cardDetails = async (req,res) =>{
     const host = req.params.host;
     const cardid = req.params.cardid;
@@ -126,6 +184,7 @@ module.exports.comments = async (req,res) =>{
             comments = rawComments.data;
             if(comments.length > 0){
                 for(var x =0; x < comments.length; x++){
+                    comments[x].text = removeCommentImages(comments[x].text);
                     const authorObject = users.find(item => item.user_id === comments[x].author.value);
                     comments[x].author.avatar = authorObject.avatar;
                     comments[x].author.username = authorObject.username;
