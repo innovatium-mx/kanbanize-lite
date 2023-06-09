@@ -3,6 +3,7 @@ import NewCardComponent from "../components/NewCardComponent";
 
 
 
+
 const test = () =>{
 
     const ActivityCard = dynamic(import('../components/ActivityCard'),{ssr:false});
@@ -10,6 +11,7 @@ const test = () =>{
     const Comment = dynamic(import('../components/Comment'),{ssr:false});
 
     const InitCard = dynamic(import('../components/ClosedInitiativeCard'))
+    const Loader = dynamic(import('../components/Loader'))
 
 
     return(
@@ -26,7 +28,7 @@ const test = () =>{
             {}
 
             {/* <InitCard card_id={345} color={"#d59beb"} owner_avatar={null} title={"Test Initiative Card"} owner_username={"Georgees"} retrieveIndex={undefined} displayModal={undefined} lane_name={"This is a very long lane name"} lane_color={"e81c1c"} child_complete={5} child_total={20} /> */}
-
+            
         </>
     )
     
