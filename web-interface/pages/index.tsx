@@ -142,7 +142,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     //[data.error] exists when invalid companyname, otherwise, undefined
                     var whichInvalid = '';
 
-                    if(data.error){
+                    if(data.error == 403){
                         whichInvalid = invalidCompany;
                     }else{
                         whichInvalid = invalid;

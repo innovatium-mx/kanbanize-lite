@@ -154,7 +154,7 @@ module.exports.cardDetails = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 };
 
@@ -177,28 +177,29 @@ module.exports.comments = async (req,res) =>{
             },
         });
 
-        if(responseUsers.ok && responseComments.ok){
+        if(responseUsers.ok){
             const rawUsers = await responseUsers.json();
             users = rawUsers.data;
-            const rawComments = await responseComments.json();
-            comments = rawComments.data;
-            if(comments.length > 0){
-                for(var x =0; x < comments.length; x++){
-                    comments[x].text = removeCommentImages(comments[x].text);
-                    const authorObject = users.find(item => item.user_id === comments[x].author.value);
-                    comments[x].author.avatar = authorObject.avatar;
-                    comments[x].author.username = authorObject.username;
+            if(responseComments.ok){
+                const rawComments = await responseComments.json();
+                comments = rawComments.data;
+                if(comments.length > 0){
+                    for(var x =0; x < comments.length; x++){
+                        comments[x].text = removeCommentImages(comments[x].text);
+                        const authorObject = users.find(item => item.user_id === comments[x].author.value);
+                        comments[x].author.avatar = authorObject.avatar;
+                        comments[x].author.username = authorObject.username;
+                    }
                 }
+            }
+            else{
+                res.status(responseComments.status).json({"error": responseComments.status});
             }
             res.json(comments);
         }
         else{
-            res.json({"error": {
-                "UsersStatus" : responseUsers.status,
-                "CommentsStatus": responseComments.status
-            }});
+            res.status(responseComments.status).json({"error" : responseUsers.status});
         }
-
     }
     catch(error){
         console.error(error);
@@ -245,9 +246,13 @@ module.exports.addComment= async (req,res) =>{
             //Es necesario crear una carpeta con el id del card,
             //por ejemplo: "cardid/"+req.files.archivo.name
             //De otra forma, el archivo se sobreescribirá
-            const storageRef = ref(storage, `${cardid}/${filename}`);
+            const storageRef = ref(storage, `${host}/${cardid}/${filename}`);
             const snapshot = await uploadBytes(storageRef, filedata);
             const downloadURL = await getDownloadURL(storageRef);
+
+            if(downloadURL == '' || downloadURL == undefined || downloadURL == null){
+                res.status(400).json({"error": 400})
+            }
 
             const formData = JSON.stringify({
                 "text": text,

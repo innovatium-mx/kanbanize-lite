@@ -56,16 +56,16 @@ module.exports.workSpaces = async (req,res) =>{
                 res.json(workSpaces);
             }
             else{
-                res.json({"error": responseBoard.status});
+                res.status(responseBoard.status).json({"error": responseBoard.status});
             }
         }
         else{
-            res.json({"error": response.status});
+            res.status(response.status).json({"error": response.status});
         }
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 }
 
@@ -136,7 +136,7 @@ module.exports.boardDetails = async (req,res) =>{
                     dataLanes = rawDataLanes.data;
                 }
                 else{
-                    res.json({"error": responseLanes.status});
+                    res.status(responseLanes.status).json({"error": responseLanes.status});
                 }
                 for(var i=0; i<boardWorkflow.length;i++){
                     const workflowid = boardWorkflow[i].workflow_id;
@@ -206,7 +206,7 @@ module.exports.boardDetails = async (req,res) =>{
                                 boardCards = boardCards.concat(rawCardPages.data.data);
                             }
                             else{
-                                res.json({"error": responseCardPages.status});
+                                res.status(responseCardPages.status).json({"error": responseCardPages.status});
                             }
                         }
                     }
@@ -221,7 +221,7 @@ module.exports.boardDetails = async (req,res) =>{
                         users = rawUsers.data;
                     }
                     else{
-                        res.json({"error": responseUsers.status});
+                        res.status(responseUsers.status).json({"error": responseUsers.status});
                     }
                     for(var x=0; x<boardWorkflow.length;x++){
                         for(var y=0; y<boardWorkflow[x].columns.length;y++){
@@ -310,19 +310,19 @@ module.exports.boardDetails = async (req,res) =>{
                     res.json(boardWorkflow);
                 }
                 else{
-                    res.json({"error": response3.status});
+                    res.status(response3.status).json({"error": response3.status});
                 }
             }
             else{
-                res.json({"error": response2.status});
+                res.status(response2.status).json({"error": response2.status});
             }
         }
         else {
-            res.json({"error": response1.status});
+            res.status(response1.status).json({"error": response1.status});
         }
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 }
