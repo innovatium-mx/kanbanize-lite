@@ -51,11 +51,16 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const forceUpdate = useCallback(() => updateState({}), []);
 
     const [artificialKey, setArtificialKey] = useState<boolean>(false);
+    const [selfFound, setSelfFound] = useState<boolean>(false);
+    const userId = cookieCutter.get('userid');
+
 
     useEffect(()=>{
-        console.log(allFilteredRef.current);
-        if(allFilteredRef.current)
-            setActivities(data[0].cards);
+        if(allFiltered)
+        {
+            setActivities(data[index].cards);
+        }
+            
         else{
             setActivities(filtered);
         }
@@ -89,12 +94,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         setFilteredActivities(data, index, selected);
     }, [data, index, selected]);
 
-    /* useEffect(()=>{
-        //setActivities(filtered);
-        console.log('filtered changed');
-        setFilteredChanged(true);
-    },[filtered]); */
-
     useEffect(()=>{
         if(getToBacklog){
             setIndex(0);
@@ -120,7 +119,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         setFilteredChanged(false);
 
         setAllFiltered(true);
-        console.log('reset');
     }
 
     const setFilteredActivities = (d: Array<column>, i: number, s:Array<selection>) =>{ 
@@ -130,6 +128,8 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 if(found !== undefined && found.checked){
                     filteredData.push(element);
                 }
+
+
         })
         setFiltered(filteredData)
     }
@@ -142,13 +142,27 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             if(found !== undefined && found.checked){
                 filteredData.push(element);
             }
+
+            if(found?.user_id == userId){
+                setSelfFound(true);
+                forceUpdate();
+            }
+
         })
         console.log(filteredData);
         setFiltered(filteredData)
         setFilteredChanged(true);
 
-        if(filteredData.length === data[0].cards.length){
+        if(filteredData.length === data[index].cards.length){
             setAllFiltered(true);
+        }
+        else if(selfFound){
+
+            setAllFiltered(true);
+            forceUpdate();
+
+            setAllFiltered(false);
+            setSelfFound(false);
         }
         else{
             setAllFiltered(false);
@@ -315,9 +329,9 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                     </div>
                     <div className={Dynamicboard.grid}>
                         { activities != null && activities.map((element: any) =>
-                            <div className={Dynamicboard.cardContainer}>
+                            <div className={Dynamicboard.cardContainer} key={element.key} >
                                 <div className={Dynamicboard.buttons} />
-                                <ActivityCard key={element.key} card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} retrieveIndex={retrieveIndex} displayModal={displayModal} lane_name={element.lane_name} lane_color={element.lane_color}/>
+                                <ActivityCard card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} retrieveIndex={retrieveIndex} displayModal={displayModal} lane_name={element.lane_name} lane_color={element.lane_color}/>
                                 <div className={Dynamicboard.buttons} onClick={() => handleRightClick(element.card_id)}>
                                     { !element.is_blocked && buttons.right &&
                                         <FontAwesomeIcon icon={faCircleArrowRight} style={{color: "#000000"}} />

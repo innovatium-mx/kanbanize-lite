@@ -152,18 +152,83 @@ const Board = (props: PropsResponse) => {
   const moveCards = (current : number, cardIndex : number, destiny: number ) =>{
     
     const tempWorkflow = workflow;
+    var firstIndex : number = 0;
+    var secondIndex : number = 0;
+    var finalIndex : number = 0;
 
     if(tempWorkflow!=null){
+      var splicedArray : Array<card> = [];
 
       if(tempWorkflow.columns[current].cards != null){
-        tempWorkflow.columns[destiny].cards?.push(tempWorkflow.columns[current].cards[cardIndex]);
+        firstIndex = workflow.columns[destiny].cards.findIndex(e => e?.lane_name === tempWorkflow.columns[current].cards[cardIndex].lane_name);
+        console.log(firstIndex);
+
+        if(firstIndex !== -1){
+          for(var x = firstIndex; x < tempWorkflow.columns[destiny].cards.length; x++ ){
+            //cropped array from index to end of array
+            splicedArray.push(tempWorkflow.columns[destiny].cards[x]);
+          }
+        }
+        
+
+        console.log(splicedArray);
+
+        secondIndex = splicedArray.findIndex(e => e?.lane_name !== tempWorkflow.columns[current].cards[cardIndex].lane_name);
+        console.log(secondIndex);
+
+        // add card into destiny column
+        if(secondIndex === -1 && firstIndex !== -1){// lane name found in last segment
+          tempWorkflow.columns[destiny].cards?.splice(tempWorkflow.columns[destiny].cards.length, 0, tempWorkflow.columns[current].cards[cardIndex])
+        }
+        else if(secondIndex === -1 && firstIndex === -1){// lane name not found in destiny column
+          
+          if(workflow.lanes[0].name === tempWorkflow.columns[current].cards[cardIndex].lane_name){
+            tempWorkflow.columns[destiny].cards?.splice(0, 0, tempWorkflow.columns[current].cards[cardIndex]);
+          }
+
+          else{
+
+            var upperLaneName : string = "";
+            var underLaneName : string = "";
+            var definitiveIndex : number = 0;
+            
+            for(var z = 0; z < workflow.lanes.length; z++){
+              if(workflow.lanes[z].name === tempWorkflow.columns[current].cards[cardIndex].lane_name){
+                upperLaneName = workflow.lanes[z-1].name; //undefined -> doesn't exist yet
+                underLaneName = workflow.lanes[z].name; //next lane name
+              }
+            }
+            
+            if(upperLaneName === undefined){
+              tempWorkflow.columns[destiny].cards?.splice(tempWorkflow.columns[destiny].cards.length, 0, tempWorkflow.columns[current].cards[cardIndex]);
+            }
+            else{
+              //search under lane name and insert  it there
+              definitiveIndex = tempWorkflow.columns[destiny].cards.findIndex(e => e?.lane_name === underLaneName);
+              console.log(definitiveIndex);
+              tempWorkflow.columns[destiny].cards?.splice(definitiveIndex, 0, tempWorkflow.columns[current].cards[cardIndex]);
+
+            }
+
+          }
+
+        }
+        else{// lane name found in an intermediate segment
+          //
+          tempWorkflow.columns[destiny].cards?.splice(secondIndex + firstIndex, 0, tempWorkflow.columns[current].cards[cardIndex])
+          console.log('here');
+        }
+
       }
       
+      //remove card from current column
       tempWorkflow.columns[current].cards?.splice(cardIndex, 1);
       setWorkflow(tempWorkflow)
   
     }
   }
+
+  console.log(workflow)
 
   const insertCardUpdate = (newCard : card) =>{
     var tempWorkflow : workflow = {...workflow};
