@@ -1,6 +1,6 @@
 div.Card {
     box-sizing: border-box;
-    display: grid;
+    display: flex;
     width: 22em;
     height: auto;
     background-clip: padding-box;
@@ -8,6 +8,7 @@ div.Card {
     border-radius: 0.5em;
     flex-direction: column;
     padding-bottom: 3em;
+    justify-content: center;
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 8;
@@ -17,9 +18,8 @@ div.line{
     margin-top: 1rem;
     height: 0.05em;
     width: 80%;
-    justify-self: center;
+    align-self: center;
     background: #C8C8C8;
-    display: flex;
 }
 
 
@@ -42,6 +42,7 @@ div.title {
 div.ownersWrap {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding-top: 1.5em;
     /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
 }
@@ -151,7 +152,7 @@ div.description {
     padding-left: 2em;
     padding-right: 2em;
     padding-top: 1em;
-    width: 22em;
+    width: 18em;
     overflow-wrap: break-word;
     /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     color: #505050;
@@ -201,16 +202,18 @@ img.send {
 
 
 div.commentsWrap {
+    margin-top: 1em;
     display: flex;
     color: #505050;
+    align-items: center;
+    justify-content: space-around;
+
 }
 
 div.commentsText {
     /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
     text-align: left;
 
-    padding-left: 3em;
-    padding-top: 1em;
 
 }
 
@@ -311,7 +314,6 @@ div.nonScroll {
 }
 
 button.arrowButton {
-    margin-top: 0.8em;
     border: none;
     background-color: white;
     height: 2em;
@@ -377,7 +379,11 @@ button.arrowButton {
     }
 
     div.coOwners{
-        padding-right: 4em;
+        padding-right: 2em;
+    }
+
+    div.owner {
+        padding-left: 1em;
     }
 
 }

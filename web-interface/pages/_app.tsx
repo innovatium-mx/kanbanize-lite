@@ -1,16 +1,19 @@
 import '../styles/globals.css'
+import { useTranslation } from 'next-i18next'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { appWithTranslation } from 'next-i18next'
 import Head from "next/head";
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import Loader from '../components/Loader'
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment, useTransition } from 'react';
 
 function App({ Component, pageProps }: AppProps) {
   const {locale} = useRouter();
   const router = useRouter();
   const [pageLoading, setPageLoading] = useState<boolean>(false);
+  const { t } = useTranslation('common');
+
   useEffect(() => {
         const handleStart = () => { setPageLoading(true); };
         const handleComplete = () => { setPageLoading(false); };
@@ -34,7 +37,7 @@ function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </Fragment>
       ) : (
-        <Loader/>
+        <Loader msgLoader={t('msgLoader')}/>
       )}
     </>
   )

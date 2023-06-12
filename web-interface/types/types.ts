@@ -286,3 +286,11 @@ export interface NavBarData {
     name: string,
     boards: Array<boardCard> | null
 }
+
+export type LoaderProps = {
+    msgLoader : string
+}
+
+export type ErrorResponse = {
+    error: number;
+}

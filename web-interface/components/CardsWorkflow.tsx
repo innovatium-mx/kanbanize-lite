@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleArrowLeft, faCircleArrowRight} from '@fortawesome/free-solid-svg-icons';
 import {urlCloud} from '../constants'
 import {column, card, user, selection} from '../types/types';
+import Swal from 'sweetalert2';
 
 
 const cookieCutter= require('cookie-cutter');
@@ -192,41 +193,8 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             },
             body: formData
         })
-        if(response.ok) {
-            const data : any = await response.json();
-            if(data.error){
-                cookieCutter.set('apikey', '', { expires: new Date(0) })
-                cookieCutter.set('host', '', { expires: new Date(0) })
-                cookieCutter.set('email', '', { expires: new Date(0) })
-                cookieCutter.set('userid', '', { expires: new Date(0) })
-                cookieCutter.set('avatar', '', { expires: new Date(0) })
-                cookieCutter.set('username', '', { expires: new Date(0) }) 
-                cookieCutter.set('workspace', '', { expires: new Date(0) })
-                router.replace({pathname: '/'});
-            }
-            else {
-                const cardIndex = activities ? activities.findIndex((ele : card )=> ele.card_id === card_id) : -1;
-                moveCards(index, cardIndex, index -1);
-                setIndex(index-1);
-                if(index-1 === 0){
-                    setButtons({left: false, right: true})
-                }
-                else if(index-1 === data.length-1){
-                    setButtons({left: true, right: false})
-                }
-                else{
-                    setButtons({left: true, right: true})
-                }
-        
-                if(columns[index-1].color === ''){
-                    setColor('#9e9e9e');
-                }
-                else{
-                    setColor('#'+columns[index-1].color);
-                }
-            }
-        }
-        else {
+        const moveData : any = await response.json();
+        if(moveData.error){
             cookieCutter.set('apikey', '', { expires: new Date(0) })
             cookieCutter.set('host', '', { expires: new Date(0) })
             cookieCutter.set('email', '', { expires: new Date(0) })
@@ -235,7 +203,74 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             cookieCutter.set('username', '', { expires: new Date(0) }) 
             cookieCutter.set('workspace', '', { expires: new Date(0) })
             router.replace({pathname: '/'});
+            if(moveData.error === 429){
+                const Toast = Swal.mixin({
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: false,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })             
+                Toast.fire({
+                icon: 'error',
+                title: 'Muchas peticiones'
+                })
+            }
+            else if(moveData.error === 401){
+                const Toast = Swal.mixin({
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: false,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })             
+                Toast.fire({
+                icon: 'error',
+                title: 'Token inválido'
+                })
+            }
+            else{
+                const Toast = Swal.mixin({
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: false,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })             
+                Toast.fire({
+                icon: 'error',
+                title: 'Error'
+                })
+            }
         }
+        else {
+            const cardIndex = activities ? activities.findIndex((ele : card )=> ele.card_id === card_id) : -1;
+            moveCards(index, cardIndex, index -1);
+            setIndex(index-1);
+            if(index-1 === 0){
+                setButtons({left: false, right: true})
+            }
+            else if(index-1 === data.length-1){
+                setButtons({left: true, right: false})
+            }
+            else{
+                setButtons({left: true, right: true})
+            }
+    
+            if(columns[index-1].color === ''){
+                setColor('#9e9e9e');
+            }
+            else{
+                setColor('#'+columns[index-1].color);
+            }
+        }
+
     };
 
     const handleRightClick =  async (card_id : number) => {
@@ -252,41 +287,8 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             },
             body: formData
         })
-        if(response.ok) {
-            const moveData : any = await response.json();
-            if(moveData.error){
-                cookieCutter.set('apikey', '', { expires: new Date(0) })
-                cookieCutter.set('host', '', { expires: new Date(0) })
-                cookieCutter.set('email', '', { expires: new Date(0) })
-                cookieCutter.set('userid', '', { expires: new Date(0) })
-                cookieCutter.set('avatar', '', { expires: new Date(0) })
-                cookieCutter.set('username', '', { expires: new Date(0) }) 
-                cookieCutter.set('workspace', '', { expires: new Date(0) })
-                router.replace({pathname: '/'});
-            }
-            else{
-                const cardIndex = activities ? activities.findIndex((ele : card )=> ele.card_id === card_id) : -1;
-                moveCards(index, cardIndex, index + 1)
-                setIndex(index+1);
-                if(index+1 === 0){
-                    setButtons({left: false, right: true})
-                }
-                else if(index+1 === data.length-1){
-                    setButtons({left: true, right: false})
-                }
-                else{
-                    setButtons({left: true, right: true})
-                }
-        
-                if(columns[index+1].color === ''){
-                    setColor('#9e9e9e');
-                }
-                else{
-                    setColor('#'+columns[index+1].color);
-                }
-            }
-        }
-        else {
+        const moveData : any = await response.json();
+        if(moveData.error){
             cookieCutter.set('apikey', '', { expires: new Date(0) })
             cookieCutter.set('host', '', { expires: new Date(0) })
             cookieCutter.set('email', '', { expires: new Date(0) })
@@ -295,6 +297,72 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             cookieCutter.set('username', '', { expires: new Date(0) }) 
             cookieCutter.set('workspace', '', { expires: new Date(0) })
             router.replace({pathname: '/'});
+            if(moveData.error === 429){
+                const Toast = Swal.mixin({
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: false,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })             
+                Toast.fire({
+                icon: 'error',
+                title: 'Muchas peticiones'
+                })
+            }
+            else if(moveData.error === 401){
+                const Toast = Swal.mixin({
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: false,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })             
+                Toast.fire({
+                icon: 'error',
+                title: 'Token inválido'
+                })
+            }
+            else{
+                const Toast = Swal.mixin({
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: false,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })             
+                Toast.fire({
+                icon: 'error',
+                title: 'Error'
+                })
+            }
+        }
+        else {
+            const cardIndex = activities ? activities.findIndex((ele : card )=> ele.card_id === card_id) : -1;
+            moveCards(index, cardIndex, index + 1)
+            setIndex(index+1);
+            if(index+1 === 0){
+                setButtons({left: false, right: true})
+            }
+            else if(index+1 === data.length-1){
+                setButtons({left: true, right: false})
+            }
+            else{
+                setButtons({left: true, right: true})
+            }
+    
+            if(columns[index+1].color === ''){
+                setColor('#9e9e9e');
+            }
+            else{
+                setColor('#'+columns[index+1].color);
+            }
         }
     };
 

@@ -61,14 +61,14 @@ div.attachments {
 
 @media screen and (max-width: 380px) {
     div.comment{
-        width: 18em;
+        width: 15em;
     }
 
     div.text{
-        font-size: 90%;
+        font-size: 80%;
     }
 
     span.time{
-        font-size: 90%;
+        font-size: 80%;
     }
 }

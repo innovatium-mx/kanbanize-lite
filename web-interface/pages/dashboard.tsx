@@ -6,13 +6,15 @@ import { useRouter } from 'next/router'
 import authRoute from '../components/authRoute';
 import dynamic from 'next/dynamic';
 import Dashboard from '../components/Dashboard'
-import { boardCard } from '../types/types';
+import { boardCard, ErrorResponse } from '../types/types';
 import { urlCloud } from '../constants'
 import dashboard from '../styles/Dashboards.module.css';
 import Image from 'next/image';
+import Swal from 'sweetalert2'
 
 import Cookies from 'cookies'
 import Sidebar from '../components/Sidebar';
+import Link from 'next/link';
 
 //import Navbar from '../components/Navbar';
 const cookieCutter = require('cookie-cutter');
@@ -40,13 +42,13 @@ type NextJsI18NConfig = {
 }
 
 interface PropsResponse {
-  data: Array<Data>
+  data: Array<Data> | ErrorResponse
   _nextI18Next: NextJsI18NConfig
 }
 
 
 const MyBoards = (props: PropsResponse) => {
-
+  const [pageLoaded, setPageLoaded] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const [workspaceName, setWorkspaceName] = useState("");
   const workspaceNumber = cookieCutter.get('workspace');
@@ -62,7 +64,69 @@ const MyBoards = (props: PropsResponse) => {
   const LanguageDropdown = dynamic(import('../components/LanguageDropdown'), { ssr: false });
   const InterfaceDropdown = dynamic(import('../components/InterfaceDropdown'), { ssr: false });
 
-  const workspaces = props.data;
+  const workspaces = props.data as Data[];
+
+  useEffect(() => {
+    if("error" in props.data){
+      cookieCutter.set('apikey', '', { expires: new Date(0) });
+      cookieCutter.set('host', '', { expires: new Date(0) });
+      cookieCutter.set('email', '', { expires: new Date(0) });
+      cookieCutter.set('userid', '', { expires: new Date(0) });
+      cookieCutter.set('avatar', '', { expires: new Date(0) });
+      cookieCutter.set('username', '', { expires: new Date(0) });
+      cookieCutter.set('workspace', '', { expires: new Date(0) });
+      router.replace({pathname: '/'});
+      if(props.data.error === 429){
+        const Toast = Swal.mixin({
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: false,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })             
+        Toast.fire({
+          icon: 'error',
+          title: 'Muchas peticiones'
+        })
+      }
+      else if(props.data.error === 401){
+        const Toast = Swal.mixin({
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: false,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })             
+        Toast.fire({
+          icon: 'error',
+          title: 'Token inválido'
+        })
+      }
+      else{
+        const Toast = Swal.mixin({
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: false,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })             
+        Toast.fire({
+          icon: 'error',
+          title: 'Error'
+        })
+      }
+    }
+    else{
+      setPageLoaded(true);
+    }
+  }, [props.data, router])
+  
 
   const handleChange = (event: any) => {
     setValue(event.target.value);
@@ -71,17 +135,19 @@ const MyBoards = (props: PropsResponse) => {
   };
 
   useEffect(() => {
-    if(workspaceNumber !== undefined){
+    if(pageLoaded){
+      if(workspaceNumber !== undefined){
       setBoards(workspaces[workspaceNumber].boards)
       setWorkspaceName(workspaces[workspaceNumber].name)
+      }
+      else{
+        const now = new Date();
+        cookieCutter.set('workspace', 0, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)})
+        setBoards(workspaces[0].boards)
+        setWorkspaceName(workspaces[0].name)
+      }
     }
-    else{
-      const now = new Date();
-      cookieCutter.set('workspace', 0, { expires: new Date(now.getTime() + 24 * 60 * 60 * 1000 * 7)})
-      setBoards(workspaces[0].boards)
-      setWorkspaceName(workspaces[0].name)
-    }
-  })
+  },[pageLoaded, workspaceNumber, workspaces])
 
 
   const getBoards = async (workspace_id: number) => {
@@ -98,7 +164,9 @@ const MyBoards = (props: PropsResponse) => {
       <div className={dashboard.topBar} style={{position:'fixed', zIndex:'2'}}>
         <div className={dashboard.left}>
           <div>
-            <Image src={"/LogoKanbanize.png"} width={64} height={36} />
+            <Link href={'/dashboard'}>
+              <Image src={"/logo.svg"} width={64} height={36} />
+            </Link>
           </div>
           <div className={dashboard.dropdownFragment}>
             <InterfaceDropdown data={workspaces} name={t('dashboard.workspaces')} getData={getBoards} />
@@ -124,72 +192,24 @@ const MyBoards = (props: PropsResponse) => {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, locale }) => {
-  const cookies = new Cookies(req, res)
-  const apikey: any = cookies.get('apikey');
-  const host = cookies.get('host');
-  const response = await fetch(urlCloud + `workSpaces/${host}`, {
-    method: "GET",
-    headers: {
-      "apikey": apikey
-    },
-  })
-
-  if (response.ok) {
-    const data: any = await response.json();
-    if (!data.error) {
-      return {
-        props: {
-          ...(await serverSideTranslations(locale ?? 'en', [
-            'common'
-          ])),
-          data
-        }
-      }
-    }
-    else {
-      cookies.set('apikey');
-      cookies.set('host');
-      cookies.set('email');
-      cookies.set('userid');
-      cookies.set('avatar');
-      cookies.set('username');
-      cookies.set('workspace')
-
-      return {
-        redirect: {
-          permanent: false,
-          destination: "/",
-        },
-        props: {
-          ...(await serverSideTranslations(locale ?? 'en', [
-            'common'
-          ]))
-        }
-      }
-    }
-
-  }
-  else {
-    cookies.set('apikey');
-    cookies.set('host');
-    cookies.set('email');
-    cookies.set('userid');
-    cookies.set('avatar');
-    cookies.set('username');
-    cookies.set('workspace')
-
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/",
+    const cookies = new Cookies(req, res)
+    const apikey: any = cookies.get('apikey');
+    const host = cookies.get('host');
+    const response = await fetch(urlCloud + `workSpaces/${host}`, {
+      method: "GET",
+      headers: {
+        "apikey": apikey
       },
+    });
+
+    const data: any = await response.json();
+    return {
       props: {
         ...(await serverSideTranslations(locale ?? 'en', [
           'common'
-        ]))
+        ])),
+        data
       }
     }
-  }
-
 }
 export default authRoute(MyBoards);

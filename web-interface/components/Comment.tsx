@@ -30,7 +30,7 @@ const Comment = ({text, last_modified, avatar, color, username, attachments}: Co
                 </div>
                 {attachments.map((element: any, index) =>
                     <div key={element.key} className={comment.attachments}>
-                        <a href={element.link} dangerouslySetInnerHTML={{ __html: element.file_name }} />
+                        <a href={element.link} >{element.file_name}</a>
                     </div>
                 )}
 

@@ -141,48 +141,77 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         setCommentsArray(decoyCommentsArray);
     }
 
-    const getComments =()=>{
+    const getComments = async ()=>{
         //get comments request
-        fetch(`${urlCloud}comments/${host}/${card_id}`, {
+        const response = await fetch(`${urlCloud}comments/${host}/${card_id}`, {
             method: "GET",
             headers: {
                 "apikey": apikey
             }
         })
-        .then(response => response.json())
-        .then(res => res.reverse())
-        .then((data)=>{
-            if(data.error){
-                //error
-                cookieCutter.set('apikey', '', { expires: new Date(0) })
-                cookieCutter.set('host', '', { expires: new Date(0) })
-                cookieCutter.set('email', '', { expires: new Date(0) })
-                cookieCutter.set('userid', '', { expires: new Date(0) })
-                cookieCutter.set('avatar', '', { expires: new Date(0) })
-                cookieCutter.set('username', '', { expires: new Date(0) }) 
-                cookieCutter.set('workspace', '', { expires: new Date(0) })
-                router.replace({pathname: '/'});
-            }
-            else{
-                //data exists
-
-                    for(var x = 0; x<data.length; x++){
-                        pushComment(data[x].text, data[x].last_modified, data[x].author, data[x].attachments);
-                    }
-                    setArrowOpenedCounter(arrowOpenedCounter+1);
-            }
-            
-        })
-        .catch((error) => {
+        const data = await response.json();
+        if(data.error){
+             //error
             cookieCutter.set('apikey', '', { expires: new Date(0) })
             cookieCutter.set('host', '', { expires: new Date(0) })
             cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) }) 
+            cookieCutter.set('userid', '', { expires: new Date(0) })
             cookieCutter.set('avatar', '', { expires: new Date(0) })
-            cookieCutter.set('username', '', { expires: new Date(0) })
-            cookieCutter.set('workspace', '', { expires: new Date(0) }) 
+            cookieCutter.set('username', '', { expires: new Date(0) }) 
+            cookieCutter.set('workspace', '', { expires: new Date(0) })
             router.replace({pathname: '/'});
-        });
+            if(data.error === 429){
+                    const Toast = Swal.mixin({
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })             
+                    Toast.fire({
+                    icon: 'error',
+                    title: 'Muchas peticiones'
+                    })
+            }
+            else if(data.error === 401){
+                const Toast = Swal.mixin({
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: false,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })             
+                Toast.fire({
+                icon: 'error',
+                title: 'Token inválido'
+                })
+            }
+            else {
+                const Toast = Swal.mixin({
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: false,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                })             
+                Toast.fire({
+                icon: 'error',
+                title: 'Error'
+                })
+            }
+        }
+        else{
+            for(var x = 0; x<data.length; x++){
+                pushComment(data[x].text, data[x].last_modified, data[x].author, data[x].attachments);
+            }
+            setArrowOpenedCounter(arrowOpenedCounter+1);
+        }
     }
 
     const handleOpenComments = () =>{
@@ -236,94 +265,117 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 formData.append("file", file);
                 formData.append("fileName", file.name);
             }
-            
-            try {
+
+
+            try{
                 const res = await axios.post(
-                    `${urlCloud}comments/${host}/${card_id}`,
-                    formData, config
+                `${urlCloud}comments/${host}/${card_id}`,
+                formData, config
                 );
-                if(res.status === 200){
 
-                    setSending(false)
+                setSending(false)
 
-                    const Toast = Swal.mixin({
-                        showConfirmButton: false,
-                        timer: 1000,
-                        timerProgressBar: false,
-                        didOpen: (toast) => {
-                          toast.addEventListener('mouseenter', Swal.stopTimer)
-                          toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        },
-                        willClose: () => {
-                            clearInterval(1500)
-                          }
-                      })
-                      
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Comment successfully sent'
+                const Toast = Swal.mixin({
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    },
+                    willClose: () => {
+                        clearInterval(1500)
+                        }
                     })
+                    
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Comment successfully sent'
+                })
 
 
 
 
-                    const newAuthor: Author = {
-                        "avatar": sessionAvatar,
-                        "type" : "internal",
-                        "username" : sessionUsername,
-                        "value" : 0
-                    }
-
-                    const newAttachment: Array<Attachment> = [];
-
-                    if(res.data.attachment !== undefined){
-                        newAttachment.push({
-                            "id": 1,
-                            "file_name": res.data.attachment.file_name,
-                            "link" : res.data.attachment.link
-                        })
-                    }
-
-                    if(firstOpen){
-                        pushComment(newComment, getCurrentTime(), newAuthor, newAttachment);
-                    }
-                    setLocalCommentsCount(localCommentsCount+1);
+                const newAuthor: Author = {
+                    "avatar": sessionAvatar,
+                    "type" : "internal",
+                    "username" : sessionUsername,
+                    "value" : 0
                 }
-                else{
 
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Something failed while sending the comment',
-                        showCloseButton: true
+                const newAttachment: Array<Attachment> = [];
+
+                if(res.data.attachment !== undefined){
+                    newAttachment.push({
+                        "id": 1,
+                        "file_name": res.data.attachment.file_name,
+                        "link" : res.data.attachment.link
                     })
-
-
-                    cookieCutter.set('apikey', '', { expires: new Date(0) })
-                    cookieCutter.set('host', '', { expires: new Date(0) })
-                    cookieCutter.set('email', '', { expires: new Date(0) })
-                    cookieCutter.set('userid', '', { expires: new Date(0) })
-                    cookieCutter.set('avatar', '', { expires: new Date(0) })
-                    cookieCutter.set('username', '', { expires: new Date(0) }) 
-                    cookieCutter.set('workspace', '', { expires: new Date(0) })
-                    router.replace({pathname: '/'});
                 }
-            } 
-            catch (ex) {
-                console.log(ex);
+
+                if(firstOpen){
+                    pushComment(newComment, getCurrentTime(), newAuthor, newAttachment);
+                }
+                setLocalCommentsCount(localCommentsCount+1);
+                
+            }
+            catch(ex : any){
+                setSending(false)
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
-                cookieCutter.set('userid', '', { expires: new Date(0) }) 
+                cookieCutter.set('userid', '', { expires: new Date(0) })
+                cookieCutter.set('avatar', '', { expires: new Date(0) })
+                cookieCutter.set('username', '', { expires: new Date(0) }) 
                 cookieCutter.set('workspace', '', { expires: new Date(0) })
                 router.replace({pathname: '/'});
-
-                  
-                Swal.fire({
+                if(ex.response.status === 429){
+                    const Toast = Swal.mixin({
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })             
+                    Toast.fire({
                     icon: 'error',
-                    title: 'There was an error sending the comment',
-                    showCloseButton: true
-                })
+                    title: 'Muchas peticiones'
+                    })
+                }
+                else if( ex.response.status  === 401){
+                    const Toast = Swal.mixin({
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })             
+                    Toast.fire({
+                    icon: 'error',
+                    title: 'Token inválido'
+                    })
+                }
+                else{
+                    const Toast = Swal.mixin({
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })             
+                    Toast.fire({
+                    icon: 'error',
+                    title: 'Error'
+                    })
+                }
             }
+            
             
             //sets variable that rerenders comments component
             setHasFile(false);
@@ -496,7 +548,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             {openedCardComments} <span style={{fontWeight:'600'}}> {"(" + localCommentsCount + ")"} </span>
                         </div>
 
-                        <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton} style={{marginLeft:'5em'}}>
+                        <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton}>
                             <FontAwesomeIcon icon={faChevronDown} className={arrowDown} />
                         </button>
                     </div>
