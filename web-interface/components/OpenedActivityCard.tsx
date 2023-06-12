@@ -492,7 +492,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                             {openedCardComments} <span style={{fontWeight:'600'}}> {"(" + localCommentsCount + ")"} </span>
                         </div>
 
-                        <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton} style={{marginLeft:'5em'}}>
+                        <button onClick={()=>{handleOpenComments()}} className={openedCard.arrowButton}>
                             <FontAwesomeIcon icon={faChevronDown} className={arrowDown} />
                         </button>
                     </div>
