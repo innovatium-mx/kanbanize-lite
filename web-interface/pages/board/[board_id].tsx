@@ -12,7 +12,7 @@ import { urlCloud } from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies';
 import {useRouter} from 'next/router';
-import { workflow, card, user, selection, } from '@/types/types';
+import { workflow, card, user, selection, ErrorResponse } from '../../types/types';
 import NewCardComponent from '../../components/NewCardComponent';
 import OpenedInitiativeCard from '../../components/OpenedInitiativeCard';
 import Swal from 'sweetalert2'
@@ -37,7 +37,7 @@ type NextJsI18NConfig = {
 }
   
 interface PropsResponse {
-  data: Array<workflow> | Error,
+  data: workflow[] | ErrorResponse,
   _nextI18Next: NextJsI18NConfig
 }
 
@@ -106,10 +106,10 @@ const Board = (props: PropsResponse) => {
 
   const query = router.query;
   const board_id = query.board_id;
-  const board = props.data.error ? [] : props.data;
+  const board = props.data as workflow[];
 
   useEffect(() => {
-    if(props.data.error){
+    if("error" in props.data){
       cookieCutter.set('apikey', '', { expires: new Date(0) });
       cookieCutter.set('host', '', { expires: new Date(0) });
       cookieCutter.set('email', '', { expires: new Date(0) });

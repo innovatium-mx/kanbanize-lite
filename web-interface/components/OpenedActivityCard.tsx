@@ -319,7 +319,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 setLocalCommentsCount(localCommentsCount+1);
                 
             }
-            catch(ex){
+            catch(ex : any){
                 setSending(false)
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
