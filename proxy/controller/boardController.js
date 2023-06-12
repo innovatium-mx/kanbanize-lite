@@ -1,5 +1,25 @@
 const fetch = require('node-fetch');
 
+function removeSubstring(text, startIndex, endIndex) {
+  	if (endIndex < startIndex) {
+  		startIndex = endIndex;
+    }
+    var a = text.substring(0, startIndex);
+    var b = text.substring(endIndex);
+    return a + b;
+}
+
+function isLetter(char) {
+  return (/[a-zA-Z]/).test(char);
+}
+function isNumber(char){
+    if (char >= '0' && char <= '9') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function FindParents(element, columns){
     var parent_list = [];
     const parent = columns.find(item => item.column_id === element.parent_column_id);
@@ -18,6 +38,55 @@ function FindParents(element, columns){
     else{
         return parent_list;
     }
+}
+
+function changeWidth(description) {
+    const widthHTML = "width";
+    let cnt = 0;
+    let temp = description;
+     for (let x = 0 ; x < temp.length; x++) {
+        cnt = 0;
+        //for to iterate characters on widthHTML
+        for (let y = 0; y < widthHTML.length; y++) {
+            //if characters match add to cnt
+            if (description[x+y] === widthHTML[y]) {
+                cnt += 1;
+            }
+            //if character doesn't match, stops for cycle
+            else {
+                break;
+            }
+        }
+        //if all characters match, rebuilds text
+        if (cnt === widthHTML.length) {
+            //for to add character before link
+            let y = x + 6;
+            
+            let noLetters = true;
+            for ( y ; y < description.length; y++) {
+                if(isNumber(description[y])){
+                    break;
+                }
+                else if(isLetter(description[y])){
+                    noLetters = false;
+                    break;
+                }
+            }
+            //add link header and reference
+            if(noLetters){
+                let cnt2 = 0;
+                let hasSemicolon = true;
+                while (description[y + cnt2] !== ';' && description[y + cnt2] !== "\"" && description[y + cnt2] !== undefined ) {
+                    cnt2 += 1;
+                }
+                //update test on comment
+                description = removeSubstring(description, y, y + cnt2);
+                description = description.slice(0, y) + '100%' + description.slice(y);
+                
+            }
+        }
+    }
+    return description;
 }
 
 module.exports.workSpaces = async (req,res) =>{
@@ -272,6 +341,17 @@ module.exports.boardDetails = async (req,res) =>{
                                     }
                                     tempCard.lane_name = lane_name;
                                     tempCard.lane_color = lane_color;
+                                    if(tempCard.description.length > 0){
+                                        let tempDescription = '';
+                                        try{
+                                            tempDescription = changeWidth(tempCard.description);
+                                        }
+                                        catch(error){
+                                            console.error(error);
+                                            tempDescription = tempCard.description;
+                                        }
+                                        tempCard.description = tempDescription;
+                                    }
                                     columnCards.push(tempCard);
                                 }
                             })

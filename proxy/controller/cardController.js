@@ -68,7 +68,7 @@ function removeCommentImages(text) {
                 imageLink += text[y + 5 + cnt2]
                 cnt2 += 1;
             }
-            imageLink += '" target = "_blank">Attachment</a>';
+            imageLink += '" target = "_blank">Image</a>';
             //console.log(`${imageLink}\n`)
             //update test on comment
             text = removeSubstring(text, x, y + 7 + cnt2);
@@ -185,7 +185,15 @@ module.exports.comments = async (req,res) =>{
                 comments = rawComments.data;
                 if(comments.length > 0){
                     for(var x =0; x < comments.length; x++){
-                        comments[x].text = removeCommentImages(comments[x].text);
+                        let tempText = '';
+                        try{
+                            tempText = removeCommentImages(comments[x].text); 
+                        }
+                        catch(error){
+                            console.error(error);
+                            tempText = comments[x].text;
+                        }
+                        comments[x].text = tempText;
                         const authorObject = users.find(item => item.user_id === comments[x].author.value);
                         comments[x].author.avatar = authorObject.avatar;
                         comments[x].author.username = authorObject.username;
