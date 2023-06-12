@@ -25,8 +25,6 @@ const CoOwner = ({users, selected, setNewSelection, updateAvatars, avatarsList} 
 
         const found = checked.findIndex(item => item.user_id !== null && item.user_id.toString() === e.target.value);
         temp[found].checked = !temp[found].checked;
-        console.log(found);
-        console.log(temp[found]);
 
         setChecked(temp);
         setNewSelection(temp);

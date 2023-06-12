@@ -150,7 +150,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             }
 
         })
-        console.log(filteredData);
         setFiltered(filteredData)
         setFilteredChanged(true);
 

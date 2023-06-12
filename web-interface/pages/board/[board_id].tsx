@@ -109,7 +109,6 @@ const Board = (props: PropsResponse) => {
 
   const workflowRef : any = useRef(null);
   workflowRef.current = workflow;
-  console.log(workflow);
 
   const query = router.query;
   const board_id = query.board_id;
@@ -221,7 +220,6 @@ const Board = (props: PropsResponse) => {
 
       if(tempWorkflow.columns[current].cards != null){
         firstIndex = workflow.columns[destiny].cards.findIndex(e => e?.lane_name === tempWorkflow.columns[current].cards[cardIndex].lane_name);
-        console.log(firstIndex);
 
         if(firstIndex !== -1){
           for(var x = firstIndex; x < tempWorkflow.columns[destiny].cards.length; x++ ){
@@ -230,11 +228,7 @@ const Board = (props: PropsResponse) => {
           }
         }
         
-
-        console.log(splicedArray);
-
         secondIndex = splicedArray.findIndex(e => e?.lane_name !== tempWorkflow.columns[current].cards[cardIndex].lane_name);
-        console.log(secondIndex);
 
         // add card into destiny column
         if(secondIndex === -1 && firstIndex !== -1){// lane name found in last segment
@@ -265,7 +259,6 @@ const Board = (props: PropsResponse) => {
             else{
               //search under lane name and insert  it there
               definitiveIndex = tempWorkflow.columns[destiny].cards.findIndex(e => e?.lane_name === underLaneName);
-              console.log(definitiveIndex);
               tempWorkflow.columns[destiny].cards?.splice(definitiveIndex, 0, tempWorkflow.columns[current].cards[cardIndex]);
 
             }
@@ -276,7 +269,6 @@ const Board = (props: PropsResponse) => {
         else{// lane name found in an intermediate segment
           //
           tempWorkflow.columns[destiny].cards?.splice(secondIndex + firstIndex, 0, tempWorkflow.columns[current].cards[cardIndex])
-          console.log('here');
         }
 
       }
@@ -288,7 +280,6 @@ const Board = (props: PropsResponse) => {
     }
   }
 
-  console.log(workflow)
 
   const insertCardUpdate = (newCard : card) =>{
     var tempWorkflow : workflow = {...workflow};
