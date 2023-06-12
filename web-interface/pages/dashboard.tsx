@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import authRoute from '../components/authRoute';
 import dynamic from 'next/dynamic';
 import Dashboard from '../components/Dashboard'
-import { boardCard, Error } from '../types/types';
+import { boardCard, ErrorResponse } from '../types/types';
 import { urlCloud } from '../constants'
 import dashboard from '../styles/Dashboards.module.css';
 import Image from 'next/image';
@@ -42,7 +42,7 @@ type NextJsI18NConfig = {
 }
 
 interface PropsResponse {
-  data: Array<Data> | Error
+  data: Array<Data> | ErrorResponse
   _nextI18Next: NextJsI18NConfig
 }
 
@@ -64,10 +64,10 @@ const MyBoards = (props: PropsResponse) => {
   const LanguageDropdown = dynamic(import('../components/LanguageDropdown'), { ssr: false });
   const InterfaceDropdown = dynamic(import('../components/InterfaceDropdown'), { ssr: false });
 
-  const workspaces = props.data.error ? [] : props.data;
+  const workspaces = props.data as Data[];
 
   useEffect(() => {
-    if(props.data.error){
+    if("error" in props.data){
       cookieCutter.set('apikey', '', { expires: new Date(0) });
       cookieCutter.set('host', '', { expires: new Date(0) });
       cookieCutter.set('email', '', { expires: new Date(0) });
