@@ -290,3 +290,7 @@ export interface NavBarData {
 export type LoaderProps = {
     msgLoader : string
 }
+
+export type Error = {
+    error: number
+}

@@ -62,7 +62,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     }
 
 
-    const handleInsert = () =>{
+    const handleInsert = async () =>{
 
         if(title!=""){
             var co_owner_ids : Array<number | null> = ([]);
@@ -83,7 +83,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
             });
     
     
-            fetch(urlCloud + 'addCard/' + host,{
+            const response = await fetch(urlCloud + 'addCard/' + host,{
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json",
@@ -91,98 +91,116 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                 },
                 body: formData
             })
-            .then((response) => response.json())
-            .then((data) =>{
-                if(data.error){
-                    cookieCutter.set('apikey', '', { expires: new Date(0) })
-                    cookieCutter.set('host', '', { expires: new Date(0) })
-                    cookieCutter.set('email', '', { expires: new Date(0) })
-                    cookieCutter.set('userid', '', { expires: new Date(0) })
-                    cookieCutter.set('avatar', '', { expires: new Date(0) })
-                    cookieCutter.set('username', '', { expires: new Date(0) }) 
-                    cookieCutter.set('workspace', '', { expires: new Date(0) })
-                    router.replace({pathname: '/'});
-                    
-                    const Toast = Swal.mixin({
-                        showConfirmButton: false,
-                        timer: 1500,
-                        timerProgressBar: false,
-                        didOpen: (toast) => {
-                          toast.addEventListener('mouseenter', Swal.stopTimer)
-                          toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                      })
-                      
-                      Toast.fire({
-                        icon: 'error',
-                        title: 'Hubo un error'
-                      })
-                }
-                else{
-                    //alert("Tarjeta agregada satisfactoriamente");
-                    
-                    const Toast = Swal.mixin({
-                        showConfirmButton: false,
-                        timer: 1500,
-                        timerProgressBar: false,
-                        didOpen: (toast) => {
-                          toast.addEventListener('mouseenter', Swal.stopTimer)
-                          toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                      })
-                      
-                      Toast.fire({
-                        icon: 'success',
-                        title: 'Tarjeta agregada satisfactoriamente'
-                      })
-
-                    //return to backlog
-                    var co_usernames : Array<string | undefined> = [];
-                    var co_avatars : Array<string | undefined> = []
-    
-                    for(var r = 0; r<avatars.length; r++){
-                        co_usernames.push(avatars[r].username);
-                        co_avatars.push(avatars[r].avatar);
-                    }
-    
-                    const tempNewCard : card = {
-                        card_id : data.card_id,
-                        custom_id : 0,
-                        title : title,
-                        owner_user_id : userId,
-                        owner_username : sessionUsername,
-                        owner_avatar : sessionAvatar,
-                        type_id : null,
-                        color : "34a97b",
-                        section : 0,
-                        lane_id : lane_id,
-                        position : position,
-                        co_owner_usernames : co_usernames,
-                        co_owner_avatars : co_avatars,
-                        description : description,
-                        comment_count : 0,
-                        lane_name : lane_name,
-                        lane_color: lane_color,
-                        linked_cards: []
-                      }
-    
-                      insertCardUpdate(tempNewCard);
-                      applyInsertEffect(true);
-                      updateCurrentCard(tempNewCard);
-    
-                    activateInsertCard(false);
-                }
-            })
-            .catch((error) =>{
+            const data = await response.json();
+            if(data.error){
                 cookieCutter.set('apikey', '', { expires: new Date(0) })
                 cookieCutter.set('host', '', { expires: new Date(0) })
                 cookieCutter.set('email', '', { expires: new Date(0) })
                 cookieCutter.set('userid', '', { expires: new Date(0) })
                 cookieCutter.set('avatar', '', { expires: new Date(0) })
                 cookieCutter.set('username', '', { expires: new Date(0) }) 
-                cookieCutter.set('workspace', '', { expires: new Date(0) }) 
-                router.replace({pathname: '/'}); 
-            })   
+                cookieCutter.set('workspace', '', { expires: new Date(0) })
+                router.replace({pathname: '/'});
+                if(data.error === 429){
+                    const Toast = Swal.mixin({
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })             
+                    Toast.fire({
+                    icon: 'error',
+                    title: 'Muchas peticiones'
+                    })
+                }
+                else if(data.error === 401){
+                    const Toast = Swal.mixin({
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })             
+                    Toast.fire({
+                    icon: 'error',
+                    title: 'Token inválido'
+                    })
+                }
+                else{
+                    const Toast = Swal.mixin({
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })             
+                    Toast.fire({
+                    icon: 'error',
+                    title: 'Error'
+                    })
+                }
+            }
+            else{
+                //alert("Tarjeta agregada satisfactoriamente");
+                
+                const Toast = Swal.mixin({
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+                    
+                    Toast.fire({
+                    icon: 'success',
+                    title: 'Tarjeta agregada satisfactoriamente'
+                    })
+
+                //return to backlog
+                var co_usernames : Array<string | undefined> = [];
+                var co_avatars : Array<string | undefined> = []
+
+                for(var r = 0; r<avatars.length; r++){
+                    co_usernames.push(avatars[r].username);
+                    co_avatars.push(avatars[r].avatar);
+                }
+
+                const tempNewCard : card = {
+                    card_id : data.card_id,
+                    custom_id : 0,
+                    title : title,
+                    owner_user_id : userId,
+                    owner_username : sessionUsername,
+                    owner_avatar : sessionAvatar,
+                    type_id : null,
+                    color : "34a97b",
+                    section : 0,
+                    lane_id : lane_id,
+                    position : position,
+                    co_owner_usernames : co_usernames,
+                    co_owner_avatars : co_avatars,
+                    description : description,
+                    comment_count : 0,
+                    lane_name : lane_name,
+                    lane_color: lane_color,
+                    linked_cards: []
+                    }
+
+                    insertCardUpdate(tempNewCard);
+                    applyInsertEffect(true);
+                    updateCurrentCard(tempNewCard);
+
+                activateInsertCard(false);
+            }
         }
     }
 
