@@ -324,9 +324,23 @@ button.arrowButton {
         width: 18em;
     }
 
+    div.description{
+        width: 18em;
+    }
+
     input.inputComment {
         width: 10.5em;
         height: 2.5em;
+    }
+
+    div.ownerExistsButNoPhoto {
+        width: 3.5em;
+        height: 3.5em;
+    }
+
+    div.ownerPhoto{
+        width: 3.5em;
+        height: 3.5em;
     }
 
     img.ownerPhoto{
@@ -382,5 +396,9 @@ button.arrowButton {
 
     input.inputComment {
         width: 8.5em;
+    }
+
+    div.description{
+        width: 16em;
     }
 }

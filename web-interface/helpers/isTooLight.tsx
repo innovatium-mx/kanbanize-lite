@@ -7,7 +7,6 @@ function isTooLight(color: string) {
     const c_b:number = parseInt(hex.substring(4, 4 + 2), 16);
     const brightness:number = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
 
-    console.log(brightness);
     // 0 - darkest, 255 - brightest
     return brightness > 155; //true, false
 }

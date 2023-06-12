@@ -2,11 +2,10 @@ import newcard from '../styles/NewCardComponent.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faXmark, faPlus} from '@fortawesome/free-solid-svg-icons';
 import { newCard, selection , croppedUser, card} from '../types/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, useLayoutEffect, useCallback } from 'react';
 import CoOwner from '../components/CoOwnersDropdown/CoOwner';
 const cookieCutter= require('cookie-cutter');
 import adjustColor from '../helpers/lightenColor';
-import { t } from 'i18next';
 import { urlCloud } from '../constants';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
@@ -34,6 +33,9 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
+    const [, updateState] = useState<{}>();
+    const forceUpdate = useCallback(() => updateState({}), []);
+
     const router = useRouter();
 
     useEffect(()=>{
@@ -59,6 +61,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
 
     const updateAvatars = (tempArray : Array<croppedUser>) => {
         setAvatars(tempArray);
+        forceUpdate();
     }
 
 
@@ -239,7 +242,7 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
         setCurrCo3(letterCo[2]);
     }
 
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         renderCoOwners();
     })
 
