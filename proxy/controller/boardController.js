@@ -341,7 +341,7 @@ module.exports.boardDetails = async (req,res) =>{
                                     }
                                     tempCard.lane_name = lane_name;
                                     tempCard.lane_color = lane_color;
-                                    if(tempCard.description.length > 0){
+                                    /*if(tempCard.description.length > 0){
                                         let tempDescription = '';
                                         try{
                                             tempDescription = changeWidth(tempCard.description);
@@ -351,7 +351,7 @@ module.exports.boardDetails = async (req,res) =>{
                                             tempDescription = tempCard.description;
                                         }
                                         tempCard.description = tempDescription;
-                                    }
+                                    }*/
                                     columnCards.push(tempCard);
                                 }
                             })
