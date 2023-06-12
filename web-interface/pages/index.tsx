@@ -166,7 +166,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     };
 
-    useEffect(() => {
+    /*useEffect(() => {
       const checkToken = () => {
         const token = cookieCutter.get('apikey');
         if (token) 
@@ -175,7 +175,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
         } 
       }
       checkToken();
-    });
+    },[]);*/
 
 
     return (

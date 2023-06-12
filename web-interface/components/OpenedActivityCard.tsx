@@ -16,7 +16,7 @@ import Image from 'next/image';
 const cookieCutter= require('cookie-cutter');
 
 
-const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, openedCardOwner, openedCardCoowner, openedCardAddComment, openedCardComments}: OpenedActivityCardProps) =>{
+const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, openedCardOwner, openedCardCoowner, openedCardAddComment, openedCardComments, requests, invalid, moreMB, fileError, commentSuccess}: OpenedActivityCardProps) =>{
     const router = useRouter();
 
     const [openComments, setOpenComments] = useState<boolean>(false);
@@ -66,7 +66,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                 Swal.fire({
                     icon: 'warning',
-                    title: 'File size must not be greater than to 15MB',
+                    title: moreMB,
                     showCloseButton: true
                 })
 
@@ -88,7 +88,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
             Swal.fire({
                 icon: 'error',
-                title: 'There was an error uploading the file',
+                title: fileError,
                 showCloseButton: true
             })
 
@@ -172,7 +172,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: 'Muchas peticiones'
+                    title: requests
                     })
             }
             else if(data.error === 401){
@@ -187,7 +187,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Token inválido'
+                title: invalid
                 })
             }
             else {
@@ -290,7 +290,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     
                 Toast.fire({
                     icon: 'success',
-                    title: 'Comment successfully sent'
+                    title: commentSuccess
                 })
 
 
@@ -341,7 +341,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: 'Muchas peticiones'
+                    title: requests
                     })
                 }
                 else if( ex.response.status  === 401){
@@ -356,7 +356,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: 'Token inválido'
+                    title: invalid
                     })
                 }
                 else{

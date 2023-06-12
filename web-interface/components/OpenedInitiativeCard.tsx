@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 const cookieCutter= require('cookie-cutter');
 
 
-const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, linked_cards, openedCardOwner, openedCardComments, openedCardAddComment, openedCardCoowner, openedCardActivities}: OpenedInitiativeCardProps) =>{
+const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, linked_cards, openedCardOwner, openedCardComments, openedCardAddComment, openedCardCoowner, openedCardActivities, requests, invalid, moreMB, fileError, commentSuccess}: OpenedInitiativeCardProps) =>{
 
     const router = useRouter();
 
@@ -69,7 +69,7 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
                 setHasFile(false);
                 Swal.fire({
                     icon: 'warning',
-                    title: 'File size must not be greater than to 15MB',
+                    title: moreMB,
                     showCloseButton: true
                 })
                 return;
@@ -88,7 +88,7 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
         else{
             Swal.fire({
                 icon: 'error',
-                title: 'There was an error uploading the file',
+                title: fileError,
                 showCloseButton: true
             })
             setHasFile(false);
@@ -168,7 +168,7 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: 'Muchas peticiones'
+                    title: requests
                     })
             }
             else if(data.error === 401){
@@ -183,7 +183,7 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Token inválido'
+                title: invalid
                 })
             }
             else {
@@ -309,7 +309,7 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
                     
                 Toast.fire({
                     icon: 'success',
-                    title: 'Comment successfully sent'
+                    title: commentSuccess
                 })
 
 
@@ -360,7 +360,7 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: 'Muchas peticiones'
+                    title: requests
                     })
                 }
                 else if( ex.response.status  === 401){
@@ -375,7 +375,7 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: 'Token inválido'
+                    title: invalid
                     })
                 }
                 else{

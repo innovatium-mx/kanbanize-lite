@@ -26,7 +26,7 @@ const authRoute = (Component : any) => {
                       
           Toast.fire({
             icon: 'error',
-            title: 'Tienes que hacer login!'
+            title: 'Error'
           })
           cookieCutter.set('apikey', '', { expires: new Date(0) })
           cookieCutter.set('host', '', { expires: new Date(0) })
