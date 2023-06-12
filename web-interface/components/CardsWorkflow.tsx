@@ -1,5 +1,5 @@
 import ColumnTitle from './ColumnTitle';
-import {useEffect, useState } from "react";
+import {useEffect, useState, useLayoutEffect, useCallback, useRef } from "react";
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router'
 import Dynamicboard from '../styles/Dynamicboard.module.css';
@@ -20,7 +20,7 @@ type CardsWorkflowProps = {
     moveCards: any,
     goBack : boolean,
     applyInsertEffect : (val:boolean) => void,
-    filterSelectAll : string
+    filterSelectAll : string,
 }
 
 type showButtons = {
@@ -34,15 +34,38 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
     const [color, setColor] = useState<string>('#9e9e9e');
     const [activities, setActivities] = useState<Array<card> | null>([]);
-    const [filtered, setFiltered] = useState<Array<card> | null>([]);
+    const [filtered, setFiltered] = useState<Array<card> | null>([...data[0].cards]);
+    const [allFiltered, setAllFiltered] = useState<boolean>(true);
+    const allFilteredRef : any = useRef(null);
+    allFilteredRef.current = allFiltered;
+
     const [selected, setSelected] = useState<Array<selection>>([]);
     const columns = data;
 
     const ActivityCard = dynamic(import('../components/ActivityCard'), {ssr:false});
     const [cardIndex, setCardIndex] = useState(0);
     const [ getToBacklog, setGetToBacklog] = useState<boolean>(false);
-
+    const [filteredChanged, setFilteredChanged] = useState<boolean>(false);
     
+    const [, updateState] = useState<{}>();
+    const forceUpdate = useCallback(() => updateState({}), []);
+
+    const [artificialKey, setArtificialKey] = useState<boolean>(false);
+
+    useEffect(()=>{
+        console.log(allFilteredRef.current);
+        if(allFilteredRef.current)
+            setActivities(data[0].cards);
+        else{
+            setActivities(filtered);
+        }
+    })
+
+
+    useLayoutEffect(()=>{
+        setActivities(filtered);
+    },[filtered]);
+
     useEffect(()=>{
         setGetToBacklog(goBack);
     }, [goBack])
@@ -57,7 +80,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             setColor('#'+data[0].color);
         }
     }, [data])
-    
 
     useEffect(()=>{
         setAllSelected(users);
@@ -67,9 +89,11 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         setFilteredActivities(data, index, selected);
     }, [data, index, selected]);
 
-    useEffect(()=>{
-        setActivities(filtered);
-    }, [filtered]);
+    /* useEffect(()=>{
+        //setActivities(filtered);
+        console.log('filtered changed');
+        setFilteredChanged(true);
+    },[filtered]); */
 
     useEffect(()=>{
         if(getToBacklog){
@@ -83,7 +107,8 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 setColor('#'+columns[0].color);
             }
         }
-    })
+
+    },[getToBacklog])
 
     const setAllSelected = (u : Array<user>) => {
         const usersselection : Array<selection> = [];
@@ -92,6 +117,10 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         })
         setSelected(usersselection);
         setFiltered(data[index].cards);
+        setFilteredChanged(false);
+
+        setAllFiltered(true);
+        console.log('reset');
     }
 
     const setFilteredActivities = (d: Array<column>, i: number, s:Array<selection>) =>{ 
@@ -114,7 +143,17 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 filteredData.push(element);
             }
         })
+        console.log(filteredData);
         setFiltered(filteredData)
+        setFilteredChanged(true);
+
+        if(filteredData.length === data[0].cards.length){
+            setAllFiltered(true);
+        }
+        else{
+            setAllFiltered(false);
+        }
+
     }
 
     const retrieveIndex = (cardIndex: number) =>{
@@ -270,23 +309,25 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     return(
         <>
             
-
+            <div>
                 <div style={{position: 'fixed', paddingTop:'5.6em', width:'100%', zIndex:'1'}}>
-                    <ColumnTitle filterSelectAll={filterSelectAll} name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users} selected={selected} setFilter={setFilter}/>
-                </div>
-                <div className={Dynamicboard.grid}>
-                    { activities != null && activities.map((element: any) =>
-                        <div key={element.key} className={Dynamicboard.cardContainer}>
-                            <div className={Dynamicboard.buttons} />
-                            <ActivityCard card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} retrieveIndex={retrieveIndex} displayModal={displayModal} lane_name={element.lane_name} lane_color={element.lane_color}/>
-                            <div className={Dynamicboard.buttons} onClick={() => handleRightClick(element.card_id)}>
-                                { !element.is_blocked && buttons.right &&
-                                    <FontAwesomeIcon icon={faCircleArrowRight} style={{color: "#000000"}} />
-                                }
+                        <ColumnTitle filterSelectAll={filterSelectAll} name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users} selected={selected} setFilter={setFilter}/>
+                    </div>
+                    <div className={Dynamicboard.grid}>
+                        { activities != null && activities.map((element: any) =>
+                            <div className={Dynamicboard.cardContainer}>
+                                <div className={Dynamicboard.buttons} />
+                                <ActivityCard key={element.key} card_id={element.card_id}  color={element.color} owner_avatar={element.owner_avatar} title={element.title} owner_username={element.owner_username} retrieveIndex={retrieveIndex} displayModal={displayModal} lane_name={element.lane_name} lane_color={element.lane_color}/>
+                                <div className={Dynamicboard.buttons} onClick={() => handleRightClick(element.card_id)}>
+                                    { !element.is_blocked && buttons.right &&
+                                        <FontAwesomeIcon icon={faCircleArrowRight} style={{color: "#000000"}} />
+                                    }
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
                 </div>
+            </div>
+                
         </>
     )
 }

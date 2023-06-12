@@ -29,10 +29,9 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, retr
         letterBackground = newColor;
     }
 
-    console.log(lane_color);
     const laneColor : string = '#' + lane_color;
     var laneTextColor : string = ''; 
-    
+
     (!isTooLight(laneColor)? laneTextColor = '#FFFFFF' : laneTextColor = '#000000');
 
     return(

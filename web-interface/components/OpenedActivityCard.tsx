@@ -359,6 +359,9 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     var letterCoBg : Array<string | undefined> = [undefined, undefined, undefined] 
     const grays : Array<string> = ['#6c6c6c','#929292','#cfcfcf'];
 
+    console.log(co_owner_usernames);
+    console.log(co_owner_avatars);
+
     if(co_owner_usernames!=null && co_owner_usernames!=undefined){
 
         for(var x = 0; x < co_owner_usernames.length; x++){
@@ -383,6 +386,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         setCurrCoBg3(letterCoBg[2])
     })
     
+    console.log(description);
 
     return(
     <>

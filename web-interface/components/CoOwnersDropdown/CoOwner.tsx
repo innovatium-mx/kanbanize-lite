@@ -1,4 +1,4 @@
-import { useState , useEffect} from "react";
+import { useState , useEffect, useRef, useCallback} from "react";
 import CardFilter from '../../styles/Filter.module.css';
 import {selection, user, AddCoOwners, croppedUser} from '../../types/types';
 
@@ -7,6 +7,9 @@ const CoOwner = ({users, selected, setNewSelection, updateAvatars, avatarsList} 
     const [checked, setChecked] = useState<Array<selection>>([]);
     const [options, setOptions] = useState<Array<user>>([])
     const [retrievedAvatarList, setRetrievedAvatarList] = useState<Array<croppedUser>>([]);
+
+    const [, updateState] = useState<any>();
+    const forceUpdate = useCallback(() => updateState({}), []);
 
     useEffect(()=>{
         setRetrievedAvatarList(avatarsList);
@@ -22,6 +25,8 @@ const CoOwner = ({users, selected, setNewSelection, updateAvatars, avatarsList} 
 
         const found = checked.findIndex(item => item.user_id !== null && item.user_id.toString() === e.target.value);
         temp[found].checked = !temp[found].checked;
+        console.log(found);
+        console.log(temp[found]);
 
         setChecked(temp);
         setNewSelection(temp);
@@ -39,6 +44,9 @@ const CoOwner = ({users, selected, setNewSelection, updateAvatars, avatarsList} 
 
                 updateAvatars(tempArray);
             }
+            else{
+                updateAvatars(retrievedAvatarList);
+            }
 
         }               
         else{
@@ -47,11 +55,11 @@ const CoOwner = ({users, selected, setNewSelection, updateAvatars, avatarsList} 
             
             updateAvatars(x);
         }
-
+        forceUpdate();
     };
 
     return (
-         <div className={CardFilter.open}  style={{right:'30vw', position:'fixed'}}>
+         <div className={CardFilter.newcardOpen}>
             
             {
                 options.map((element : any) =>
@@ -69,7 +77,7 @@ const CoOwner = ({users, selected, setNewSelection, updateAvatars, avatarsList} 
                         </div>
 
                         <div className={CardFilter.checkbox}>
-                            <input type="checkbox" value={element.user_id} defaultChecked={checked[checked.findIndex( item => item.user_id === element.user_id)].checked} onChange={handleChange}/>
+                            <input type="checkbox" value={element.user_id} checked={checked[checked.findIndex( item => item.user_id === element.user_id)].checked} onChange={handleChange}/>
                         </div>
 
                     </div>

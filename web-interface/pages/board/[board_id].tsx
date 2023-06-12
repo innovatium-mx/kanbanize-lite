@@ -6,7 +6,7 @@ import authRoute from '../../components/authRoute';
 import CardsWorkflow from '../../components/CardsWorkflow';
 import InitiativesWorkflow from '../../components/InitiativesWorkflow';
 import FloatButton from '../../components/FloatButton';
-import {useEffect, useState, useRef, useLayoutEffect} from "react";
+import {useEffect, useState, useRef, useLayoutEffect, useCallback} from "react";
 import dynamic from 'next/dynamic';
 import { urlCloud } from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
@@ -19,6 +19,7 @@ const cookieCutter= require('cookie-cutter');
 
 import Image from 'next/image';
 import Sidebar from '../../components/Sidebar';
+import { use } from 'i18next';
 
 type Props = {}
 
@@ -65,6 +66,10 @@ const Board = (props: PropsResponse) => {
   const pageRef = useRef<any>(null);
   const [pageWidth, setPageWidth] = useState<{width: number;}>({width:0})
 
+  const [, updateState] = useState<{}>();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
+
   const userId = cookieCutter.get('userid');
 
   const activateInsertCard = (param: boolean) =>{
@@ -104,6 +109,9 @@ const Board = (props: PropsResponse) => {
     "lanes": [],
   });
 
+  const workflowRef : any = useRef(null);
+  workflowRef.current = workflow;
+  console.log(workflow);
 
   const query = router.query;
   const board_id = query.board_id;
@@ -158,22 +166,23 @@ const Board = (props: PropsResponse) => {
   }
 
   const insertCardUpdate = (newCard : card) =>{
-    const tempWorkflow : workflow = workflow;
-
+    var tempWorkflow : workflow = {...workflow};
+    var newPosition : number = 0;
 
     if(tempWorkflow!=null){
-      tempWorkflow.columns[0].cards.push(newCard);
-      setNewCardPosition(workflow.columns[0].cards.length + 1);
+      newPosition = workflow.columns[0].cards.findIndex(e => e.lane_name !== workflow.lanes[0].name);
+      tempWorkflow.columns[0].cards.splice(newPosition, 0, newCard);
+      setNewCardPosition(newPosition+1);
     }
 
+    //setArtificialKey(artificialKey+1);
     setWorkflow(tempWorkflow);
   }
+
 
   const applyInsertEffect = (val : boolean) =>{
     setReturnToBacklog(val);
   }
-
-
 
   const showModal = (value: boolean) =>{
     setDisplayCard(value);
@@ -211,8 +220,6 @@ const Board = (props: PropsResponse) => {
   const updateSelected = (newSelected: Array<selection>) =>{
     setSelected(newSelected);
   }
-
-  console.log(workflow);
 
   return (
     <>
@@ -254,7 +261,7 @@ const Board = (props: PropsResponse) => {
 
         <div>
           { workflow.type === 0 && 
-            <CardsWorkflow filterSelectAll={t('filter.selectAll')} data={workflow.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
+            <CardsWorkflow filterSelectAll={t('filter.selectAll')} data={workflowRef.current.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
           }
 
           {workflow.type === 1 &&
