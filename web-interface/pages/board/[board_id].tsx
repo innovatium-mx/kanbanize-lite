@@ -15,6 +15,7 @@ import {useRouter} from 'next/router';
 import { workflow, card, user, selection, } from '@/types/types';
 import NewCardComponent from '../../components/NewCardComponent';
 import OpenedInitiativeCard from '../../components/OpenedInitiativeCard';
+import Swal from 'sweetalert2'
 const cookieCutter= require('cookie-cutter');
 
 import Image from 'next/image';
@@ -23,30 +24,27 @@ import Link from 'next/link';
 
 type Props = {}
 
-  type NextJsI18NConfig = {
+type NextJsI18NConfig = {
+  defaultLocale: string
+  domains?: {
     defaultLocale: string
-    domains?: {
-      defaultLocale: string
-      domain: string
-      http?: true
-      locales?: string[]
-    }[]
-    localeDetection?: false
-    locales: string[]
-  }
+    domain: string
+    http?: true
+    locales?: string[]
+  }[]
+  localeDetection?: false
+  locales: string[]
+}
   
 interface PropsResponse {
-  data: Array<workflow>
+  data: Array<workflow> | Error,
   _nextI18Next: NextJsI18NConfig
 }
-  interface PropsResponse {
-    data : Array<workflow> 
-    _nextI18Next : NextJsI18NConfig
-  }
 
 const Board = (props: PropsResponse) => {
   const router = useRouter();
   const { t } = useTranslation('common');
+  const [pageLoaded, setPageLoaded] = useState(false);
   const InterfaceDropdown = dynamic(import('../../components/InterfaceDropdown'), { ssr: false });
   const OpenedActivityCard = dynamic(import('../../components/OpenedActivityCard'), { ssr: false });
 
@@ -108,22 +106,84 @@ const Board = (props: PropsResponse) => {
 
   const query = router.query;
   const board_id = query.board_id;
-  const board = props.data;
+  const board = props.data.error ? [] : props.data;
 
   useEffect(() => {
-    const temp = board.filter(function (item) { return item.type === 0});
-    if(temp.length > 0){
-      setWorkflow(temp[0]);
-      setRetrievedWorflow(true);
-      setResetIndex(0);
+    if(props.data.error){
+      cookieCutter.set('apikey', '', { expires: new Date(0) });
+      cookieCutter.set('host', '', { expires: new Date(0) });
+      cookieCutter.set('email', '', { expires: new Date(0) });
+      cookieCutter.set('userid', '', { expires: new Date(0) });
+      cookieCutter.set('avatar', '', { expires: new Date(0) });
+      cookieCutter.set('username', '', { expires: new Date(0) });
+      cookieCutter.set('workspace', '', { expires: new Date(0) });
+      router.replace({pathname: '/'});
+      if(props.data.error === 429){
+        const Toast = Swal.mixin({
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: false,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })             
+        Toast.fire({
+          icon: 'error',
+          title: 'Muchas peticiones'
+        })
+      }
+      else if(props.data.error === 401){
+        const Toast = Swal.mixin({
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: false,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })             
+        Toast.fire({
+          icon: 'error',
+          title: 'Token inválido'
+        })
+      }
+      else{
+        const Toast = Swal.mixin({
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: false,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })             
+        Toast.fire({
+          icon: 'error',
+          title: 'Error'
+        })
+      }
     }
     else{
-      setWorkflow(board[board.length-1]);
-      setRetrievedWorflow(true);
-      setResetIndex(0);
+      setPageLoaded(true);
     }
-    
-  }, [board])
+  }, [props.data, router])
+
+  useEffect(() => {
+    if(pageLoaded){
+      const temp = board.filter(function (item) { return item.type === 0});
+      if(temp.length > 0){
+        setWorkflow(temp[0]);
+        setRetrievedWorflow(true);
+        setResetIndex(0);
+      }
+      else{
+        setWorkflow(board[board.length-1]);
+        setRetrievedWorflow(true);
+        setResetIndex(0);
+      }
+    }
+  }, [pageLoaded, board])
   
 
   const getWorkflow = (workflowid: number) => {
@@ -206,8 +266,10 @@ const Board = (props: PropsResponse) => {
 }
 
   useEffect(()=>{
+    if(pageLoaded){
       setAllSelected(workflow.users);
-  }, [retrievedWorkflow])
+    }
+  }, [pageLoaded, workflow.users])
 
   const updateSelected = (newSelected: Array<selection>) =>{
     setSelected(newSelected);
@@ -292,64 +354,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     },
   })
 
-  if (response.ok) {
-    const data: any = await response.json();
-    if (!data.error) {
-      return {
-          props: {
-          ...(await serverSideTranslations(context.locale ?? 'en', [
-            'common'
-          ])),
-          data
-        }
-      }
-    }
-    else {
-      cookies.set('apikey');
-      cookies.set('host');
-      cookies.set('email');
-      cookies.set('userid');
-      cookies.set('avatar');
-      cookies.set('username');
-      cookies.set('workspace')
-
-
-        return {
-          redirect: {
-          permanent: false,
-        destination: "/",
-        },
-        props: {
-          ...(await serverSideTranslations(context.locale ?? 'en', [
-            'common'
-          ]))
-        }
-      }
-    }
-
-  }
-  else {
-    cookies.set('apikey');
-    cookies.set('host');
-    cookies.set('email');
-    cookies.set('userid');
-    cookies.set('avatar');
-    cookies.set('username');
-    cookies.set('workspace')
-
-        return {
-          redirect: {
-          permanent: false,
-        destination: "/",
-      },
+  const data: any = await response.json();
+  return {
       props: {
-        ...(await serverSideTranslations(context.locale ?? 'en', [
-          'common'
-        ]))
-      }
+      ...(await serverSideTranslations(context.locale ?? 'en', [
+        'common'
+      ])),
+      data
     }
   }
-
 }
 
 export default authRoute(Board);
