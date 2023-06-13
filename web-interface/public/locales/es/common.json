@@ -34,5 +34,6 @@
     "SWAL.apikey": "Apikey inválido",
     "SWAL.moreMB": "El tamaño del archivo no debe ser superior a 15 MB",
     "SWAL.fileError": "Hubo un error al cargar el archivo",
-    "SWAL.commentSuccess": "Comentario enviado con éxito"
+    "SWAL.commentSuccess": "Comentario enviado con éxito",
+    "SWAL.cardSuccess": "Tarjeta agregada satisfactoriamente"
 }

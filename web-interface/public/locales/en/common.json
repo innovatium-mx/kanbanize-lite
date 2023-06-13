@@ -34,5 +34,6 @@
     "SWAL.apikey": "Apikey invalid",
     "SWAL.moreMB": "File size must not be greater than to 15MB",
     "SWAL.fileError": "There was an error uploading the file",
-    "SWAL.commentSuccess": "Comment successfully sent"
+    "SWAL.commentSuccess": "Comment successfully sent",
+    "SWAL.cardSuccess": "Card added successfully"
 }
