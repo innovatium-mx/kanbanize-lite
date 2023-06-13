@@ -60,6 +60,7 @@ const Board = (props: PropsResponse) => {
   const [ newCardPosition, setNewCardPosition] = useState<number>(0);
 
   const [returnToBacklog, setReturnToBacklog] = useState<boolean>(false);
+  const [board, setBoard] = useState([]);
 
   const pageRef = useRef<any>(null);
   const [pageWidth, setPageWidth] = useState<{width: number;}>({width:0})
@@ -109,18 +110,26 @@ const Board = (props: PropsResponse) => {
 
   const query = router.query;
   const board_id = query.board_id;
-  const board = props.data as workflow[];
+
+  function timeout(delay: number) {
+    return new Promise( res => setTimeout(res, delay) );
+  }
 
   useEffect(() => {
+    //await timeout(10000); //for 1 sec delay
+
+          //console.log(props.data);
+
     if("error" in props.data){
-      cookieCutter.set('apikey', '', { expires: new Date(0) });
+      /* cookieCutter.set('apikey', '', { expires: new Date(0) });
       cookieCutter.set('host', '', { expires: new Date(0) });
       cookieCutter.set('email', '', { expires: new Date(0) });
       cookieCutter.set('userid', '', { expires: new Date(0) });
       cookieCutter.set('avatar', '', { expires: new Date(0) });
       cookieCutter.set('username', '', { expires: new Date(0) });
-      cookieCutter.set('workspace', '', { expires: new Date(0) });
+      cookieCutter.set('workspace', '', { expires: new Date(0) }); */
       router.replace({pathname: '/'});
+
       if(props.data.error === 429){
         const Toast = Swal.mixin({
           showConfirmButton: false,
@@ -168,6 +177,7 @@ const Board = (props: PropsResponse) => {
       }
     }
     else{
+      setBoard(props.data as workflow[])
       setPageLoaded(true);
     }
   }, [invalid, props.data, requests, router])
@@ -186,7 +196,7 @@ const Board = (props: PropsResponse) => {
         setResetIndex(0);
       }
     }
-  }, [pageLoaded, board])
+  }, [pageLoaded])
   
 
   const getWorkflow = (workflowid: number) => {
@@ -358,6 +368,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   })
 
   const data: any = await response.json();
+  if(data.error){
+    const cookies = new Cookies(context.req, context.res);
+    cookies.set('apikey');
+    cookies.set('host');
+    cookies.set('email');
+    cookies.set('userid');
+    cookies.set('avatar');
+    cookies.set('username');
+    cookies.set('workspace');
+  }
   return {
       props: {
       ...(await serverSideTranslations(context.locale ?? 'en', [

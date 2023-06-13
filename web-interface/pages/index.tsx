@@ -166,7 +166,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
     };
 
-    /*useEffect(() => {
+    useEffect(() => {
       const checkToken = () => {
         const token = cookieCutter.get('apikey');
         if (token) 
@@ -175,7 +175,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
         } 
       }
       checkToken();
-    },[]);*/
+    },[]);
 
 
     return (
@@ -187,7 +187,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
             </Head>*/
         }
-            <div className={login.dropdownFragment}>
+            <div className={login.dropdownFragment} style={{paddingTop:'1em'}}>
                 <LanguageButton color={false}/>
             </div>
 
@@ -196,7 +196,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
             <div className={login.grid}>
 
-                <div >
+                <div style={{paddingTop:'1em'}}>
                     <img src="/Kanbanize_logo.png" alt="Kanbanize-logo" className={login.logo}/>
                 </div>
 
@@ -241,7 +241,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     </form>
                 </div>
             </div>
-            </div>
+        </div>
         </>
 
     )
