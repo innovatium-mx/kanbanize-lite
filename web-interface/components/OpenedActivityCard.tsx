@@ -11,7 +11,6 @@ import {urlCloud} from '../constants';
 import { comment, OpenedActivityCardProps, Author, Attachment } from '../types/types';
 import Swal from 'sweetalert2';
 import { TailSpin } from  'react-loader-spinner'
-import Image from 'next/image';
 
 const cookieCutter= require('cookie-cutter');
 import { deleteCookie } from 'cookies-next';
@@ -45,7 +44,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     const [openedCardHeight, setOpenedCardHeight] = useState({height:0})
     const [scrollClass, setScrollClass] = useState(openedCard.nonScroll);
     const [justResized, setJustResized] = useState<boolean>(false); 
-
 
     //change send icon to loading
     const [sending, setSending] = useState<boolean>(false);
@@ -126,7 +124,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         }
     })
 
-    
     const pushComment = (text: string, last_modified: string, author: Author, attachment: Array<Attachment>) =>{
         var decoyCommentsArray : Array<comment | null> = ([]);
         decoyCommentsArray = commentsArray;
@@ -207,6 +204,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 })
             }
         }
+
         else{
             for(var x = 0; x<data.length; x++){
                 pushComment(data[x].text, data[x].last_modified, data[x].author, data[x].attachments);
@@ -262,11 +260,11 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     "apikey": apikey
                 }
             }
+
             if(hasFile && file !== undefined){
                 formData.append("file", file);
                 formData.append("fileName", file.name);
             }
-
 
             try{
                 const res = await axios.post(
@@ -293,9 +291,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     icon: 'success',
                     title: commentSuccess
                 })
-
-
-
 
                 const newAuthor: Author = {
                     "avatar": sessionAvatar,
@@ -377,7 +372,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 }
             }
             
-            
             //sets variable that rerenders comments component
             setHasFile(false);
             setJustSent('');
@@ -440,7 +434,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
     return(
     <>
         <div className={openedCard.modalBackground}>
-
             <div className={scrollClass} ref={componentRef}>
 
                 <div className={openedCard.Card}>
@@ -463,7 +456,6 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
 
                             <div>{openedCardOwner}</div>
                         </div>
-
 
                         <div className={openedCard.coOwners}>
 

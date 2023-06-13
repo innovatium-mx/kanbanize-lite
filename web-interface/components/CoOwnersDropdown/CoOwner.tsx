@@ -1,4 +1,4 @@
-import { useState , useEffect, useRef, useCallback} from "react";
+import { useState , useEffect, useCallback} from "react";
 import CardFilter from '../../styles/Filter.module.css';
 import {selection, user, AddCoOwners, croppedUser} from '../../types/types';
 

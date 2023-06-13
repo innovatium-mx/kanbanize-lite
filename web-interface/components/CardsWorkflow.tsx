@@ -8,7 +8,6 @@ import {faCircleArrowLeft, faCircleArrowRight} from '@fortawesome/free-solid-svg
 import {urlCloud} from '../constants'
 import {column, card, user, selection} from '../types/types';
 import Swal from 'sweetalert2';
-import { set } from 'react-hook-form';
 
 
 const cookieCutter= require('cookie-cutter');
@@ -25,7 +24,9 @@ type CardsWorkflowProps = {
     applyInsertEffect : (val:boolean) => void,
     filterSelectAll : string,
     requests: string,
-    invalid: string
+    invalid: string,
+    justMoved: boolean,
+    updateJustMoved : (value:boolean) => void,
 }
 
 type showButtons = {
@@ -33,7 +34,7 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect, filterSelectAll, requests, invalid} : CardsWorkflowProps) => {
+const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect, filterSelectAll, requests, invalid, justMoved, updateJustMoved} : CardsWorkflowProps) => {
     const router = useRouter();
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
@@ -65,7 +66,21 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
 
     const [activitiesLength, setActivitiesLength] = useState<number>(data[0].cards.length);
     const [ upperActivitiesLength, setUpperActivitiesLength] = useState<number>(data[0].cards.length);
-    //console.log(filterUsers)
+
+    const [ moved, setMoved] = useState<boolean>(false);
+
+    useEffect(()=>{
+        //set moved state
+        setMoved(justMoved);
+    })
+
+    useEffect(()=>{
+        if(justMoved){
+            setAllSelected(users);
+            updateJustMoved(false);
+            setAllFiltered(true);
+        }
+    })
 
     useEffect(()=>{
         setFilterUsers(users);
@@ -74,39 +89,9 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         }
     });
 
-
     useEffect(()=>{
-        // checks for activities length in every render
-        //setActivitiesLength(data[0].cards.length);
         setUpperActivitiesLength(data[0].cards.length);
-
     })
-
-    /* useEffect(() =>{
-        console.log('intended');
-        console.log(activitiesLength);
-        
-        console.log(effectCounterRef.current);
-        if(effectCounterRef.current === 0 && (upperActivitiesLength > activitiesLength)){
-            //render all cards
-            setActivities(data[index].cards);
-            forceUpdate();
-            setEffectCounter(effectCounter+1);
-            console.log('done1');
-            setAllFiltered(false);
-
-        }
-        else if(effectCounterRef.current === 1){
-            //render filter
-            setEffectCounter(-1);
-            setActivities(filtered);
-            console.log('done2');
-            setAllFiltered(false);
-            setActivitiesLength(upperActivitiesLength);
-        }
-
-    }) */
-
 
     useLayoutEffect(()=>{
         if(allFiltered)
@@ -118,8 +103,13 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             setActivities(filtered);
             console.log('done3');
         }
-    })
 
+        if(upperActivitiesLength > activitiesLength){
+            setAllSelected(users);
+            setActivitiesLength(upperActivitiesLength);
+            console.log('all selected')
+        }
+    })
 
     useLayoutEffect(()=>{
         setActivities(filtered);
@@ -182,8 +172,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 if(found !== undefined && found.checked){
                     filteredData.push(element);
                 }
-
-
         })
         setFiltered(filteredData)
     }
@@ -197,14 +185,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             if(found !== undefined && found.checked){
                 filteredData.push(element);
             }
-
-            if(found?.user_id == userId && found?.checked){
-                setSelfFound(true);
-                setEffectCounter(0);
-                forceUpdate();
-                console.log('hereeeeeee');
-            }
-
         })
         setFiltered(filteredData)
         setFilteredChanged(true);
@@ -213,13 +193,9 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             setAllFiltered(true);
             setSelfFound(false);
         }
-        /* else if(selfFound){
-            console.log('coolest kittie');
-        } */
         else{
             setAllFiltered(false);
         }
-
     }
 
     const retrieveIndex = (cardIndex: number) =>{
@@ -227,7 +203,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         const curr = activities!=null ? activities.find(item => item.card_id === cardIndex) : [];
 
         updateCurrentCard(curr);
-
     }
 
     const handleLeftClick = async (card_id : number) => {

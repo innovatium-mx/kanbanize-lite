@@ -106,7 +106,6 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
         return finalTime;
     }
 
-
     useLayoutEffect(()=>{
         if(componentRef.current) {
             setOpenedCardHeight({height: componentRef.current.clientHeight})
@@ -121,7 +120,6 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
             setJustResized(true);
         }
     })
-
     
     const pushComment = (text: string, last_modified: string, author: Author, attachment: Array<Attachment>) =>{
         var decoyCommentsArray : Array<comment | null> = ([]);
