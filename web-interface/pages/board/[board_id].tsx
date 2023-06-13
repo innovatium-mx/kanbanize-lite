@@ -60,7 +60,6 @@ const Board = (props: PropsResponse) => {
   const [ newCardPosition, setNewCardPosition] = useState<number>(0);
 
   const [returnToBacklog, setReturnToBacklog] = useState<boolean>(false);
-  const [board, setBoard] = useState([]);
 
   const pageRef = useRef<any>(null);
   const [pageWidth, setPageWidth] = useState<{width: number;}>({width:0})
@@ -116,10 +115,7 @@ const Board = (props: PropsResponse) => {
 
   const query = router.query;
   const board_id = query.board_id;
-
-  function timeout(delay: number) {
-    return new Promise( res => setTimeout(res, delay) );
-  }
+  const board = props.data as workflow[];
 
   useEffect(() => {
     //await timeout(10000); //for 1 sec delay
@@ -183,7 +179,6 @@ const Board = (props: PropsResponse) => {
       }
     }
     else{
-      setBoard(props.data as workflow[])
       setPageLoaded(true);
     }
   }, [invalid, props.data, requests, router])
