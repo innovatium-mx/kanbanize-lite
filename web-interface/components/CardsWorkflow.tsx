@@ -97,17 +97,14 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         if(allFiltered)
         {
             setActivities(data[index].cards);
-            console.log('done0');
         }
         else{
             setActivities(filtered);
-            console.log('done3');
         }
 
         if(upperActivitiesLength > activitiesLength){
             setAllSelected(users);
             setActivitiesLength(upperActivitiesLength);
-            console.log('all selected')
         }
     })
 

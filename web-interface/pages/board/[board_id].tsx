@@ -299,7 +299,6 @@ const Board = (props: PropsResponse) => {
 
     if(tempWorkflow!=null){
       newPosition = workflow.columns[0].cards.findIndex(e => e.lane_name !== workflow.lanes[0].name);
-      console.log(newPosition);
 
       newPosition === -1 ? tempWorkflow.columns[0].cards.splice(workflow.columns[0].cards.length, 0, newCard)
       :
