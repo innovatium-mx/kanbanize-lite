@@ -8,6 +8,7 @@ import {faCircleArrowLeft, faCircleArrowRight} from '@fortawesome/free-solid-svg
 import {urlCloud} from '../constants'
 import {column, card, user, selection} from '../types/types';
 import Swal from 'sweetalert2';
+import { set } from 'react-hook-form';
 
 
 const cookieCutter= require('cookie-cutter');
@@ -55,15 +56,55 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [selfFound, setSelfFound] = useState<boolean>(false);
     const userId = cookieCutter.get('userid');
 
+    const [effectCounter, setEffectCounter] = useState<number>(-1);
+    const effectCounterRef : any = useRef(0); effectCounterRef.current = effectCounter;
+
+    const [activitiesLength, setActivitiesLength] = useState<number>(data[0].cards.length);
+    const [ upperActivitiesLength, setUpperActivitiesLength] = useState<number>(data[0].cards.length);
+
 
     useEffect(()=>{
+        // checks for activities length in every render
+        //setActivitiesLength(data[0].cards.length);
+        setUpperActivitiesLength(data[0].cards.length);
+
+    })
+
+    /* useEffect(() =>{
+        console.log('intended');
+        console.log(activitiesLength);
+        
+        console.log(effectCounterRef.current);
+        if(effectCounterRef.current === 0 && (upperActivitiesLength > activitiesLength)){
+            //render all cards
+            setActivities(data[index].cards);
+            forceUpdate();
+            setEffectCounter(effectCounter+1);
+            console.log('done1');
+            setAllFiltered(false);
+
+        }
+        else if(effectCounterRef.current === 1){
+            //render filter
+            setEffectCounter(-1);
+            setActivities(filtered);
+            console.log('done2');
+            setAllFiltered(false);
+            setActivitiesLength(upperActivitiesLength);
+        }
+
+    }) */
+
+
+    useLayoutEffect(()=>{
         if(allFiltered)
         {
             setActivities(data[index].cards);
+            console.log('done0');
         }
-            
         else{
             setActivities(filtered);
+            console.log('done3');
         }
     })
 
@@ -139,31 +180,30 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         setSelected(temp);
         const filteredData :  Array<card> = [];
         data[index]?.cards?.map((element: any) => {
-            const found = temp.find(item => item.user_id == element.owner_user_id);
+
+            const found : selection | undefined = temp.find(item => item.user_id == element.owner_user_id);
             if(found !== undefined && found.checked){
                 filteredData.push(element);
             }
 
-            if(found?.user_id == userId){
+            if(found?.user_id == userId && found?.checked){
                 setSelfFound(true);
+                setEffectCounter(0);
                 forceUpdate();
+                console.log('hereeeeeee');
             }
 
         })
         setFiltered(filteredData)
         setFilteredChanged(true);
 
-        if(filteredData.length === data[index].cards.length){
+        if(filteredData.length === data[index].cards.length && !selfFound){
             setAllFiltered(true);
-        }
-        else if(selfFound){
-
-            setAllFiltered(true);
-            forceUpdate();
-
-            setAllFiltered(false);
             setSelfFound(false);
         }
+        /* else if(selfFound){
+            console.log('coolest kittie');
+        } */
         else{
             setAllFiltered(false);
         }
