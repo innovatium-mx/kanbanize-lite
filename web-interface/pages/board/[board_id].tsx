@@ -68,6 +68,8 @@ const Board = (props: PropsResponse) => {
   const [, updateState] = useState<{}>();
   const forceUpdate = useCallback(() => updateState({}), []);
 
+  const [ justMoved, setJustMoved] = useState<boolean>(false);
+
 
   const userId = cookieCutter.get('userid');
   const userusername = cookieCutter.get('username');
@@ -271,12 +273,10 @@ const Board = (props: PropsResponse) => {
               //search under lane name and insert  it there
               definitiveIndex = tempWorkflow.columns[destiny].cards.findIndex(e => e?.lane_name === underLaneName);
               tempWorkflow.columns[destiny].cards?.splice(definitiveIndex, 0, tempWorkflow.columns[current].cards[cardIndex]);
-
             }
-
           }
-
         }
+
         else{// lane name found in an intermediate segment
           //
           tempWorkflow.columns[destiny].cards?.splice(secondIndex + firstIndex, 0, tempWorkflow.columns[current].cards[cardIndex])
@@ -287,6 +287,7 @@ const Board = (props: PropsResponse) => {
       //remove card from current column
       tempWorkflow.columns[current].cards?.splice(cardIndex, 1);
       setWorkflow(tempWorkflow)
+      setJustMoved(true);
   
     }
   }
@@ -298,7 +299,12 @@ const Board = (props: PropsResponse) => {
 
     if(tempWorkflow!=null){
       newPosition = workflow.columns[0].cards.findIndex(e => e.lane_name !== workflow.lanes[0].name);
+      console.log(newPosition);
+
+      newPosition === -1 ? tempWorkflow.columns[0].cards.splice(workflow.columns[0].cards.length, 0, newCard)
+      :
       tempWorkflow.columns[0].cards.splice(newPosition, 0, newCard);
+
       setNewCardPosition(newPosition+1);
     }
 
@@ -371,6 +377,11 @@ const Board = (props: PropsResponse) => {
     setSelected(newSelected);
   }
 
+  const updateJustMoved = (value:boolean) =>{
+    setJustMoved(value);
+  }
+
+
   return (
     <>
     
@@ -413,7 +424,7 @@ const Board = (props: PropsResponse) => {
 
         <div>
           { workflow.type === 0 && 
-            <CardsWorkflow filterSelectAll={t('filter.selectAll')} requests={requests} invalid={invalid} data={workflowRef.current.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
+            <CardsWorkflow updateJustMoved={updateJustMoved} justMoved={justMoved} filterSelectAll={t('filter.selectAll')} requests={requests} invalid={invalid} data={workflowRef.current.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
           }
 
           {workflow.type === 1 &&

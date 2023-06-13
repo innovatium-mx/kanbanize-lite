@@ -24,7 +24,9 @@ type CardsWorkflowProps = {
     applyInsertEffect : (val:boolean) => void,
     filterSelectAll : string,
     requests: string,
-    invalid: string
+    invalid: string,
+    justMoved: boolean,
+    updateJustMoved : (value:boolean) => void,
 }
 
 type showButtons = {
@@ -32,7 +34,7 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect, filterSelectAll, requests, invalid} : CardsWorkflowProps) => {
+const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect, filterSelectAll, requests, invalid, justMoved, updateJustMoved} : CardsWorkflowProps) => {
     const router = useRouter();
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
@@ -59,7 +61,26 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [selfFound, setSelfFound] = useState<boolean>(false);
     const userId = cookieCutter.get('userid');
 
-    //console.log(filterUsers)
+    const [effectCounter, setEffectCounter] = useState<number>(-1);
+    const effectCounterRef : any = useRef(0); effectCounterRef.current = effectCounter;
+
+    const [activitiesLength, setActivitiesLength] = useState<number>(data[0].cards.length);
+    const [ upperActivitiesLength, setUpperActivitiesLength] = useState<number>(data[0].cards.length);
+
+    const [ moved, setMoved] = useState<boolean>(false);
+
+    useEffect(()=>{
+        //set moved state
+        setMoved(justMoved);
+    })
+
+    useEffect(()=>{
+        if(justMoved){
+            setAllSelected(users);
+            updateJustMoved(false);
+            setAllFiltered(true);
+        }
+    })
 
     useEffect(()=>{
         setFilterUsers(users);
@@ -68,18 +89,27 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         }
     });
 
-
     useEffect(()=>{
+        setUpperActivitiesLength(data[0].cards.length);
+    })
+
+    useLayoutEffect(()=>{
         if(allFiltered)
         {
             setActivities(data[index].cards);
+            console.log('done0');
         }
-            
         else{
             setActivities(filtered);
+            console.log('done3');
+        }
+
+        if(upperActivitiesLength > activitiesLength){
+            setAllSelected(users);
+            setActivitiesLength(upperActivitiesLength);
+            console.log('all selected')
         }
     })
-
 
     useLayoutEffect(()=>{
         setActivities(filtered);
@@ -142,8 +172,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 if(found !== undefined && found.checked){
                     filteredData.push(element);
                 }
-
-
         })
         setFiltered(filteredData)
     }
@@ -152,35 +180,22 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         setSelected(temp);
         const filteredData :  Array<card> = [];
         data[index]?.cards?.map((element: any) => {
-            const found = temp.find(item => item.user_id == element.owner_user_id);
+
+            const found : selection | undefined = temp.find(item => item.user_id == element.owner_user_id);
             if(found !== undefined && found.checked){
                 filteredData.push(element);
             }
-
-            if(found?.user_id == userId){
-                setSelfFound(true);
-                forceUpdate();
-            }
-
         })
         setFiltered(filteredData)
         setFilteredChanged(true);
 
-        if(filteredData.length === data[index].cards.length){
+        if(filteredData.length === data[index].cards.length && !selfFound){
             setAllFiltered(true);
-        }
-        else if(selfFound){
-
-            setAllFiltered(true);
-            forceUpdate();
-
-            setAllFiltered(false);
             setSelfFound(false);
         }
         else{
             setAllFiltered(false);
         }
-
     }
 
     const retrieveIndex = (cardIndex: number) =>{
@@ -188,7 +203,6 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         const curr = activities!=null ? activities.find(item => item.card_id === cardIndex) : [];
 
         updateCurrentCard(curr);
-
     }
 
     const handleLeftClick = async (card_id : number) => {
