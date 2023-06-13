@@ -190,7 +190,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
     const cookies = new Cookies(req, res)
     const apikey: any = cookies.get('apikey');
     const host = cookies.get('host');
-    const response = await fetch(urlCloud + `workSpaces/${host}`, {
+    const response = await fetch(urlCloud + `workSpaces/${host !== undefined ? host : 'noHost'}`, {
       method: "GET",
       headers: {
         "apikey": apikey
