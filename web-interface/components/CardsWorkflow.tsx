@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 
 
 const cookieCutter= require('cookie-cutter');
+import { deleteCookie } from 'cookies-next';
 
 type CardsWorkflowProps = {
     data: Array<column>,
@@ -206,13 +207,13 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         })
         const moveData : any = await response.json();
         if(moveData.error){
-            cookieCutter.set('apikey', '', { expires: new Date(0) })
-            cookieCutter.set('host', '', { expires: new Date(0) })
-            cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) })
-            cookieCutter.set('avatar', '', { expires: new Date(0) })
-            cookieCutter.set('username', '', { expires: new Date(0) }) 
-            cookieCutter.set('workspace', '', { expires: new Date(0) })
+            deleteCookie('apikey', { path: '/'});
+            deleteCookie('host', { path: '/' });
+            deleteCookie('email', { path: '/'});
+            deleteCookie('userid', { path: '/'});
+            deleteCookie('avatar', { path: '/'});
+            deleteCookie('username', { path: '/'});
+            deleteCookie('workspace', { path: '/'});
             router.replace({pathname: '/'});
             if(moveData.error === 429){
                 const Toast = Swal.mixin({
@@ -300,13 +301,13 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         })
         const moveData : any = await response.json();
         if(moveData.error){
-            cookieCutter.set('apikey', '', { expires: new Date(0) })
-            cookieCutter.set('host', '', { expires: new Date(0) })
-            cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) })
-            cookieCutter.set('avatar', '', { expires: new Date(0) })
-            cookieCutter.set('username', '', { expires: new Date(0) }) 
-            cookieCutter.set('workspace', '', { expires: new Date(0) })
+            deleteCookie('apikey', { path: '/'});
+            deleteCookie('host', { path: '/' });
+            deleteCookie('email', { path: '/'});
+            deleteCookie('userid', { path: '/'});
+            deleteCookie('avatar', { path: '/'});
+            deleteCookie('username', { path: '/'});
+            deleteCookie('workspace', { path: '/'});
             router.replace({pathname: '/'});
             if(moveData.error === 429){
                 const Toast = Swal.mixin({

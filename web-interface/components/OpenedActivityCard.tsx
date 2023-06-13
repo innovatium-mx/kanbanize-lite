@@ -14,6 +14,7 @@ import { TailSpin } from  'react-loader-spinner'
 import Image from 'next/image';
 
 const cookieCutter= require('cookie-cutter');
+import { deleteCookie } from 'cookies-next';
 
 
 const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_owner_avatars, description, setDisplayCard, color, card_id, comment_count, openedCardOwner, openedCardCoowner, openedCardAddComment, openedCardComments, requests, invalid, moreMB, fileError, commentSuccess}: OpenedActivityCardProps) =>{
@@ -152,13 +153,13 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         const data = await response.json();
         if(data.error){
              //error
-            cookieCutter.set('apikey', '', { expires: new Date(0) })
-            cookieCutter.set('host', '', { expires: new Date(0) })
-            cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) })
-            cookieCutter.set('avatar', '', { expires: new Date(0) })
-            cookieCutter.set('username', '', { expires: new Date(0) }) 
-            cookieCutter.set('workspace', '', { expires: new Date(0) })
+             deleteCookie('apikey', { path: '/'});
+             deleteCookie('host', { path: '/' });
+             deleteCookie('email', { path: '/'});
+             deleteCookie('userid', { path: '/'});
+             deleteCookie('avatar', { path: '/'});
+             deleteCookie('username', { path: '/'});
+             deleteCookie('workspace', { path: '/'});
             router.replace({pathname: '/'});
             if(data.error === 429){
                     const Toast = Swal.mixin({
@@ -321,13 +322,13 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             }
             catch(ex : any){
                 setSending(false)
-                cookieCutter.set('apikey', '', { expires: new Date(0) })
-                cookieCutter.set('host', '', { expires: new Date(0) })
-                cookieCutter.set('email', '', { expires: new Date(0) })
-                cookieCutter.set('userid', '', { expires: new Date(0) })
-                cookieCutter.set('avatar', '', { expires: new Date(0) })
-                cookieCutter.set('username', '', { expires: new Date(0) }) 
-                cookieCutter.set('workspace', '', { expires: new Date(0) })
+                deleteCookie('apikey', { path: '/'});
+                deleteCookie('host', { path: '/' });
+                deleteCookie('email', { path: '/'});
+                deleteCookie('userid', { path: '/'});
+                deleteCookie('avatar', { path: '/'});
+                deleteCookie('username', { path: '/'});
+                deleteCookie('workspace', { path: '/'});
                 router.replace({pathname: '/'});
                 if(ex.response.status === 429){
                     const Toast = Swal.mixin({

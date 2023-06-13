@@ -8,7 +8,7 @@ import InitiativesWorkflow from '../../components/InitiativesWorkflow';
 import FloatButton from '../../components/FloatButton';
 import {useEffect, useState, useRef, useLayoutEffect, useCallback} from "react";
 import dynamic from 'next/dynamic';
-import { urlCloud } from '../../constants'
+import { urlCloud, cookieDomain } from '../../constants'
 import dashboard from '../../styles/Dashboards.module.css';
 import Cookies from 'cookies';
 import {useRouter} from 'next/router';
@@ -17,6 +17,7 @@ import NewCardComponent from '../../components/NewCardComponent';
 import OpenedInitiativeCard from '../../components/OpenedInitiativeCard';
 import Swal from 'sweetalert2'
 const cookieCutter= require('cookie-cutter');
+import { deleteCookie } from 'cookies-next';
 
 import Image from 'next/image';
 import Sidebar from '../../components/Sidebar';
@@ -125,13 +126,13 @@ const Board = (props: PropsResponse) => {
           //console.log(props.data);
 
     if("error" in props.data){
-      /* cookieCutter.set('apikey', '', { expires: new Date(0) });
-      cookieCutter.set('host', '', { expires: new Date(0) });
-      cookieCutter.set('email', '', { expires: new Date(0) });
-      cookieCutter.set('userid', '', { expires: new Date(0) });
-      cookieCutter.set('avatar', '', { expires: new Date(0) });
-      cookieCutter.set('username', '', { expires: new Date(0) });
-      cookieCutter.set('workspace', '', { expires: new Date(0) }); */
+      deleteCookie('apikey', { path: '/'});
+      deleteCookie('host', { path: '/' });
+      deleteCookie('email', { path: '/'});
+      deleteCookie('userid', { path: '/'});
+      deleteCookie('avatar', { path: '/'});
+      deleteCookie('username', { path: '/'});
+      deleteCookie('workspace', { path: '/'});
       router.replace({pathname: '/'});
 
       if(props.data.error === 429){
@@ -448,16 +449,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   })
 
   const data: any = await response.json();
-  if(data.error){
-    const cookies = new Cookies(context.req, context.res);
-    cookies.set('apikey');
-    cookies.set('host');
-    cookies.set('email');
-    cookies.set('userid');
-    cookies.set('avatar');
-    cookies.set('username');
-    cookies.set('workspace');
-  }
   return {
       props: {
       ...(await serverSideTranslations(context.locale ?? 'en', [

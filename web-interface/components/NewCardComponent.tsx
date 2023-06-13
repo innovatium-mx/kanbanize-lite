@@ -9,6 +9,7 @@ import adjustColor from '../helpers/lightenColor';
 import { urlCloud } from '../constants';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
+import { deleteCookie } from 'cookies-next';
 
 
 const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color, newCardTitle, newCardDescription, newCardOwner, newCardCoowner, newCardCreate,  requests, invalid, cardSuccess}: newCard) =>{
@@ -96,13 +97,13 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
             })
             const data = await response.json();
             if(data.error){
-                cookieCutter.set('apikey', '', { expires: new Date(0) })
-                cookieCutter.set('host', '', { expires: new Date(0) })
-                cookieCutter.set('email', '', { expires: new Date(0) })
-                cookieCutter.set('userid', '', { expires: new Date(0) })
-                cookieCutter.set('avatar', '', { expires: new Date(0) })
-                cookieCutter.set('username', '', { expires: new Date(0) }) 
-                cookieCutter.set('workspace', '', { expires: new Date(0) })
+                deleteCookie('apikey', { path: '/'});
+                deleteCookie('host', { path: '/' });
+                deleteCookie('email', { path: '/'});
+                deleteCookie('userid', { path: '/'});
+                deleteCookie('avatar', { path: '/'});
+                deleteCookie('username', { path: '/'});
+                deleteCookie('workspace', { path: '/'});
                 router.replace({pathname: '/'});
                 if(data.error === 429){
                     const Toast = Swal.mixin({
