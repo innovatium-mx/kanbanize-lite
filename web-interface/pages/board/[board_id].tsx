@@ -441,7 +441,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   const apikey: any = cookies.get('apikey');
   const host = cookies.get('host');
   const { board_id } = context.query;
-  const response = await fetch(urlCloud + `boardDetails/${host}/${board_id}`, {
+  const response = await fetch(urlCloud + `boardDetails/${host !== undefined ? host : 'noHost'}/${board_id}`, {
     method: "GET",
     headers: {
       "apikey": apikey
