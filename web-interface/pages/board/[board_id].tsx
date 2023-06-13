@@ -115,15 +115,24 @@ const Board = (props: PropsResponse) => {
   const board = props.data as workflow[];
 
   useEffect(() => {
+    const deleteCookie = async () =>{
+
+      await cookieCutter.set('apikey', '', { expires: new Date(0) });
+      await cookieCutter.set('host', '', { expires: new Date(0) });
+      await cookieCutter.set('email', '', { expires: new Date(0) });
+      await cookieCutter.set('userid', '', { expires: new Date(0) });
+      await cookieCutter.set('avatar', '', { expires: new Date(0) });
+      await cookieCutter.set('username', '', { expires: new Date(0) });
+      await cookieCutter.set('workspace', '', { expires: new Date(0) });
+      await router.replace({pathname: '/'});
+      return false;
+    }
+
+
     if("error" in props.data){
-      cookieCutter.set('apikey', '', { expires: new Date(0) });
-      cookieCutter.set('host', '', { expires: new Date(0) });
-      cookieCutter.set('email', '', { expires: new Date(0) });
-      cookieCutter.set('userid', '', { expires: new Date(0) });
-      cookieCutter.set('avatar', '', { expires: new Date(0) });
-      cookieCutter.set('username', '', { expires: new Date(0) });
-      cookieCutter.set('workspace', '', { expires: new Date(0) });
-      router.replace({pathname: '/'});
+
+      deleteCookie();
+
       if(props.data.error === 429){
         const Toast = Swal.mixin({
           showConfirmButton: false,
@@ -287,7 +296,12 @@ const Board = (props: PropsResponse) => {
 
     if(tempWorkflow!=null){
       newPosition = workflow.columns[0].cards.findIndex(e => e.lane_name !== workflow.lanes[0].name);
+      console.log(newPosition);
+
+      newPosition === -1 ? tempWorkflow.columns[0].cards.splice(workflow.columns[0].cards.length, 0, newCard)
+      :
       tempWorkflow.columns[0].cards.splice(newPosition, 0, newCard);
+
       setNewCardPosition(newPosition+1);
     }
 
