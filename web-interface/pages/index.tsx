@@ -30,7 +30,6 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
     const invalidCompany = t('login.invalidCompany');
     const emptyCredentials = t('login.emptyFields');
     const requests = t('SWAL.requests');
-    const PhantomVar = '';
 
     const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
 
