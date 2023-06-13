@@ -69,6 +69,8 @@ const Board = (props: PropsResponse) => {
 
 
   const userId = cookieCutter.get('userid');
+  const userusername = cookieCutter.get('username');
+  const useravatar = cookieCutter.get('avatar');
 
   const requests = t('SWAL.requests');
   const invalid = t('SWAL.apikey');
@@ -299,6 +301,27 @@ const Board = (props: PropsResponse) => {
       setNewCardPosition(newPosition+1);
     }
 
+    const tempUsers = workflow.users;
+    const userIndex = tempUsers.findIndex(e => e.user_id === userId);
+    if(userIndex === -1){
+      const notAssignedIndex = tempUsers.findIndex(e => e.user_id === null);
+      if(notAssignedIndex === -1) {
+        tempWorkflow.users.push({
+          user_id: userId,
+          username: userusername,
+          realname: '',
+          avatar: useravatar
+        })
+      }
+      else{
+        tempWorkflow.users.splice(notAssignedIndex, 0,{
+          user_id: parseInt(userId),
+          username: userusername,
+          realname: '',
+          avatar: useravatar
+        })
+      }
+    }
     //setArtificialKey(artificialKey+1);
     setWorkflow(tempWorkflow);
   }
@@ -341,7 +364,7 @@ const Board = (props: PropsResponse) => {
     if(pageLoaded){
       setAllSelected(workflow.users);
     }
-  }, [pageLoaded, workflow.users])
+  }, [pageLoaded, workflow])
 
   const updateSelected = (newSelected: Array<selection>) =>{
     setSelected(newSelected);
