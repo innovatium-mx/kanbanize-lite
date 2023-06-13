@@ -109,7 +109,8 @@ export type newCard = {
     "newCardCoowner": string,
     "newCardCreate": string,
     "requests": string,
-    "invalid": string
+    "invalid": string,
+    "cardSuccess": string
 }
 
 export type OpenedActivityCardProps = {

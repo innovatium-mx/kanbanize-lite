@@ -24,6 +24,7 @@
     "cookie-cutter": "^0.2.0",
     "cookie-parser": "^1.4.6",
     "cookies": "^0.8.0",
+    "cookies-next": "^2.1.2",
     "cors": "^2.8.5",
     "do": "^0.6.2",
     "eslint": "8.36.0",

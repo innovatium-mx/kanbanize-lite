@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 
 
 const cookieCutter= require('cookie-cutter');
+import { deleteCookie } from 'cookies-next';
 
 type CardsWorkflowProps = {
     data: Array<column>,
@@ -39,6 +40,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [activities, setActivities] = useState<Array<card> | null>([]);
     const [filtered, setFiltered] = useState<Array<card> | null>([...data[0].cards]);
     const [allFiltered, setAllFiltered] = useState<boolean>(true);
+    const [filterUsers, setFilterUsers] = useState<Array<user>>(users);
     const allFilteredRef : any = useRef(null);
     allFilteredRef.current = allFiltered;
 
@@ -56,6 +58,15 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [artificialKey, setArtificialKey] = useState<boolean>(false);
     const [selfFound, setSelfFound] = useState<boolean>(false);
     const userId = cookieCutter.get('userid');
+
+    //console.log(filterUsers)
+
+    useEffect(()=>{
+        setFilterUsers(users);
+        if(selected.length !== users.length){
+            setAllSelected(users);
+        }
+    });
 
 
     useEffect(()=>{
@@ -196,13 +207,13 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         })
         const moveData : any = await response.json();
         if(moveData.error){
-            cookieCutter.set('apikey', '', { expires: new Date(0) })
-            cookieCutter.set('host', '', { expires: new Date(0) })
-            cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) })
-            cookieCutter.set('avatar', '', { expires: new Date(0) })
-            cookieCutter.set('username', '', { expires: new Date(0) }) 
-            cookieCutter.set('workspace', '', { expires: new Date(0) })
+            deleteCookie('apikey', { path: '/'});
+            deleteCookie('host', { path: '/' });
+            deleteCookie('email', { path: '/'});
+            deleteCookie('userid', { path: '/'});
+            deleteCookie('avatar', { path: '/'});
+            deleteCookie('username', { path: '/'});
+            deleteCookie('workspace', { path: '/'});
             router.replace({pathname: '/'});
             if(moveData.error === 429){
                 const Toast = Swal.mixin({
@@ -290,13 +301,13 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         })
         const moveData : any = await response.json();
         if(moveData.error){
-            cookieCutter.set('apikey', '', { expires: new Date(0) })
-            cookieCutter.set('host', '', { expires: new Date(0) })
-            cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) })
-            cookieCutter.set('avatar', '', { expires: new Date(0) })
-            cookieCutter.set('username', '', { expires: new Date(0) }) 
-            cookieCutter.set('workspace', '', { expires: new Date(0) })
+            deleteCookie('apikey', { path: '/'});
+            deleteCookie('host', { path: '/' });
+            deleteCookie('email', { path: '/'});
+            deleteCookie('userid', { path: '/'});
+            deleteCookie('avatar', { path: '/'});
+            deleteCookie('username', { path: '/'});
+            deleteCookie('workspace', { path: '/'});
             router.replace({pathname: '/'});
             if(moveData.error === 429){
                 const Toast = Swal.mixin({
@@ -394,7 +405,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             
             <div>
                 <div style={{position: 'fixed', paddingTop:'5.6em', width:'100%', zIndex:'1'}}>
-                        <ColumnTitle filterSelectAll={filterSelectAll} name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users} selected={selected} setFilter={setFilter}/>
+                        <ColumnTitle filterSelectAll={filterSelectAll} name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={filterUsers} selected={selected} setFilter={setFilter}/>
                     </div>
                     <div className={Dynamicboard.grid}>
                         { activities != null && activities.map((element: any) =>
