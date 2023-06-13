@@ -3,6 +3,7 @@ import {urlCloud} from '../constants'
 import {useEffect, useState } from "react";
 import Swal from 'sweetalert2'
 const cookieCutter= require('cookie-cutter');
+import { deleteCookie } from 'cookies-next';
 
 const authRoute = (Component : any) => {
   // eslint-disable-next-line react/display-name
@@ -26,15 +27,15 @@ const authRoute = (Component : any) => {
                       
           Toast.fire({
             icon: 'error',
-            title: 'Tienes que hacer login!'
+            title: 'Error'
           })
-          cookieCutter.set('apikey', '', { expires: new Date(0) })
-          cookieCutter.set('host', '', { expires: new Date(0) })
-          cookieCutter.set('email', '', { expires: new Date(0) })
-          cookieCutter.set('userid', '', { expires: new Date(0) })
-          cookieCutter.set('avatar', '', { expires: new Date(0) })
-          cookieCutter.set('username', '', { expires: new Date(0) }) 
-          cookieCutter.set('workspace', '', { expires: new Date(0) })
+          deleteCookie('apikey', { path: '/'});
+          deleteCookie('host', { path: '/' });
+          deleteCookie('email', { path: '/'});
+          deleteCookie('userid', { path: '/'});
+          deleteCookie('avatar', { path: '/'});
+          deleteCookie('username', { path: '/'});
+          deleteCookie('workspace', { path: '/'});
 
           router.replace({pathname: '/'});
         } 

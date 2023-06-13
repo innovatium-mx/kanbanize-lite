@@ -12,6 +12,7 @@ import { set } from 'react-hook-form';
 
 
 const cookieCutter= require('cookie-cutter');
+import { deleteCookie } from 'cookies-next';
 
 type CardsWorkflowProps = {
     data: Array<column>,
@@ -23,6 +24,8 @@ type CardsWorkflowProps = {
     goBack : boolean,
     applyInsertEffect : (val:boolean) => void,
     filterSelectAll : string,
+    requests: string,
+    invalid: string
 }
 
 type showButtons = {
@@ -30,7 +33,7 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect, filterSelectAll} : CardsWorkflowProps) => {
+const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect, filterSelectAll, requests, invalid} : CardsWorkflowProps) => {
     const router = useRouter();
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
@@ -38,6 +41,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
     const [activities, setActivities] = useState<Array<card> | null>([]);
     const [filtered, setFiltered] = useState<Array<card> | null>([...data[0].cards]);
     const [allFiltered, setAllFiltered] = useState<boolean>(true);
+    const [filterUsers, setFilterUsers] = useState<Array<user>>(users);
     const allFilteredRef : any = useRef(null);
     allFilteredRef.current = allFiltered;
 
@@ -61,6 +65,14 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
 
     const [activitiesLength, setActivitiesLength] = useState<number>(data[0].cards.length);
     const [ upperActivitiesLength, setUpperActivitiesLength] = useState<number>(data[0].cards.length);
+    //console.log(filterUsers)
+
+    useEffect(()=>{
+        setFilterUsers(users);
+        if(selected.length !== users.length){
+            setAllSelected(users);
+        }
+    });
 
 
     useEffect(()=>{
@@ -234,13 +246,13 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         })
         const moveData : any = await response.json();
         if(moveData.error){
-            cookieCutter.set('apikey', '', { expires: new Date(0) })
-            cookieCutter.set('host', '', { expires: new Date(0) })
-            cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) })
-            cookieCutter.set('avatar', '', { expires: new Date(0) })
-            cookieCutter.set('username', '', { expires: new Date(0) }) 
-            cookieCutter.set('workspace', '', { expires: new Date(0) })
+            deleteCookie('apikey', { path: '/'});
+            deleteCookie('host', { path: '/' });
+            deleteCookie('email', { path: '/'});
+            deleteCookie('userid', { path: '/'});
+            deleteCookie('avatar', { path: '/'});
+            deleteCookie('username', { path: '/'});
+            deleteCookie('workspace', { path: '/'});
             router.replace({pathname: '/'});
             if(moveData.error === 429){
                 const Toast = Swal.mixin({
@@ -254,7 +266,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Muchas peticiones'
+                title: requests
                 })
             }
             else if(moveData.error === 401){
@@ -269,7 +281,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Token inválido'
+                title: invalid
                 })
             }
             else{
@@ -328,13 +340,13 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
         })
         const moveData : any = await response.json();
         if(moveData.error){
-            cookieCutter.set('apikey', '', { expires: new Date(0) })
-            cookieCutter.set('host', '', { expires: new Date(0) })
-            cookieCutter.set('email', '', { expires: new Date(0) })
-            cookieCutter.set('userid', '', { expires: new Date(0) })
-            cookieCutter.set('avatar', '', { expires: new Date(0) })
-            cookieCutter.set('username', '', { expires: new Date(0) }) 
-            cookieCutter.set('workspace', '', { expires: new Date(0) })
+            deleteCookie('apikey', { path: '/'});
+            deleteCookie('host', { path: '/' });
+            deleteCookie('email', { path: '/'});
+            deleteCookie('userid', { path: '/'});
+            deleteCookie('avatar', { path: '/'});
+            deleteCookie('username', { path: '/'});
+            deleteCookie('workspace', { path: '/'});
             router.replace({pathname: '/'});
             if(moveData.error === 429){
                 const Toast = Swal.mixin({
@@ -348,7 +360,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Muchas peticiones'
+                title: requests
                 })
             }
             else if(moveData.error === 401){
@@ -363,7 +375,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Token inválido'
+                title: invalid
                 })
             }
             else{
@@ -432,7 +444,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
             
             <div>
                 <div style={{position: 'fixed', paddingTop:'5.6em', width:'100%', zIndex:'1'}}>
-                        <ColumnTitle filterSelectAll={filterSelectAll} name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={users} selected={selected} setFilter={setFilter}/>
+                        <ColumnTitle filterSelectAll={filterSelectAll} name={data[index].name} left={buttons.left} right={buttons.right} color={color} returnResponse={returnResponse} parent_column_id={data[index].parent_column_id} workflow_name={workflow_name} users={filterUsers} selected={selected} setFilter={setFilter}/>
                     </div>
                     <div className={Dynamicboard.grid}>
                         { activities != null && activities.map((element: any) =>

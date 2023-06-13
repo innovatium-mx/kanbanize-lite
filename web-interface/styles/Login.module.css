@@ -6,9 +6,9 @@ div.grid {
     display: grid;
     place-items: center;
     margin-bottom: 2.5rem;
-    margin-top: 2.5rem;
+    margin-top: 4rem;
     margin-right: 0rem;
-    grid-gap: 4rem;
+    grid-gap: 2rem;
     box-sizing: border-box;
 }
 
@@ -137,7 +137,7 @@ form.form footer.formFooterLogin {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 4em;
+    margin-top: 2em;
 }
 
 a.linkStyle {
@@ -179,6 +179,10 @@ input.inputLogin:focus:is([type=email], [type=password]) {
     img.logo {
         width: 22em;
     }
+
+    div.grid{
+        font-size: 95%;
+    }
 }
 
 @media screen and (max-width: 365px) {
@@ -188,5 +192,19 @@ input.inputLogin:focus:is([type=email], [type=password]) {
 
     img.logo {
         width: 18em;
+    }
+
+    div.grid{
+        font-size: 90%;
+    }
+}
+
+@media screen and (max-width: 300px) {
+    form.form {
+        width: 16em;
+    }
+
+    img.logo {
+        width: 16em;
     }
 }
