@@ -18,6 +18,7 @@ import Link from 'next/link';
 
 //import Navbar from '../components/Navbar';
 const cookieCutter = require('cookie-cutter');
+import { deleteCookie } from 'cookies-next';
 
 type Props = {}
 
@@ -62,13 +63,13 @@ const MyBoards = (props: PropsResponse) => {
 
   useEffect(() => {
     if("error" in props.data){
-      cookieCutter.set('apikey', '', { expires: new Date(0) });
-      cookieCutter.set('host', '', { expires: new Date(0) });
-      cookieCutter.set('email', '', { expires: new Date(0) });
-      cookieCutter.set('userid', '', { expires: new Date(0) });
-      cookieCutter.set('avatar', '', { expires: new Date(0) });
-      cookieCutter.set('username', '', { expires: new Date(0) });
-      cookieCutter.set('workspace', '', { expires: new Date(0) });
+      deleteCookie('apikey', { path: '/'});
+      deleteCookie('host', { path: '/' });
+      deleteCookie('email', { path: '/'});
+      deleteCookie('userid', { path: '/'});
+      deleteCookie('avatar', { path: '/'});
+      deleteCookie('username', { path: '/'});
+      deleteCookie('workspace', { path: '/'});
       router.replace({pathname: '/'});
       if(props.data.error === 429){
         const Toast = Swal.mixin({

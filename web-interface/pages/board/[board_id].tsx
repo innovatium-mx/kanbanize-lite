@@ -303,7 +303,7 @@ const Board = (props: PropsResponse) => {
     }
 
     const tempUsers = workflow.users;
-    const userIndex = tempUsers.findIndex(e => e.user_id === userId);
+    const userIndex = tempUsers.findIndex(e => e.user_id == userId);
     if(userIndex === -1){
       const notAssignedIndex = tempUsers.findIndex(e => e.user_id === null);
       if(notAssignedIndex === -1) {
