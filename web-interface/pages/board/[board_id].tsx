@@ -60,6 +60,7 @@ const Board = (props: PropsResponse) => {
   const [ newCardPosition, setNewCardPosition] = useState<number>(0);
 
   const [returnToBacklog, setReturnToBacklog] = useState<boolean>(false);
+  const [board, setBoard] = useState([]);
 
   const pageRef = useRef<any>(null);
   const [pageWidth, setPageWidth] = useState<{width: number;}>({width:0})
@@ -69,6 +70,9 @@ const Board = (props: PropsResponse) => {
 
 
   const userId = cookieCutter.get('userid');
+
+  const requests = t('SWAL.requests');
+  const invalid = t('SWAL.apikey')
 
   const activateInsertCard = (param: boolean) =>{
     setInsertCard(param);
@@ -112,18 +116,26 @@ const Board = (props: PropsResponse) => {
 
   const query = router.query;
   const board_id = query.board_id;
-  const board = props.data as workflow[];
+
+  function timeout(delay: number) {
+    return new Promise( res => setTimeout(res, delay) );
+  }
 
   useEffect(() => {
+    //await timeout(10000); //for 1 sec delay
+
+          //console.log(props.data);
+
     if("error" in props.data){
-      cookieCutter.set('apikey', '', { expires: new Date(0) });
+      /* cookieCutter.set('apikey', '', { expires: new Date(0) });
       cookieCutter.set('host', '', { expires: new Date(0) });
       cookieCutter.set('email', '', { expires: new Date(0) });
       cookieCutter.set('userid', '', { expires: new Date(0) });
       cookieCutter.set('avatar', '', { expires: new Date(0) });
       cookieCutter.set('username', '', { expires: new Date(0) });
-      cookieCutter.set('workspace', '', { expires: new Date(0) });
+      cookieCutter.set('workspace', '', { expires: new Date(0) }); */
       router.replace({pathname: '/'});
+
       if(props.data.error === 429){
         const Toast = Swal.mixin({
           showConfirmButton: false,
@@ -136,7 +148,7 @@ const Board = (props: PropsResponse) => {
         })             
         Toast.fire({
           icon: 'error',
-          title: 'Muchas peticiones'
+          title: requests
         })
       }
       else if(props.data.error === 401){
@@ -151,7 +163,7 @@ const Board = (props: PropsResponse) => {
         })             
         Toast.fire({
           icon: 'error',
-          title: 'Token inválido'
+          title: invalid
         })
       }
       else{
@@ -171,9 +183,10 @@ const Board = (props: PropsResponse) => {
       }
     }
     else{
+      setBoard(props.data as workflow[])
       setPageLoaded(true);
     }
-  }, [props.data, router])
+  }, [invalid, props.data, requests, router])
 
   useEffect(() => {
     if(pageLoaded){
@@ -189,7 +202,7 @@ const Board = (props: PropsResponse) => {
         setResetIndex(0);
       }
     }
-  }, [pageLoaded, board])
+  }, [pageLoaded])
   
 
   const getWorkflow = (workflowid: number) => {
@@ -345,18 +358,18 @@ const Board = (props: PropsResponse) => {
     <div className={dashboard.pageWrap} ref={pageRef}>
       <div className={dashboard.modalWrap}>
 
-          {displayCard && currentCard!=undefined && <OpenedActivityCard openedCardOwner={t('openedCard.owner')} openedCardCoowner={t('openedCard.co-owner')} openedCardAddComment={t('openedCard.addComment')} openedCardComments={t('openedCard.comments')} title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
+          {displayCard && currentCard!=undefined && <OpenedActivityCard requests={t('SWAL.requests')} invalid={t('SWAL.apikey')} moreMB={t('SWAL.moreMB')} fileError={t('SWAL.fileError')} commentSuccess={t('SWAL.commentSuccess')} openedCardOwner={t('openedCard.owner')} openedCardCoowner={t('openedCard.co-owner')} openedCardAddComment={t('openedCard.addComment')} openedCardComments={t('openedCard.comments')} title={currentCard.title} owner={currentCard.owner_username} owner_avatar={currentCard.owner_avatar} co_owner_usernames={currentCard.co_owner_usernames} co_owner_avatars={currentCard.co_owner_avatars} description={currentCard.description} setDisplayCard={setDisplayCard} color={currentCard.color} card_id={currentCard.card_id} comment_count={currentCard.comment_count}/>}
       
       </div>
 
       <div className={dashboard.modalWrap}>
-        {displayInitiativeCard && currentInitiativeCard !=undefined && <OpenedInitiativeCard  openedCardOwner={t('openedCard.owner')} openedCardCoowner={t('openedCard.co-owner')} openedCardAddComment={t('openedCard.addComment')} openedCardComments={t('openedCard.comments')} openedCardActivities={t('openedCard.activities')}  title={currentInitiativeCard.title} owner={currentInitiativeCard.owner_username} owner_avatar={currentInitiativeCard.owner_avatar} co_owner_usernames={currentInitiativeCard.co_owner_usernames} co_owner_avatars={currentInitiativeCard.co_owner_avatars} description={currentInitiativeCard.description} setDisplayCard={setDisplayInitiativeCard} color={currentInitiativeCard.color} card_id={currentInitiativeCard.card_id} comment_count={currentInitiativeCard.comment_count} linked_cards={currentInitiativeCard.linked_cards}/>}
+        {displayInitiativeCard && currentInitiativeCard !=undefined && <OpenedInitiativeCard  requests={t('SWAL.requests')} invalid={t('SWAL.apikey')} moreMB={t('SWAL.moreMB')} fileError={t('SWAL.fileError')} commentSuccess={t('SWAL.commentSuccess')} openedCardOwner={t('openedCard.owner')} openedCardCoowner={t('openedCard.co-owner')} openedCardAddComment={t('openedCard.addComment')} openedCardComments={t('openedCard.comments')} openedCardActivities={t('openedCard.activities')}  title={currentInitiativeCard.title} owner={currentInitiativeCard.owner_username} owner_avatar={currentInitiativeCard.owner_avatar} co_owner_usernames={currentInitiativeCard.co_owner_usernames} co_owner_avatars={currentInitiativeCard.co_owner_avatars} description={currentInitiativeCard.description} setDisplayCard={setDisplayInitiativeCard} color={currentInitiativeCard.color} card_id={currentInitiativeCard.card_id} comment_count={currentInitiativeCard.comment_count} linked_cards={currentInitiativeCard.linked_cards}/>}
       </div>
 
       
       <div className={dashboard.modalWrap}>
 
-        {insertCard && <NewCardComponent newCardTitle={t('newCard.title')} newCardDescription={t('newCard.description')} newCardOwner={t('newCard.owner')} newCardCoowner={t('newCard.co-owner')} newCardCreate={t('newCard.create')} users={newUsers} activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.lanes[0].lane_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected} position={newCardPosition} insertCardUpdate={insertCardUpdate} applyInsertEffect={applyInsertEffect} updateCurrentCard={updateCurrentCard} lane_name={workflow.lanes[0].name} lane_color={workflow.lanes[0].color}/>}
+        {insertCard && <NewCardComponent requests={requests} invalid={invalid} newCardTitle={t('newCard.title')} newCardDescription={t('newCard.description')} newCardOwner={t('newCard.owner')} newCardCoowner={t('newCard.co-owner')} newCardCreate={t('newCard.create')} users={newUsers} activateInsertCard={activateInsertCard} color={'#42AD49'} selected={selected} lane_id={workflow.lanes[0].lane_id} column_id={workflow.columns[0].column_id} updateSelected={updateSelected} position={newCardPosition} insertCardUpdate={insertCardUpdate} applyInsertEffect={applyInsertEffect} updateCurrentCard={updateCurrentCard} lane_name={workflow.lanes[0].name} lane_color={workflow.lanes[0].color}/>}
 
       </div>
 
@@ -381,11 +394,11 @@ const Board = (props: PropsResponse) => {
 
         <div>
           { workflow.type === 0 && 
-            <CardsWorkflow filterSelectAll={t('filter.selectAll')} data={workflowRef.current.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
+            <CardsWorkflow filterSelectAll={t('filter.selectAll')} requests={t('SWAL.requests')} invalid={t('SWAL.apikey')} data={workflowRef.current.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
           }
 
           {workflow.type === 1 &&
-            <InitiativesWorkflow filterSelectAll={t('filter.selectAll')} data={workflow.columns} users={workflow.users} workflow_name={workflow.name} showInitiativeModal = {showInitiativeModal} updateCurrentInitiativeCard = {updateCurrentInitiativeCard}/>
+            <InitiativesWorkflow filterSelectAll={t('filter.selectAll')} requests={t('SWAL.requests')} invalid={t('SWAL.apikey')} data={workflow.columns} users={workflow.users} workflow_name={workflow.name} showInitiativeModal = {showInitiativeModal} updateCurrentInitiativeCard = {updateCurrentInitiativeCard}/>
           }
 
         </div>
@@ -417,6 +430,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   })
 
   const data: any = await response.json();
+  if(data.error){
+    const cookies = new Cookies(context.req, context.res);
+    cookies.set('apikey');
+    cookies.set('host');
+    cookies.set('email');
+    cookies.set('userid');
+    cookies.set('avatar');
+    cookies.set('username');
+    cookies.set('workspace');
+  }
   return {
       props: {
       ...(await serverSideTranslations(context.locale ?? 'en', [

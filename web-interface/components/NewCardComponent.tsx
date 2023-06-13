@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 
 
-const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color, newCardTitle, newCardDescription, newCardOwner, newCardCoowner, newCardCreate}: newCard) =>{
+const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, column_id, updateSelected, position, insertCardUpdate, applyInsertEffect, updateCurrentCard, lane_name, lane_color, newCardTitle, newCardDescription, newCardOwner, newCardCoowner, newCardCreate,  requests, invalid}: newCard) =>{
 
     const [showCoOwners, setShowCoOwners] = useState<boolean>(false);
 

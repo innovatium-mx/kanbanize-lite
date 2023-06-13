@@ -73,6 +73,7 @@ export type workSpace ={
     "type": number,
     "is_archived": number,
     "name": string,
+    boards: Array<boardCard> | null
 }
 
 
@@ -106,7 +107,9 @@ export type newCard = {
     "newCardDescription": string,
     "newCardOwner": string,
     "newCardCoowner": string,
-    "newCardCreate": string
+    "newCardCreate": string,
+    "requests": string,
+    "invalid": string
 }
 
 export type OpenedActivityCardProps = {
@@ -124,6 +127,11 @@ export type OpenedActivityCardProps = {
     "openedCardCoowner": string,
     "openedCardAddComment": string,
     "openedCardComments": string,
+    "requests" : string,
+    "invalid" : string,
+    "moreMB": string,
+    "fileError": string,
+    "commentSuccess": string
 }
 
 export type linkedCards = {
@@ -150,7 +158,12 @@ export type OpenedInitiativeCardProps = {
     "openedCardCoowner": string,
     "openedCardAddComment": string,
     "openedCardComments": string,
-    "openedCardActivities" : string
+    "openedCardActivities" : string,
+    "requests" : string,
+    "invalid" : string,
+    "moreMB": string,
+    "fileError": string,
+    "commentSuccess": string
 }
 
 

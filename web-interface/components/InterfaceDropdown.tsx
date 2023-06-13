@@ -25,7 +25,7 @@ const InterfaceDropdown = ({data, getData, name} : DropdownProps) => {
             <Dropdown isOpen={dropdown} toggle={openCloseDropdown}  >
                         <DropdownToggle caret className={dashboard.workspaceStyle}>{name}</DropdownToggle>
                         <DropdownMenu className={dashboard.menuOptions}>
-                            {data.map((element: any)=> (element.type === 0 || element.type === 1) && <DropdownItem className={dashboard.item} key={element.key} value={ element.workspace_id || element.workflow_id } onClick={() => onToggleClick(element.workspace_id || element.workflow_id )}>{element.name}</DropdownItem>)}
+                            {Array.isArray(data) && data.map((element: any)=> (element.type === 0 || element.type === 1) && <DropdownItem className={dashboard.item} key={element.key} value={ element.workspace_id || element.workflow_id } onClick={() => onToggleClick(element.workspace_id || element.workflow_id )}>{element.name}</DropdownItem>)}
                         </DropdownMenu>
             </Dropdown>
         </div>

@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import authRoute from '../components/authRoute';
 import dynamic from 'next/dynamic';
 import Dashboard from '../components/Dashboard'
-import { boardCard, ErrorResponse } from '../types/types';
+import { boardCard, ErrorResponse, workSpace } from '../types/types';
 import { urlCloud } from '../constants'
 import dashboard from '../styles/Dashboards.module.css';
 import Image from 'next/image';
@@ -21,14 +21,6 @@ const cookieCutter = require('cookie-cutter');
 
 type Props = {}
 
-interface Data {
-  workspace_id: number,
-  type: number,
-  is_archived: number,
-  name: string,
-  boards: Array<boardCard> | null
-}
-
 type NextJsI18NConfig = {
   defaultLocale: string
   domains?: {
@@ -42,7 +34,7 @@ type NextJsI18NConfig = {
 }
 
 interface PropsResponse {
-  data: Array<Data> | ErrorResponse
+  data: Array<workSpace> | ErrorResponse
   _nextI18Next: NextJsI18NConfig
 }
 
@@ -63,8 +55,10 @@ const MyBoards = (props: PropsResponse) => {
   const { t } = useTranslation('common');
   const LanguageDropdown = dynamic(import('../components/LanguageDropdown'), { ssr: false });
   const InterfaceDropdown = dynamic(import('../components/InterfaceDropdown'), { ssr: false });
+  const requests = t('SWAL.requests');
+  const invalid = t('SWAL.apikey');
 
-  const workspaces = props.data as Data[];
+  const workspaces = props.data as workSpace[];
 
   useEffect(() => {
     if("error" in props.data){
@@ -88,7 +82,7 @@ const MyBoards = (props: PropsResponse) => {
         })             
         Toast.fire({
           icon: 'error',
-          title: 'Muchas peticiones'
+          title: requests
         })
       }
       else if(props.data.error === 401){
@@ -103,7 +97,7 @@ const MyBoards = (props: PropsResponse) => {
         })             
         Toast.fire({
           icon: 'error',
-          title: 'Token inválido'
+          title: invalid
         })
       }
       else{
@@ -125,7 +119,7 @@ const MyBoards = (props: PropsResponse) => {
     else{
       setPageLoaded(true);
     }
-  }, [props.data, router])
+  }, [invalid, props.data, requests, router])
   
 
   const handleChange = (event: any) => {
@@ -147,7 +141,7 @@ const MyBoards = (props: PropsResponse) => {
         setWorkspaceName(workspaces[0].name)
       }
     }
-  },[pageLoaded, workspaceNumber, workspaces])
+  },[pageLoaded, workspaceNumber])
 
 
   const getBoards = async (workspace_id: number) => {

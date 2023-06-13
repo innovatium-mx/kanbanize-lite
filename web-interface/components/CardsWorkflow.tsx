@@ -22,6 +22,8 @@ type CardsWorkflowProps = {
     goBack : boolean,
     applyInsertEffect : (val:boolean) => void,
     filterSelectAll : string,
+    requests: string,
+    invalid: string
 }
 
 type showButtons = {
@@ -29,7 +31,7 @@ type showButtons = {
     right: boolean
 };
 
-const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect, filterSelectAll} : CardsWorkflowProps) => {
+const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayModal, moveCards, goBack, applyInsertEffect, filterSelectAll, requests, invalid} : CardsWorkflowProps) => {
     const router = useRouter();
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
@@ -214,7 +216,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Muchas peticiones'
+                title: requests
                 })
             }
             else if(moveData.error === 401){
@@ -229,7 +231,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Token inválido'
+                title: invalid
                 })
             }
             else{
@@ -308,7 +310,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Muchas peticiones'
+                title: requests
                 })
             }
             else if(moveData.error === 401){
@@ -323,7 +325,7 @@ const CardsWorkflow = ({data, users, workflow_name, updateCurrentCard, displayMo
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Token inválido'
+                title: invalid
                 })
             }
             else{

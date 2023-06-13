@@ -12,7 +12,9 @@ type InitiativesWorkflowProps = {
     workflow_name: string,
     showInitiativeModal : (value:boolean) =>void,
     updateCurrentInitiativeCard : any
-    filterSelectAll : string
+    filterSelectAll : string,
+    requests : string,
+    invalid : string
 }
 
 type showButtons = {
@@ -20,7 +22,7 @@ type showButtons = {
     right: boolean
 };
 
-const InitiativesWorkflow = ({data, users, workflow_name, showInitiativeModal, updateCurrentInitiativeCard, filterSelectAll} : InitiativesWorkflowProps) =>{
+const InitiativesWorkflow = ({data, users, workflow_name, showInitiativeModal, updateCurrentInitiativeCard, filterSelectAll, requests, invalid} : InitiativesWorkflowProps) =>{
 
     const [index, setIndex] = useState<number>(0);
     const [buttons, setButtons] = useState<showButtons>({left: false, right: true});
