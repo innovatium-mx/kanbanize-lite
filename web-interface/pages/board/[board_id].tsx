@@ -309,7 +309,7 @@ const Board = (props: PropsResponse) => {
     }
 
     const tempUsers = workflow.users;
-    const userIndex = tempUsers.findIndex(e => e.user_id === userId);
+    const userIndex = tempUsers.findIndex(e => e.user_id == userId);
     if(userIndex === -1){
       const notAssignedIndex = tempUsers.findIndex(e => e.user_id === null);
       if(notAssignedIndex === -1) {
@@ -452,7 +452,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   const apikey: any = cookies.get('apikey');
   const host = cookies.get('host');
   const { board_id } = context.query;
-  const response = await fetch(urlCloud + `boardDetails/${host}/${board_id}`, {
+  const response = await fetch(urlCloud + `boardDetails/${host !== undefined ? host : 'noHost'}/${board_id}`, {
     method: "GET",
     headers: {
       "apikey": apikey
