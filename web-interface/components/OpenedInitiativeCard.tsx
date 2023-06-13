@@ -240,7 +240,6 @@ const OpenedInitiativeCard = ({title, owner, owner_avatar, co_owner_usernames, c
 
     const handleOpenActivities = () =>{
         setOpenActivities(!openActivities);
-        console.log(openActivities);
 
         if(openActivities){
             setInitiativeArrowDown(openedCard.rotated);
