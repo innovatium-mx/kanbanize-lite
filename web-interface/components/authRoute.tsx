@@ -27,7 +27,8 @@ const authRoute = (Component : any) => {
                       
           Toast.fire({
             icon: 'error',
-            title: 'Error'
+            title: 'Error',
+            text: 'ID 2003'
           })
           deleteCookie('apikey', { path: '/'});
           deleteCookie('host', { path: '/' });
