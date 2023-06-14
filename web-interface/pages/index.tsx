@@ -65,7 +65,8 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                 iconColor: 'red',
                 confirmButtonColor: 'gray',
                 icon: 'error',
-                title: emptyCredentials
+                title: emptyCredentials, 
+                text: 'ID 1001'
             })
         }
         else{
@@ -142,20 +143,24 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     // login failed
                     //[data.error] exists when invalid companyname, otherwise, undefined
                     var whichInvalid = '';
-
+                    var idError = 'ID 2003'
                     if(data.error == 403){
                         whichInvalid = invalidCompany;
+                        idError = 'ID 1002'
                     }else if(data.error == 429){
                         whichInvalid = requests;
+                        idError = 'ID 2001'
                     }
                     else{
                         whichInvalid = invalid;
+                        idError = 'ID 1003'
                     }
                     Swal.fire({
                         iconColor: 'red',
                         confirmButtonColor: 'gray',
                         icon: 'error',
-                        title: whichInvalid
+                        title: whichInvalid,
+                        text: idError
                     })
 
                 }
