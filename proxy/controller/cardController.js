@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 const firebaseConfig = {
   //Aquí va la configuración de la aplicación del proyecto
   //Descripcion general>1 app>Engrane>Código al final de la página
-  storageBucket: process.env.STORAGEBUCKET || "tc3005bmarco.appspot.com",
+  storageBucket: process.env.STORAGEBUCKET || "innovatium-storage.appspot.com",
 };
 
 function generateString(length) {
