@@ -420,7 +420,6 @@ const Board = (props: PropsResponse) => {
           </div>}
         </div>
 
-
         <div>
           { workflow.type === 0 && 
             <CardsWorkflow updateJustMoved={updateJustMoved} justMoved={justMoved} filterSelectAll={t('filter.selectAll')} requests={requests} invalid={invalid} data={workflowRef.current.columns} users={workflow.users} workflow_name={workflow.name} updateCurrentCard={updateCurrentCard} displayModal={showModal} moveCards={moveCards}  goBack={returnToBacklog} applyInsertEffect={applyInsertEffect}/>
@@ -430,9 +429,9 @@ const Board = (props: PropsResponse) => {
             <InitiativesWorkflow filterSelectAll={t('filter.selectAll')} requests={requests} invalid={invalid} data={workflow.columns} users={workflow.users} workflow_name={workflow.name} showInitiativeModal = {showInitiativeModal} updateCurrentInitiativeCard = {updateCurrentInitiativeCard}/>
           }
 
+
         </div>
       </div>
-
 
     </div>
 

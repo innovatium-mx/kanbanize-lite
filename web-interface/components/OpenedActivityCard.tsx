@@ -124,6 +124,7 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
         }
     })
 
+
     const pushComment = (text: string, last_modified: string, author: Author, attachment: Array<Attachment>) =>{
         var decoyCommentsArray : Array<comment | null> = ([]);
         decoyCommentsArray = commentsArray;
