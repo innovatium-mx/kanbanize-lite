@@ -3,10 +3,14 @@ import actCard from '../styles/Activitycard.module.css'
 import { InitiativeCardProps } from '@/types/types';
 
 
-const InitiativeCard = ({card_id, color, owner_avatar, title, owner_username, lane_name, lane_color, child_complete, child_total} : InitiativeCardProps) =>{
+const InitiativeCard = ({card_id, color, owner_avatar, title, owner_username, lane_name, lane_color, child_complete, child_total, showInitiativeModal, retrieveIndex} : InitiativeCardProps) =>{
 
+    const handleClick = () =>{
+        showInitiativeModal(true);
+        retrieveIndex(card_id);
+    }
+    
     const newColor = '#' + color;
-
     var completeness: number = 0;
 
     if(child_total === 0){
@@ -15,11 +19,6 @@ const InitiativeCard = ({card_id, color, owner_avatar, title, owner_username, la
     else{
         completeness = Number(((child_complete/child_total)*100).toFixed(0))
     }
-
-    /* const handleClick = () =>{
-        retrieveIndex(card_id);
-        displayModal(true);
-    } */
 
     var nonPhoto;
     var letter = '';
@@ -37,8 +36,8 @@ const InitiativeCard = ({card_id, color, owner_avatar, title, owner_username, la
     }
 
     return(
-        <div>
-            <div className={initCard.card}/*  onClick={()=> handleClick()} */>
+        <div onClick={()=> handleClick()}>
+            <div className={initCard.card}>
                 <div className={initCard.tags}>
                     <div className={initCard.leftTags}>
                         <span className={initCard.tag}>{completeness}%</span>

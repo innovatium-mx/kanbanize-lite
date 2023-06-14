@@ -6,10 +6,12 @@ import Swal from 'sweetalert2'
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { cookieDomain } from "../constants";
 
-import Cookies from 'universal-cookie';
+//import Cookies from 'universal-cookie';
 import { workSpace } from '@/types/types';
-var globalCookie = new Cookies();
+//var globalCookie = new Cookies();
+import { deleteCookie } from 'cookies-next';
 
 interface SidebarProps {
     "workspaces" : string,
@@ -52,7 +54,7 @@ const Sidebar = ({workspaces, LogOut, confirmlogout, cancellogout, loggedout} : 
         };
     }, []);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
 
         Swal.fire({
             title: confirmlogout,
@@ -76,18 +78,17 @@ const Sidebar = ({workspaces, LogOut, confirmlogout, cancellogout, loggedout} : 
                     }
                 })
 
-                globalCookie.remove('apikey')
-                globalCookie.remove('host')
-                globalCookie.remove('email')
-                globalCookie.remove('userid')
-                globalCookie.remove('avatar')
-                globalCookie.remove('username')
-                globalCookie.remove('workspace')
-
                 Toast.fire({
                     icon: 'success',
                     title: loggedout
                 })
+                deleteCookie('apikey', { path: '/' });
+                deleteCookie('host', { path: '/'});
+                deleteCookie('email', { path: '/'});
+                deleteCookie('userid', { path: '/'});
+                deleteCookie('avatar', { path: '/'});
+                deleteCookie('username', { path: '/'});
+                deleteCookie('workspace', { path: '/'});
                 router.replace({ pathname: '/' })
             }
         })

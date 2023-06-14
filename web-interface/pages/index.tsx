@@ -29,6 +29,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
     const invalid = t('login.invalid');
     const invalidCompany = t('login.invalidCompany');
     const emptyCredentials = t('login.emptyFields');
+    const requests = t('SWAL.requests');
 
     const LanguageButton = dynamic(import('../components/LanguageDropdown'), {ssr:false});
 
@@ -142,9 +143,12 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     //[data.error] exists when invalid companyname, otherwise, undefined
                     var whichInvalid = '';
 
-                    if(data.error){
+                    if(data.error == 403){
                         whichInvalid = invalidCompany;
-                    }else{
+                    }else if(data.error == 429){
+                        whichInvalid = requests;
+                    }
+                    else{
                         whichInvalid = invalid;
                     }
                     Swal.fire({
@@ -175,7 +179,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
         } 
       }
       checkToken();
-    });
+    },[]);
 
 
     return (
@@ -187,7 +191,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
             </Head>*/
         }
-            <div className={login.dropdownFragment}>
+            <div className={login.dropdownFragment} style={{paddingTop:'1em'}}>
                 <LanguageButton color={false}/>
             </div>
 
@@ -196,7 +200,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
 
             <div className={login.grid}>
 
-                <div >
+                <div style={{paddingTop:'1em'}}>
                     <img src="/Kanbanize_logo.png" alt="Kanbanize-logo" className={login.logo}/>
                 </div>
 
@@ -221,7 +225,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     <fieldset className={login.formGroup}>
 
                         <div className={login.formInputLogin}>
-                            <input type="email" className={login.inputLogin}  name="Email" placeholder={t('login.email' as const)} title="Enter your email" onChange={handleLoginEmail}></input>
+                            <input type="email" className={login.inputLogin}  name="Email" placeholder={t('login.email' as const)} title="Enter your email" onChange={handleLoginEmail} autoComplete="true"></input>
                         </div>
 
                     </fieldset>
@@ -229,7 +233,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     <fieldset className={login.formGroup}>
 
                         <div className={login.formInputLogin}>
-                            <input type="password" className={login.inputLogin} name = 'password' placeholder={t('login.password' as const)} title="Enter your password" onChange={handleLoginPassword} ></input>
+                            <input type="password" className={login.inputLogin} name = 'password' placeholder={t('login.password' as const)} title="Enter your password" onChange={handleLoginPassword} autoComplete="true"></input>
                         </div>
 
                     </fieldset>
@@ -241,7 +245,7 @@ const Login= (_props: InferGetStaticPropsType<typeof getStaticProps>) =>{
                     </form>
                 </div>
             </div>
-            </div>
+        </div>
         </>
 
     )

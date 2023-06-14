@@ -15,8 +15,10 @@ export type card = {
     "description" : string,
     "comment_count" : number,
     "lane_name" : string,
-    "lane_color" : string
+    "lane_color" : string,
+    "linked_cards" : Array<linkedCards>
 };
+
 
 export type lane = {
     "lane_id": number,
@@ -45,6 +47,8 @@ export type column = {
     "order": number
 }
 
+
+
 export type parent_columns = {
     parent_id: number,
     parent_name: string,
@@ -69,6 +73,7 @@ export type workSpace ={
     "type": number,
     "is_archived": number,
     "name": string,
+    boards: Array<boardCard> | null
 }
 
 
@@ -102,9 +107,10 @@ export type newCard = {
     "newCardDescription": string,
     "newCardOwner": string,
     "newCardCoowner": string,
-    "newCardCreate": string, 
-    "msgSuccess" : string, 
-    "msgError" : string
+    "newCardCreate": string,
+    "requests": string,
+    "invalid": string,
+    "cardSuccess": string
 }
 
 export type OpenedActivityCardProps = {
@@ -122,12 +128,48 @@ export type OpenedActivityCardProps = {
     "openedCardCoowner": string,
     "openedCardAddComment": string,
     "openedCardComments": string,
-    "msgError1": string,
-    "msgError2" : string,
-    "msgError3" : string,
-    "msgError4" : string,
-    "msgSuccess" : string
+    "requests" : string,
+    "invalid" : string,
+    "moreMB": string,
+    "fileError": string,
+    "commentSuccess": string
 }
+
+export type linkedCards = {
+    "card_id" : number,
+    "link_type" : string,
+    "title" : string
+}
+
+
+
+export type OpenedInitiativeCardProps = {
+    "title" : string,
+    "owner" : string | undefined,
+    "owner_avatar" : string | null,
+    "co_owner_usernames"  : Array<string | undefined> | null,
+    "co_owner_avatars" : Array<string | undefined> | null,
+    "description": string,
+    "setDisplayCard": any,
+    "color": string,
+    "card_id" : number,
+    "comment_count" : number,
+    "linked_cards" : Array<linkedCards>,
+    "openedCardOwner": string,
+    "openedCardCoowner": string,
+    "openedCardAddComment": string,
+    "openedCardComments": string,
+    "openedCardActivities" : string,
+    "requests" : string,
+    "invalid" : string,
+    "moreMB": string,
+    "fileError": string,
+    "commentSuccess": string
+}
+
+
+
+
 
 export type Author = {
     "type" : string,
@@ -213,7 +255,9 @@ export type InitiativeCardProps = {
     "lane_name": string,
     "lane_color": string
     "child_complete": number,
-    "child_total": number
+    "child_total": number,
+    "showInitiativeModal" : (value:boolean) => void,
+    "retrieveIndex" : any
 }
 
 export interface FilterProps {
@@ -255,4 +299,12 @@ export interface NavBarData {
     is_archived: number,
     name: string,
     boards: Array<boardCard> | null
+}
+
+export type LoaderProps = {
+    msgLoader : string
+}
+
+export type ErrorResponse = {
+    error: number;
 }

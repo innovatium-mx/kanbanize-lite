@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 const firebaseConfig = {
   //Aquí va la configuración de la aplicación del proyecto
   //Descripcion general>1 app>Engrane>Código al final de la página
-  storageBucket: "tc3005bmarco.appspot.com",
+  storageBucket: process.env.STORAGEBUCKET || "tc3005bmarco.appspot.com",
 };
 
 function generateString(length) {
@@ -19,6 +19,64 @@ function generateString(length) {
     }
 
     return result;
+}
+
+function removeSubstring(text, startIndex, endIndex) {
+  	if (endIndex < startIndex) {
+  		startIndex = endIndex;
+    }
+    var a = text.substring(0, startIndex);
+    var b = text.substring(endIndex);
+    return a + b;
+}
+
+function removeCommentImages(text) {
+    //define variaables
+    const imageHTML = "<img";
+    let cnt = 0;
+    let temp = text;
+    
+    //for to iterate comments
+    //for to iterate characters on text
+    for (let x = 0 ; x < temp.length; x++) {
+        cnt = 0;
+        //for to iterate characters on imageHTML
+        for (let y = 0; y < imageHTML.length; y++) {
+            //if characters match add to cnt
+            if (text[x+y] === imageHTML[y]) {
+                cnt += 1;
+            }
+            //if character doesn't match, stops for cycle
+            else {
+                break;
+            }
+        }
+        //if all characters match, rebuilds text
+        if (cnt === imageHTML.length) {
+            //for to add character before link
+            let src = true;
+            let cnt2 = 0;
+            let y = x;
+            let imageLink = '<a href = "';
+            for ( y ; y < text.length; y++) {
+                if(text[y] == 's' && text[y+1] == 'r' && text[y+2]=='c' && text[y+3]=='='){
+                    break;
+                }
+            }
+            //add link header and reference
+            while (text[y + 5 + cnt2] != '"') {
+                imageLink += text[y + 5 + cnt2]
+                cnt2 += 1;
+            }
+            imageLink += '" target = "_blank">Image</a>';
+            //console.log(`${imageLink}\n`)
+            //update test on comment
+            text = removeSubstring(text, x, y + 7 + cnt2);
+            text= text.slice(0, x) + imageLink + text.slice(x);
+            cnt2 = 0;
+        }
+    }
+    return text;
 }
 
 module.exports.cardDetails = async (req,res) =>{
@@ -96,7 +154,7 @@ module.exports.cardDetails = async (req,res) =>{
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 };
 
@@ -119,27 +177,37 @@ module.exports.comments = async (req,res) =>{
             },
         });
 
-        if(responseUsers.ok && responseComments.ok){
+        if(responseUsers.ok){
             const rawUsers = await responseUsers.json();
             users = rawUsers.data;
-            const rawComments = await responseComments.json();
-            comments = rawComments.data;
-            if(comments.length > 0){
-                for(var x =0; x < comments.length; x++){
-                    const authorObject = users.find(item => item.user_id === comments[x].author.value);
-                    comments[x].author.avatar = authorObject.avatar;
-                    comments[x].author.username = authorObject.username;
+            if(responseComments.ok){
+                const rawComments = await responseComments.json();
+                comments = rawComments.data;
+                if(comments.length > 0){
+                    for(var x =0; x < comments.length; x++){
+                        let tempText = '';
+                        try{
+                            tempText = removeCommentImages(comments[x].text); 
+                        }
+                        catch(error){
+                            console.error(error);
+                            tempText = comments[x].text;
+                        }
+                        comments[x].text = tempText;
+                        const authorObject = users.find(item => item.user_id === comments[x].author.value);
+                        comments[x].author.avatar = authorObject.avatar;
+                        comments[x].author.username = authorObject.username;
+                    }
                 }
+            }
+            else{
+                res.status(responseComments.status).json({"error": responseComments.status});
             }
             res.json(comments);
         }
         else{
-            res.json({"error": {
-                "UsersStatus" : responseUsers.status,
-                "CommentsStatus": responseComments.status
-            }});
+            res.status(responseComments.status).json({"error" : responseUsers.status});
         }
-
     }
     catch(error){
         console.error(error);
@@ -186,9 +254,13 @@ module.exports.addComment= async (req,res) =>{
             //Es necesario crear una carpeta con el id del card,
             //por ejemplo: "cardid/"+req.files.archivo.name
             //De otra forma, el archivo se sobreescribirá
-            const storageRef = ref(storage, `${cardid}/${filename}`);
+            const storageRef = ref(storage, `${host}/${cardid}/${filename}`);
             const snapshot = await uploadBytes(storageRef, filedata);
             const downloadURL = await getDownloadURL(storageRef);
+
+            if(downloadURL == '' || downloadURL == undefined || downloadURL == null){
+                res.status(400).json({"error": 400})
+            }
 
             const formData = JSON.stringify({
                 "text": text,

@@ -21,6 +21,25 @@
     position: absolute;
 }
 
+.newcardOpen{
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border-radius: 0.2em;
+    right: -10em;
+    padding: 1.5rem;
+    width: 15em;
+    height: 13em;
+    overflow: scroll;
+    overflow-x: hidden;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    background-color: white;
+    position: absolute;
+}
+
+
+
 .container {
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -62,8 +81,8 @@
 div.letter {
     color: white;
     text-align: center;
-    padding-top: 0.46em;
-    font-size: 1em;
+    padding-top: 0.1em;
+    font-size: 1.5em;
 }
 
 .noPhoto_noUser {
@@ -72,8 +91,93 @@ div.letter {
     border-radius: 50%;
 }
 
+@media screen and (max-width: 576px) {
+    .newcardOpen {
+        right: -5.5em;
+        width: 13em;
+        height: 13em;
+    }
+
+    .image {
+        width: 2em;
+        height: 2em;
+    }
+
+    .noPhoto_noUser{
+        width: 2em;
+        height: 2em;
+    }
+
+    .username{
+        font-size: 90%;
+    }
+
+    div.letter{
+        font-size: 1.2em;
+    }
+}
+
+@media screen and (max-width: 436px) {
+    .newcardOpen {
+        right: -4.5em;
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .newcardOpen {
+        right: -3em;
+        padding: 1rem;
+        width: 11em;
+    }
+
+    .image {
+        width: 1.5em;
+        height: 1.5em;
+    }
+
+    .noPhoto_noUser{
+        width: 1.5em;
+        height: 1.5em;
+    }
+
+    .username{
+        font-size: 85%;
+    }
+
+    div.letter{
+        padding-top: 0;
+        font-size: 1em;
+    }
+}
+
+
+
 @media screen and (max-width: 307px) {
     .filter {
         padding-left: 1em;
     }
+
+    .newcardOpen {
+        right: -2em;
+        width: 10em;
+    }
+
+    .image {
+        width: 1.3em;
+        height: 1.3em;
+    }
+
+    .noPhoto_noUser{
+        width: 1.3em;
+        height: 1.3em;
+    }
+
+    .username{
+        font-size: 80%;
+    }
+
+    div.letter{
+        font-size: 0.9em;
+    }
+
 }

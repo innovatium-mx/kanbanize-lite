@@ -1,7 +1,8 @@
 import actCard from '../styles/Activitycard.module.css';
 import adjustColor from '../helpers/lightenColor';
 import { ActivityCardProps } from '../types/types';
-
+import {useEffect} from 'react';
+import isTooLight from '../helpers/isTooLight';
 
 const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, retrieveIndex, displayModal, lane_name, lane_color} : ActivityCardProps) =>{
 
@@ -28,16 +29,24 @@ const ActivityCard = ({card_id, color, owner_avatar, title, owner_username, retr
         letterBackground = newColor;
     }
 
+    const laneColor : string = '#' + lane_color;
+    var laneTextColor : string = ''; 
+
+    (!isTooLight(laneColor)? laneTextColor = '#FFFFFF' : laneTextColor = '#000000');
+
     return(
         <div>
             
             <div className={actCard.boardCard} style={{backgroundColor:boardCardColor}} onClick={()=> handleClick()}>
                 
                 <div className={actCard.container}>
-                    <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}` }}>{lane_name}</div>
-                    <div className={actCard.innerContainer}>
-                        <div className={actCard.text}>{title}</div>
-                    </div>
+                        <div className={actCard.lane} style={{ backgroundColor: `#${lane_color}`, color:laneTextColor }}>
+                            <span>{lane_name}</span>
+                        </div>
+                    
+                        <div className={actCard.innerContainer}>
+                            <div className={actCard.text}>{title}</div>
+                        </div>
                 </div>
                 <div className={actCard.imageSection}>
                         {(owner_avatar !=  null &&  owner_avatar!="") ? <img src={owner_avatar} alt="" className={actCard.photo}/> : <div className={actCard.wrap}><div className={nonPhoto} style={{background:letterBackground}}> <div className={actCard.letter}>{letter}</div> </div></div>}

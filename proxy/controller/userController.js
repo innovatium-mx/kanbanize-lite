@@ -33,19 +33,19 @@ module.exports.login = async (req,res) =>{
                     res.json(data1);
                 }
                 else {
-                    res.json({"status":false, "response": "Error fetching user data"});
+                    res.status(response2.status).json({"error": response2.status});
                 }
             }
             else{
-                res.json({"status":false, "response": "Error fetching user data"});
+                res.status(401).json({"error": 401});
             }
         }
         else {
-            res.json({"status":false, "response": "Error fetching user data"});
+            res.status(response1.status).json({"error": response1.status});
         }
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 }

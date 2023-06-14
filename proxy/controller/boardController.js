@@ -1,5 +1,25 @@
 const fetch = require('node-fetch');
 
+function removeSubstring(text, startIndex, endIndex) {
+  	if (endIndex < startIndex) {
+  		startIndex = endIndex;
+    }
+    var a = text.substring(0, startIndex);
+    var b = text.substring(endIndex);
+    return a + b;
+}
+
+function isLetter(char) {
+  return (/[a-zA-Z]/).test(char);
+}
+function isNumber(char){
+    if (char >= '0' && char <= '9') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function FindParents(element, columns){
     var parent_list = [];
     const parent = columns.find(item => item.column_id === element.parent_column_id);
@@ -18,6 +38,55 @@ function FindParents(element, columns){
     else{
         return parent_list;
     }
+}
+
+function changeWidth(description) {
+    const widthHTML = "width";
+    let cnt = 0;
+    let temp = description;
+     for (let x = 0 ; x < temp.length; x++) {
+        cnt = 0;
+        //for to iterate characters on widthHTML
+        for (let y = 0; y < widthHTML.length; y++) {
+            //if characters match add to cnt
+            if (description[x+y] === widthHTML[y]) {
+                cnt += 1;
+            }
+            //if character doesn't match, stops for cycle
+            else {
+                break;
+            }
+        }
+        //if all characters match, rebuilds text
+        if (cnt === widthHTML.length) {
+            //for to add character before link
+            let y = x + 6;
+            
+            let noLetters = true;
+            for ( y ; y < description.length; y++) {
+                if(isNumber(description[y])){
+                    break;
+                }
+                else if(isLetter(description[y])){
+                    noLetters = false;
+                    break;
+                }
+            }
+            //add link header and reference
+            if(noLetters){
+                let cnt2 = 0;
+                let hasSemicolon = true;
+                while (description[y + cnt2] !== ';' && description[y + cnt2] !== "\"" && description[y + cnt2] !== undefined ) {
+                    cnt2 += 1;
+                }
+                //update test on comment
+                description = removeSubstring(description, y, y + cnt2);
+                description = description.slice(0, y) + '100%' + description.slice(y);
+                
+            }
+        }
+    }
+    return description;
 }
 
 module.exports.workSpaces = async (req,res) =>{
@@ -56,16 +125,16 @@ module.exports.workSpaces = async (req,res) =>{
                 res.json(workSpaces);
             }
             else{
-                res.json({"error": responseBoard.status});
+                res.status(responseBoard.status).json({"error": responseBoard.status});
             }
         }
         else{
-            res.json({"error": response.status});
+            res.status(response.status).json({"error": response.status});
         }
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 }
 
@@ -136,7 +205,7 @@ module.exports.boardDetails = async (req,res) =>{
                     dataLanes = rawDataLanes.data;
                 }
                 else{
-                    res.json({"error": responseLanes.status});
+                    res.status(responseLanes.status).json({"error": responseLanes.status});
                 }
                 for(var i=0; i<boardWorkflow.length;i++){
                     const workflowid = boardWorkflow[i].workflow_id;
@@ -206,7 +275,7 @@ module.exports.boardDetails = async (req,res) =>{
                                 boardCards = boardCards.concat(rawCardPages.data.data);
                             }
                             else{
-                                res.json({"error": responseCardPages.status});
+                                res.status(responseCardPages.status).json({"error": responseCardPages.status});
                             }
                         }
                     }
@@ -221,7 +290,7 @@ module.exports.boardDetails = async (req,res) =>{
                         users = rawUsers.data;
                     }
                     else{
-                        res.json({"error": responseUsers.status});
+                        res.status(responseUsers.status).json({"error": responseUsers.status});
                     }
                     for(var x=0; x<boardWorkflow.length;x++){
                         for(var y=0; y<boardWorkflow[x].columns.length;y++){
@@ -272,6 +341,17 @@ module.exports.boardDetails = async (req,res) =>{
                                     }
                                     tempCard.lane_name = lane_name;
                                     tempCard.lane_color = lane_color;
+                                    /*if(tempCard.description.length > 0){
+                                        let tempDescription = '';
+                                        try{
+                                            tempDescription = changeWidth(tempCard.description);
+                                        }
+                                        catch(error){
+                                            console.error(error);
+                                            tempDescription = tempCard.description;
+                                        }
+                                        tempCard.description = tempDescription;
+                                    }*/
                                     columnCards.push(tempCard);
                                 }
                             })
@@ -310,19 +390,19 @@ module.exports.boardDetails = async (req,res) =>{
                     res.json(boardWorkflow);
                 }
                 else{
-                    res.json({"error": response3.status});
+                    res.status(response3.status).json({"error": response3.status});
                 }
             }
             else{
-                res.json({"error": response2.status});
+                res.status(response2.status).json({"error": response2.status});
             }
         }
         else {
-            res.json({"error": response1.status});
+            res.status(response1.status).json({"error": response1.status});
         }
     }
     catch(error){
         console.error(error);
-        res.json({"error": 500});
+        res.status(500).json({"error": 500});
     }
 }
