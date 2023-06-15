@@ -117,7 +117,8 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: requests
+                    title: requests,
+                    text: 'ID 2001'
                     })
                 }
                 else if(data.error === 401){
@@ -132,7 +133,8 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: invalid
+                    title: invalid,
+                    text: 'ID 2002'
                     })
                 }
                 else{
@@ -147,7 +149,8 @@ const NewCardComponent = ({users, activateInsertCard, color, selected, lane_id, 
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: 'Error'
+                    title: 'Error',
+                    text: 'ID 2003'
                     })
                 }
             }

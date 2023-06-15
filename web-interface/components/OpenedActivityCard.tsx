@@ -66,7 +66,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 Swal.fire({
                     icon: 'warning',
                     title: moreMB,
-                    showCloseButton: true
+                    showCloseButton: true,
+                    text: 'ID 3001'
                 })
 
 
@@ -88,7 +89,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
             Swal.fire({
                 icon: 'error',
                 title: fileError,
-                showCloseButton: true
+                showCloseButton: true,
+                text: 'ID 3002'
             })
 
             
@@ -171,7 +173,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: requests
+                    title: requests,
+                    text: 'ID 2001'
                     })
             }
             else if(data.error === 401){
@@ -186,7 +189,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: invalid
+                title: invalid,
+                text: 'ID 2002'
                 })
             }
             else {
@@ -201,7 +205,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                 })             
                 Toast.fire({
                 icon: 'error',
-                title: 'Error'
+                title: 'Error',
+                text: 'ID 2003'
                 })
             }
         }
@@ -338,7 +343,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: requests
+                    title: requests,
+                    text: 'ID 2001'
                     })
                 }
                 else if( ex.response.status  === 401){
@@ -353,7 +359,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: invalid
+                    title: invalid,
+                    text: 'ID 2002'
                     })
                 }
                 else{
@@ -368,7 +375,8 @@ const OpenedActivityCard = ({title, owner, owner_avatar, co_owner_usernames, co_
                     })             
                     Toast.fire({
                     icon: 'error',
-                    title: 'Error'
+                    title: 'Error',
+                    text: 'ID 2003'
                     })
                 }
             }
